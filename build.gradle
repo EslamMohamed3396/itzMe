@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.4.30"
+    ext.kotlin_version = "1.4.31"
     repositories {
         google()
         jcenter()
@@ -29,11 +29,12 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
+    kotlinVersion = '1.4.31'
     appCompatVersion = '1.2.0'
     constraintLayoutVersion = '2.0.4'
     coordinatorlayoutVersion = '1.1.0'
-    lifecycleVersion = '2.2.0'
-    materialVersion = '1.2.1'
+    lifecycleVersion = '2.3.0'
+    materialVersion = '1.3.0'
     glideVersion = '4.11.0'
     roomVersion = '2.2.6'
     retrofitVersion = '2.9.0'
