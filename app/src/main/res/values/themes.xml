@@ -24,6 +24,17 @@
         <item name="android:forceDarkAllowed">false</item>
     </style>
 
+    <style name="TextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxStrokeColor">@color/gray</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="errorEnabled">true</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_8</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_8</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_8</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_8</item>
+    </style>
+
     <style name="SearchTextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textSize">12sp</item>
         <item name="boxStrokeWidth">2dp</item>
