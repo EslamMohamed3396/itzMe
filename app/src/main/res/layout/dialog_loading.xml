@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="100dp"
     android:layout_height="100dp"
-    android:layout_gravity="center"
-    android:background="@color/transparent">
+    android:layout_gravity="center">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
@@ -24,12 +23,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ProgressBar
-            android:id="@+id/avi"
+        <androidx.core.widget.ContentLoadingProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="8dp"
+            style="?android:attr/progressBarStyleLarge"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

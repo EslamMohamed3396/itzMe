@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import com.itzme.R
 
-
 object DialogUtil {
     private var dialog: Dialog? = null
 
@@ -27,6 +26,7 @@ object DialogUtil {
         if (dialog != null && dialog?.isShowing!!) {
             dialog?.dismiss()
         }
+        dialog = null
     }
 
 }
