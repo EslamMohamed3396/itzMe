@@ -1,6 +1,9 @@
 package com.itzme.utilits
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.itzme.data.models.registerationAndLogin.response.Data
 
 class PreferencesUtils(val context: Context?) {
 
@@ -62,6 +65,22 @@ class PreferencesUtils(val context: Context?) {
         return sharedPreferences.getFloat(key, 1.0f)
     }
 
+
+    fun putUserData(key: String, selectedPharmacy: Data) {
+        val gson = Gson()
+        val json = gson.toJson(selectedPharmacy)
+        sharedPreferences.edit().putString(key, json).apply()
+    }
+
+    fun getUserData(key: String): Data? {
+        val gson = Gson()
+        val json = sharedPreferences.getString(key, null) ?: return null
+
+        val type = object : TypeToken<Data>() {
+        }.type
+
+        return gson.fromJson(json, type)
+    }
     fun clear() {
         sharedPreferences.edit().clear().apply()
     }

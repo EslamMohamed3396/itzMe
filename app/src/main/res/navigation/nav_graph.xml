@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/nav_graph.xml">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/joinNowFragment">
 
+    <fragment
+        android:id="@+id/joinNowFragment"
+        android:name="com.itzme.ui.fragment.joinNow.JoinNowFragment"
+        android:label="JoinNowFragment">
+
+        <action
+            android:id="@+id/action_joinNowFragment_to_loginFragment2"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/joinNowFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.itzme.ui.fragment.logn.LoginFragment"
+        android:label="LoginFragment" />
 </navigation>

@@ -11,7 +11,7 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
+    
     defaultConfig {
         applicationId "com.itzme"
         minSdkVersion 23
@@ -40,6 +40,7 @@ android {
         checkReleaseBuilds false //<- add this line
     }
     buildFeatures.dataBinding = true
+
 }
 
 dependencies {
@@ -111,5 +112,5 @@ dependencies {
 
     //viewpagerdotsindicator
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
-    
+
 }

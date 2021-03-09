@@ -1,82 +1,88 @@
 package com.itzme.utilits
 
+import com.google.android.material.textfield.TextInputLayout
+import com.itzme.R
+import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 object EditTextValidiation {
-//    fun validEmail(
-//        textInputLayout: TextInputLayout
-//    ): Boolean {
-//        val validEmail =
-//            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-//        val matcherEmail: Matcher =
-//            Pattern.compile(validEmail)
-//                .matcher(textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT))
-//        return if (matcherEmail.matches()) {
-//            textInputLayout.error = null
-//            true
-//        } else {
-//            textInputLayout.error =
-//                textInputLayout.context.resources.getString(R.string.invalidemail)
-//            textInputLayout.editText?.requestFocus()
-//            false
-//        }
-//    }
-//
-//
-//    fun validPassword(
-//        textInputLayout: TextInputLayout
-//    ): Boolean {
-//        val pattern: Pattern
-//        val matcher: Matcher
-////            val passwordPattern = "[0-9]{1,6}"
-////            val passwordPattern = "((?!\\s)\\A)(\\s|(?<!\\s)\\S){4,20}\\Z"
-//        val passwordPattern = "^[A-Za-z0-9]{4,20}$"
-//        pattern = Pattern.compile(passwordPattern)
-//        matcher = pattern.matcher(textInputLayout.editText?.text.toString())
-//        return if (matcher.matches()) {
-//            textInputLayout.error = null
-//            true
-//        } else {
-//            textInputLayout.error =
-//                textInputLayout.context.resources.getString(R.string.invalidPassword)
-//            textInputLayout.editText?.requestFocus()
-//            false
-//        }
-//    }
-//
-//    fun validConfirmPassword(
-//        Password: TextInputLayout,
-//        confirmInputLayout: TextInputLayout
-//    ): Boolean {
-//        return if (confirmInputLayout.editText?.text.toString() != Password.editText?.text.toString()) {
-//            confirmInputLayout.error =
-//                confirmInputLayout.context.getString(R.string.password_match)
-//            confirmInputLayout.editText?.requestFocus()
-//            false
-//        } else {
-//            confirmInputLayout.error = null
-//            true
-//        }
-//    }
-//
-//
-//    fun validUserName(
-//        textInputLayout: TextInputLayout
-//    ): Boolean {
-////            val validName = "^(?![ .]*$)[\\p{L} .]*$"
-//
-////            val validName = "([a-zA-Z]{2,30})"
-//        val validName = "[A-Za-z0-9_]{2,30}"
-//        val mName = textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT)
-//        val matcherName: Matcher = Pattern.compile(validName).matcher(mName)
-//        return if (matcherName.matches()) {
-//            textInputLayout.error = null
-//            true
-//        } else {
-//            textInputLayout.error =
-//                textInputLayout.context.resources.getString(R.string.invalidName)
-//            textInputLayout.editText?.requestFocus()
-//            false
-//        }
-//    }
+    fun validEmail(
+        textInputLayout: TextInputLayout
+    ): Boolean {
+        val validEmail =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+        val matcherEmail: Matcher =
+            Pattern.compile(validEmail)
+                .matcher(textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT))
+        return if (matcherEmail.matches()) {
+            textInputLayout.error = null
+            true
+        } else {
+            textInputLayout.error =
+                textInputLayout.context.resources.getString(R.string.invalidemail)
+            textInputLayout.editText?.requestFocus()
+            false
+        }
+    }
+
+
+    fun validPassword(
+        textInputLayout: TextInputLayout
+    ): Boolean {
+        val pattern: Pattern
+        val matcher: Matcher
+//            val passwordPattern = "[0-9]{1,6}"
+//            val passwordPattern = "((?!\\s)\\A)(\\s|(?<!\\s)\\S){4,20}\\Z"
+        val passwordPattern = "^[A-Za-z0-9]{4,20}$"
+        pattern = Pattern.compile(passwordPattern)
+        matcher = pattern.matcher(textInputLayout.editText?.text.toString())
+        return if (matcher.matches()) {
+            textInputLayout.error = null
+            true
+        } else {
+            textInputLayout.error =
+                textInputLayout.context.resources.getString(R.string.invalidPassword)
+            textInputLayout.editText?.requestFocus()
+            false
+        }
+    }
+
+    fun validConfirmPassword(
+        Password: TextInputLayout,
+        confirmInputLayout: TextInputLayout
+    ): Boolean {
+        return if (confirmInputLayout.editText?.text.toString() != Password.editText?.text.toString()) {
+            confirmInputLayout.error =
+                confirmInputLayout.context.getString(R.string.password_match)
+            confirmInputLayout.editText?.requestFocus()
+            false
+        } else {
+            confirmInputLayout.error = null
+            true
+        }
+    }
+
+
+    fun validUserName(
+        textInputLayout: TextInputLayout
+    ): Boolean {
+        val validName = "^(?![ .]*$)[\\p{L} .]*$"
+
+        val mName = textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT)
+        val matcherName: Matcher = Pattern.compile(validName).matcher(mName)
+        return if (matcherName.matches() && textInputLayout.editText?.text.toString()
+                .trim().isNotEmpty()
+        ) {
+            textInputLayout.error = null
+            true
+        } else {
+            textInputLayout.error =
+                textInputLayout.context.resources.getString(R.string.invalid_name)
+            textInputLayout.editText?.requestFocus()
+            false
+        }
+    }
 //
 //    fun validName(
 //        textInputLayout: TextInputLayout

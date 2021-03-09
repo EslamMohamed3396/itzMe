@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Itzme</string>
-    <string name="invalidPassword">The password must be greater than 4 characters </string>
+    <string name="invalidPassword">The password must be greater than four characters </string>
     <string name="password_match">Password doesn\'t match</string>
     <string name="invalidemail">Invalid Email</string>
     <string name="name_exist">User Name is Already Exist</string>

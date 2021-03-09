@@ -37,15 +37,15 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
                 .isNullOrEmpty()
         ) {
             when (Locale.getDefault().displayLanguage) {
-                Constant.ARABIC_LANGUAGE -> Constant.AR_LANG_CODE
-                else -> Constant.EN_LANG_CODE
+                Constant.ARABIC_LANGUAGE -> Constant.ARABIC_LANGUAGE
+                else -> Constant.ENGLISH_LANGUAGE
             }
             lang = Locale.getDefault().displayLanguage
         } else {
-            Constant.LANG_ID =
+            Constant.LANG_NAME =
                 when (PreferencesUtils(context).getInstance()?.getString(Constant.LANGUAGE_KEY)) {
-                    Constant.ARABIC_LANGUAGE -> Constant.AR_LANG_CODE
-                    else -> Constant.EN_LANG_CODE
+                    Constant.ARABIC_LANGUAGE -> Constant.ARABIC_LANGUAGE
+                    else -> Constant.ENGLISH_LANGUAGE
                 }
             lang = PreferencesUtils(context).getInstance()?.getString(Constant.LANGUAGE_KEY)!!
         }

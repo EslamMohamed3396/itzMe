@@ -5,7 +5,15 @@ import android.Manifest
 object Constant {
 
     //region base url
-    const val BASE_URL = ""
+    const val BASE_URL = "http://itzme.somee.com/api/"
+    const val AUTHORIZATION = "Authorization"
+    const val BEARER = "Bearer "
+
+    private const val ROUTE_ACCOUNT = "account/"
+    const val REGISTER = ROUTE_ACCOUNT + "register"
+    const val LOGIN = ROUTE_ACCOUNT + "login"
+    const val CHECK_USER_NAME = ROUTE_ACCOUNT + "CheckUsernameAvailability"
+
 
     //endregion
 
@@ -26,7 +34,8 @@ object Constant {
     const val IS_FIRST_TIME_KEY = "is_first_time"
     const val LANGUAGE_KEY = "language_key"
     const val IS_USER_LOGIN = "login_key"
-    const val TOKEN_KEY = "token_key"
+    const val AUTH_KEY = "auth_key"
+    const val USER_DATA_KEY = "user_data_key"
     const val LANG_APP = "lang"
 
     //navigation args
@@ -44,7 +53,7 @@ object Constant {
     //Language key
     const val AR_LANG_CODE = "5ff2e4109554686cb4354bfc"
     const val EN_LANG_CODE = "5ff2e4069554686cb4354bfb"
-    var LANG_ID = ""
+    var LANG_NAME = ""
 
     //Language
     const val ARABIC_LANGUAGE = "ar"
