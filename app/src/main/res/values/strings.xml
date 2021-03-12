@@ -6,4 +6,13 @@
     <string name="name_exist">User Name is Already Exist</string>
     <string name="invalid_name">User Name is Not Valid</string>
     <string name="email_or_password_wrong">Email or Password wrong</string>
+    <string name="join_now">Join Now</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="forget_your_password">Forget your password ?</string>
+    <string name="don_t_have_an_account">Don’t have an account ?</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="welcome_to_itzme">Welcome to itzme</string>
+    <string name="log_in_to_continue">Log in to continue</string>
 </resources>

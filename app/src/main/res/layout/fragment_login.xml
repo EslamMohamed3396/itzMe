@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/imageView3"
@@ -25,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Log in to continue"
+            android:text="@string/log_in_to_continue"
             android:textColor="@color/blue"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -39,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Welcome to itzme"
+            android:text="@string/welcome_to_itzme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +52,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:hint="Email"
+            android:hint="@string/email"
             app:errorEnabled="true"
             app:layout_constraintBottom_toTopOf="@+id/password_inputLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +66,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:inputType="textWebEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,21 +82,21 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:hint="Password"
-            app:endIconDrawable="@drawable/ic_happy_hide"
-            app:endIconTint="@color/light_gray"
+            android:hint="@string/password"
             app:errorEnabled="true"
             app:layout_constraintBottom_toTopOf="@+id/join_now_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email_inputLayout"
+            app:passwordToggleDrawable="@drawable/show_hide_password"
+            app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/ic_password"
             app:startIconTint="@null">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -115,7 +113,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="LOG IN"
+            android:text="@string/log_in"
             app:layout_constraintBottom_toTopOf="@+id/textView3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -126,21 +124,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Don’t have an account ?"
+            android:text="@string/don_t_have_an_account"
             android:textColor="@color/gray"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sign_up"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tv_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:text="SIGN UP"
+            android:text="@string/sign_up"
             android:textColor="@color/dark_blue"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -151,11 +149,11 @@
             app:layout_constraintTop_toTopOf="@+id/textView3" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/tv_forget_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Forget your password ?"
+            android:text="@string/forget_your_password"
             android:textColor="@color/dark_blue"
             android:textSize="16sp"
             android:textStyle="bold"

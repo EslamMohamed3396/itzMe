@@ -1,28 +1,39 @@
 package com.itzme.ui.fragment.splash
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.itzme.R
+import com.itzme.databinding.FragmentSplashBinding
+import com.itzme.ui.base.BaseFragment
 
-class SplashFragment : Fragment() {
+class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
-
-    private lateinit var viewModel: SplashViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_splash, container, false)
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        return bindView(inflater, container, R.layout.fragment_splash)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
+        initClick()
+    }
+
+    private fun initClick() {
+        binding.joinNowBtn.setOnClickListener {
+            val action = SplashFragmentDirections.actionSplashFragmentToJoinNowFragment()
+            findNavController().navigate(action)
+        }
+        binding.loginBtn.setOnClickListener {
+            val action = SplashFragmentDirections.actionSplashFragmentToLoginFragment()
+            findNavController().navigate(action)
+        }
+
     }
 
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.itzme.R
 import com.itzme.data.models.registerationAndLogin.request.BodyLogin
 import com.itzme.databinding.FragmentLoginBinding
@@ -18,15 +19,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
         return bindView(inflater, container, R.layout.fragment_login)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initClick()
+        textValidation()
     }
 
 
@@ -55,6 +57,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 initLoginViewModel()
             }
         }
+        binding.tvSignUp.setOnClickListener {
+            val action = LoginFragmentDirections.actionLoginFragmentToJoinNowFragment()
+            findNavController().navigate(action)
+        }
     }
 
 
@@ -63,8 +69,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun bodyLogin(): BodyLogin {
         return BodyLogin(
-            binding.emailInputLayout.editText?.text.toString(),
-            binding.passwordInputLayout.editText?.text.toString()
+                binding.emailInputLayout.editText?.text.toString(),
+                binding.passwordInputLayout.editText?.text.toString()
         )
     }
 
@@ -78,22 +84,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
                     PreferencesUtils(App.getContext()).getInstance()
-                        ?.putUserData(
-                            Constant.USER_DATA_KEY,
-                            response.data?.data!!
-                        )
+                            ?.putUserData(
+                                    Constant.USER_DATA_KEY,
+                                    response.data?.data!!
+                            )
                     Timber.d(
-                        PreferencesUtils(requireContext()).getInstance()?.getUserData(
-                            Constant.USER_DATA_KEY,
-                        )?.name
+                            PreferencesUtils(requireContext()).getInstance()?.getUserData(
+                                    Constant.USER_DATA_KEY,
+                            )?.name
                     )
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()
                     when (response.code) {
                         13, 14 -> {
-                            binding.emailInputLayout.error =
-                                requireContext().resources.getString(R.string.email_or_password_wrong)
+                            binding.passwordInputLayout.error =
+                                    requireContext().resources.getString(R.string.email_or_password_wrong)
                         }
                     }
                 }

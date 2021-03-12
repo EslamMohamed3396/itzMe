@@ -27,8 +27,8 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
     private lateinit var viewModelCheckName: CheckNameViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_join_now)
     }
@@ -51,6 +51,7 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
             val action = JoinNowFragmentDirections.actionJoinNowFragmentToLoginFragment2()
             findNavController().navigate(action)
         }
+
     }
 
 
@@ -60,8 +61,8 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                 EditTextValidiation.validUserName(binding.userNameInputLayout) &&
                 EditTextValidiation.validPassword(binding.passwordInputLayout) &&
                 EditTextValidiation.validConfirmPassword(
-                    binding.passwordInputLayout,
-                    binding.confirmPasswordInputLayout
+                        binding.passwordInputLayout,
+                        binding.confirmPasswordInputLayout
                 )
     }
 
@@ -78,8 +79,8 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
 
         binding.confirmPasswordInputLayout.editText?.doOnTextChanged { _, _, _, _ ->
             EditTextValidiation.validConfirmPassword(
-                binding.passwordInputLayout,
-                binding.confirmPasswordInputLayout
+                    binding.passwordInputLayout,
+                    binding.confirmPasswordInputLayout
             )
         }
     }
@@ -89,9 +90,9 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
     //region register
     private fun bodyRegister(): BodyRegister {
         return BodyRegister(
-            binding.userNameInputLayout.editText?.text.toString(),
-            binding.emailInputLayout.editText?.text.toString(),
-            binding.passwordInputLayout.editText?.text.toString()
+                binding.userNameInputLayout.editText?.text.toString(),
+                binding.emailInputLayout.editText?.text.toString(),
+                binding.passwordInputLayout.editText?.text.toString()
         )
     }
 
@@ -106,10 +107,10 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
                     PreferencesUtils(App.getContext()).getInstance()
-                        ?.putUserData(
-                            Constant.USER_DATA_KEY,
-                            response.data?.data!!
-                        )
+                            ?.putUserData(
+                                    Constant.USER_DATA_KEY,
+                                    response.data?.data!!
+                            )
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()
@@ -117,12 +118,12 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                         19 -> {
                             binding.userNameInputLayout.isErrorEnabled = true
                             binding.userNameInputLayout.error =
-                                requireContext().resources.getString(R.string.name_exist)
+                                    requireContext().resources.getString(R.string.name_exist)
                         }
                         20 -> {
                             binding.emailInputLayout.isErrorEnabled = true
                             binding.emailInputLayout.error =
-                                requireContext().resources.getString(R.string.invalid_name)
+                                    requireContext().resources.getString(R.string.invalid_name)
                         }
                     }
                 }
@@ -148,11 +149,11 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                     when (response.code) {
                         19 -> {
                             binding.userNameInputLayout.error =
-                                requireContext().resources.getString(R.string.name_exist)
+                                    requireContext().resources.getString(R.string.name_exist)
                         }
                         20 -> {
                             binding.userNameInputLayout.error =
-                                requireContext().resources.getString(R.string.invalid_name)
+                                    requireContext().resources.getString(R.string.invalid_name)
                         }
                     }
                 }
@@ -166,10 +167,10 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
         Observable.create { emitter: ObservableEmitter<String?> ->
             inputLayout?.editText?.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
                 ) {
                 }
 
@@ -182,11 +183,11 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                 }
             })
         }.debounce(2, TimeUnit.SECONDS)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { s: String? ->
-                initCheckNameViewModel(s.toString())
-            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { s: String? ->
+                    initCheckNameViewModel(s.toString())
+                }
 
 
     }
