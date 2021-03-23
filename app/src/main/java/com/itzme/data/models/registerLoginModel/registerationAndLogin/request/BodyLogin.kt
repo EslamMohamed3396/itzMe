@@ -1,17 +1,15 @@
-package com.itzme.data.models.registerationAndLogin.request
+package com.itzme.data.models.registerLoginModel.registerationAndLogin.request
 
 
 import android.annotation.SuppressLint
-import com.google.gson.annotations.SerializedName
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @SuppressLint("ParcelCreator")
 @Parcelize
-data class BodyRegister(
-    @SerializedName("Name")
-    val name: String?,
-    @SerializedName("Email")
+data class BodyLogin(
+    @SerializedName("Provider")
     val email: String?,
     @SerializedName("Password")
     val password: String?

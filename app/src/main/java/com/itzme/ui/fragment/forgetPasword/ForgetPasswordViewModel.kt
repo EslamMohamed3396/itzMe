@@ -1,7 +1,14 @@
 package com.itzme.ui.fragment.forgetPasword
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import com.itzme.data.models.registerLoginModel.forgetPassword.response.ResponseForgetPassword
+import com.itzme.data.network.Client
+import com.itzme.ui.base.BaseViewModel
+import com.itzme.utilits.Resource
 
-class ForgetPasswordViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+class ForgetPasswordViewModel : BaseViewModel<ResponseForgetPassword>() {
+
+    fun forgotPassword(email: String): LiveData<Resource<ResponseForgetPassword>> {
+        return callApi(Client.getInstance()?.forgotPassword(email)!!)
+    }
 }

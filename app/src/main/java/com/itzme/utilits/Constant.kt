@@ -13,6 +13,9 @@ object Constant {
     const val REGISTER = ROUTE_ACCOUNT + "register"
     const val LOGIN = ROUTE_ACCOUNT + "login"
     const val CHECK_USER_NAME = ROUTE_ACCOUNT + "CheckUsernameAvailability"
+    const val FORGET_PASSWORD = ROUTE_ACCOUNT + "ForgotPassword"
+    const val CONFIRM_CODE = ROUTE_ACCOUNT + "ValidateForgotPasswordCode"
+    const val RESET_PASSWORD = ROUTE_ACCOUNT + "ResetPassword"
 
 
     //endregion

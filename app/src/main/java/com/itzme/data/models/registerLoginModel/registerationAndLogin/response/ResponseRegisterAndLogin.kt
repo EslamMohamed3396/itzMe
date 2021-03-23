@@ -1,4 +1,4 @@
-package com.itzme.data.models.registerationAndLogin.response
+package com.itzme.data.models.registerLoginModel.registerationAndLogin.response
 
 
 import android.annotation.SuppressLint

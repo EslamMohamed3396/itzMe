@@ -1,4 +1,4 @@
-package com.itzme.ui.fragment.logn
+package com.itzme.ui.fragment.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,11 +8,11 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.itzme.R
-import com.itzme.data.models.registerationAndLogin.request.BodyLogin
+import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyLogin
+import com.itzme.data.models.registerLoginModel.registerationAndLogin.response.ResponseRegisterAndLogin
 import com.itzme.databinding.FragmentLoginBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.utilits.*
-import timber.log.Timber
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
@@ -21,7 +21,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View {
+    ): View? {
+        hideNavigation()
         return bindView(inflater, container, R.layout.fragment_login)
     }
 
@@ -34,31 +35,34 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     //region check data
     private fun checkData(): Boolean {
-        return EditTextValidiation.validEmail(binding.emailInputLayout) &&
-                EditTextValidiation.validPassword(binding.passwordInputLayout)
+        return CheckValidData.checkEmail(binding?.emailInputLayout!!) &&
+                CheckValidData.checkPassword(binding?.passwordInputLayout!!)
 
     }
 
     private fun textValidation() {
-
-        binding.emailInputLayout.editText?.doOnTextChanged { _, _, _, _ ->
-            EditTextValidiation.validEmail(binding.emailInputLayout)
+        binding?.emailInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validEmail(binding?.emailInputLayout!!)
         }
-        binding.passwordInputLayout.editText?.doOnTextChanged { _, _, _, _ ->
-            EditTextValidiation.validPassword(binding.passwordInputLayout)
+        binding?.passwordInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validPassword(binding?.passwordInputLayout!!)
         }
 
     }
 
     //endregion
     private fun initClick() {
-        binding.joinNowBtn.setOnClickListener {
+        binding?.joinNowBtn?.setOnClickListener {
             if (checkData()) {
                 initLoginViewModel()
             }
         }
-        binding.tvSignUp.setOnClickListener {
+        binding?.tvSignUp?.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToJoinNowFragment()
+            findNavController().navigate(action)
+        }
+        binding?.tvForgetPassword?.setOnClickListener {
+            val action = LoginFragmentDirections.actionLoginFragmentToForgetPasswordFragment()
             findNavController().navigate(action)
         }
     }
@@ -69,8 +73,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun bodyLogin(): BodyLogin {
         return BodyLogin(
-                binding.emailInputLayout.editText?.text.toString(),
-                binding.passwordInputLayout.editText?.text.toString()
+                binding?.emailInputLayout?.editText?.text.toString(),
+                binding?.passwordInputLayout?.editText?.text.toString()
         )
     }
 
@@ -83,22 +87,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    PreferencesUtils(App.getContext()).getInstance()
-                            ?.putUserData(
-                                    Constant.USER_DATA_KEY,
-                                    response.data?.data!!
-                            )
-                    Timber.d(
-                            PreferencesUtils(requireContext()).getInstance()?.getUserData(
-                                    Constant.USER_DATA_KEY,
-                            )?.name
-                    )
+                    saveData(response.data!!)
+
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()
                     when (response.code) {
                         13, 14 -> {
-                            binding.passwordInputLayout.error =
+                            binding?.passwordInputLayout?.error =
                                     requireContext().resources.getString(R.string.email_or_password_wrong)
                         }
                     }
@@ -106,5 +102,24 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
             }
         })
+    }
+
+    private fun saveData(response: ResponseRegisterAndLogin) {
+        PreferencesUtils(App.getContext()).getInstance()
+                ?.putUserData(
+                        Constant.USER_DATA_KEY,
+                        response.data!!
+                )
+        PreferencesUtils(App.getContext()).getInstance()
+                ?.putBoolean(
+                        Constant.IS_USER_LOGIN,
+                        true
+                )
+        goToMyProfile()
+    }
+
+    private fun goToMyProfile() {
+        val action = LoginFragmentDirections.actionLoginFragmentToMyProfileFragment()
+        findNavController().navigate(action)
     }
 }

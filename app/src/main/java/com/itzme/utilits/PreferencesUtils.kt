@@ -3,7 +3,7 @@ package com.itzme.utilits
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.itzme.data.models.registerationAndLogin.response.Data
+import com.itzme.data.models.registerLoginModel.registerationAndLogin.response.Data
 
 class PreferencesUtils(val context: Context?) {
 

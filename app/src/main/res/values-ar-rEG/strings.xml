@@ -16,4 +16,15 @@
     <string name="email">Email</string>
     <string name="welcome_to_itzme">Welcome to itzme</string>
     <string name="log_in_to_continue">Log in to continue</string>
+    <string name="provide_your_account_e_mail_for_which_you_want_to_reset_your_password">provide your account e-mail for which you want to reset your password</string>
+    <string name="next">NEXT</string>
+    <string name="back">Back</string>
+    <string name="resend_the_code">Resend the code</string>
+    <string name="please_enter_the_code_the_code_has_been_sent_to_your_e_mail">Please enter the code , the code has been sent to your e-mail</string>
+    <string name="confirm">Confirm</string>
+    <string name="wrong_code">Wrong code</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="my_profile">My Profile</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
 </resources>

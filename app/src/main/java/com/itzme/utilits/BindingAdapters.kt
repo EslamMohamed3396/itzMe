@@ -1,27 +1,13 @@
-//package com.itzme.utilits
-//
-//import android.util.Base64
-//import android.widget.ImageView
-//import android.widget.TextView
-//import androidx.databinding.BindingAdapter
-//import com.bumptech.glide.Glide
-//import com.bumptech.glide.load.engine.DiskCacheStrategy
-//import com.itzme.R
-//import java.text.ParseException
-//import java.text.SimpleDateFormat
-//import java.util.*
-//
-//
-//@BindingAdapter("app:loadImageUrl")
-//fun imageUrl(imageView: ImageView, url: String?) {
-//    if (!url.isNullOrBlank()) {
-//        val newUrl = url.replace("\\", "//")
-//        Glide.with(imageView.context)
-//            .load(Constant.BASE_URL + newUrl)
-//            .placeholder(R.drawable.logo_blue)
-//            .into(imageView)
-//    }
-//}
+package com.itzme.utilits
+
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+
+
+@BindingAdapter("app:loadImageDrawable")
+fun loadImageDrawable(imageView: ImageView, image: Int) {
+    imageView.setImageResource(image)
+}
 //
 //@BindingAdapter("app:imageBase")
 //fun imageBitmap(imageView: ImageView, base64: String?) {

@@ -2,10 +2,13 @@ package com.itzme.data.network
 
 import com.google.gson.Gson
 import com.itzme.data.models.baseResponse.ErrorResponse
-import com.itzme.data.models.checkName.ResponseCheckUserName
-import com.itzme.data.models.registerationAndLogin.request.BodyLogin
-import com.itzme.data.models.registerationAndLogin.request.BodyRegister
-import com.itzme.data.models.registerationAndLogin.response.ResponseRegisterAndLogin
+import com.itzme.data.models.registerLoginModel.checkName.ResponseCheckUserName
+import com.itzme.data.models.registerLoginModel.forgetPassword.response.ResponseForgetPassword
+import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyLogin
+import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyRegister
+import com.itzme.data.models.registerLoginModel.registerationAndLogin.response.ResponseRegisterAndLogin
+import com.itzme.data.models.registerLoginModel.resetPassword.request.BodyResetPassword
+import com.itzme.data.models.registerLoginModel.verficationCode.response.ResponseConfirmCode
 import com.itzme.utilits.App
 import com.itzme.utilits.Constant
 import com.itzme.utilits.PreferencesUtils
@@ -119,6 +122,18 @@ object Client {
 
     fun checkUserName(name: String): Observable<ResponseCheckUserName> {
         return apiService?.CHECK_USER_NAME(name)!!
+    }
+
+    fun forgotPassword(email: String): Observable<ResponseForgetPassword> {
+        return apiService?.FORGET_PASSWORD(email)!!
+    }
+
+    fun confirmCode(code: String): Observable<ResponseConfirmCode> {
+        return apiService?.CONFIRM_CODE(code)!!
+    }
+
+    fun resetPassword(bodyResetPassword: BodyResetPassword): Observable<ResponseRegisterAndLogin> {
+        return apiService?.RESET_PASSWORD(bodyResetPassword)!!
     }
 
 }

@@ -1,4 +1,4 @@
-package com.itzme.data.models.registerationAndLogin.request
+package com.itzme.data.models.registerLoginModel.resetPassword.request
 
 
 import android.annotation.SuppressLint
@@ -8,9 +8,9 @@ import kotlinx.parcelize.Parcelize
 
 @SuppressLint("ParcelCreator")
 @Parcelize
-data class BodyLogin(
-    @SerializedName("Provider")
-    val email: String?,
+data class BodyResetPassword(
+    @SerializedName("Key")
+    val key: String?,
     @SerializedName("Password")
     val password: String?
 ) : Parcelable

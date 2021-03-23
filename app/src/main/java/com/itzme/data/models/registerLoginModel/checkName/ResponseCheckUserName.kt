@@ -1,4 +1,4 @@
-package com.itzme.data.models.checkName
+package com.itzme.data.models.registerLoginModel.checkName
 
 
 import com.google.gson.annotations.SerializedName

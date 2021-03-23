@@ -1,31 +1,231 @@
 package com.itzme.ui.fragment.verificationCode
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.itzme.R
+import com.itzme.databinding.FragmentVerificationCodeBinding
+import com.itzme.ui.base.BaseFragment
+import com.itzme.ui.fragment.forgetPasword.ForgetPasswordViewModel
+import com.itzme.utilits.DialogUtil
+import com.itzme.utilits.Resource
+import timber.log.Timber
 
-class VerificationCodeFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = VerificationCodeFragment()
-    }
+class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>() {
+
 
     private lateinit var viewModel: VerificationCodeViewModel
+    private val currentCode = StringBuilder()
+    private val args: VerificationCodeFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_verification_code, container, false)
+        hideNavigation()
+        return bindView(inflater, container, R.layout.fragment_verification_code)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(VerificationCodeViewModel::class.java)
+        insertCode()
+        initClick()
+        bindEmailTxt()
     }
 
+    //region init
+    private fun initClick() {
+        binding?.joinNowBtn?.setOnClickListener {
+            if (checkData(currentCode.toString())) {
+                initConfirmViewModel(currentCode.toString())
+                Timber.d(currentCode.toString())
+            }
+        }
+
+        binding?.tvResendCode?.setOnClickListener {
+            initForgotViewModel()
+        }
+
+        binding?.imBack?.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    //endregion
+
+
+    //region check
+
+    private fun checkData(code: String): Boolean {
+        return code.isNotEmpty()
+    }
+
+    //endregion
+
+    //region type code into edite text
+    private fun insertCode() {
+
+        binding?.ConfirmCodeOneInputLayout?.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                val edtChar: String =
+                    binding?.ConfirmCodeOneInputLayout?.editText?.text.toString()
+
+                if (edtChar.length == 1) {
+                    currentCode?.append(edtChar)
+
+                    binding?.ConfirmCodeTwoInputLayout?.editText?.requestFocus()
+                } else if (edtChar.length == 0) {
+                    currentCode?.deleteCharAt(0)
+                    binding?.ConfirmCodeOneInputLayout?.editText?.requestFocus()
+                }
+            }
+        })
+
+
+        binding?.ConfirmCodeTwoInputLayout?.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                val edtChar: String =
+                    binding?.ConfirmCodeTwoInputLayout?.editText?.text.toString()
+                if (edtChar.length == 1) {
+                    currentCode?.append(edtChar)
+                    binding?.ConfirmCodeThreeInputLayout?.editText?.requestFocus()
+                } else if (edtChar.length == 0) {
+                    currentCode?.deleteCharAt(1)
+                    binding?.ConfirmCodeOneInputLayout?.editText?.requestFocus()
+                }
+            }
+        })
+        binding?.ConfirmCodeThreeInputLayout?.editText?.addTextChangedListener(object :
+            TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                val edtChar: String =
+                    binding?.ConfirmCodeThreeInputLayout?.editText?.text.toString()
+                if (edtChar.length == 1) {
+                    currentCode?.append(edtChar)
+                    binding?.ConfirmCodeFourInputLayout?.editText?.requestFocus()
+                } else if (edtChar.length == 0) {
+                    currentCode?.deleteCharAt(2)
+                    binding?.ConfirmCodeTwoInputLayout?.editText?.requestFocus()
+                }
+            }
+        })
+        binding?.ConfirmCodeFourInputLayout?.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                val edtChar: String =
+                    binding?.ConfirmCodeFourInputLayout?.editText?.text.toString()
+                if (edtChar.length == 1) {
+                    currentCode?.append(edtChar)
+                    binding?.ConfirmCodeFourInputLayout?.editText?.requestFocus()
+                } else if (edtChar.length == 0) {
+                    currentCode?.deleteCharAt(2)
+                    binding?.ConfirmCodeThreeInputLayout?.editText?.requestFocus()
+                }
+            }
+        })
+    }
+    //endregion
+
+    //region init confirm view model
+    private fun initConfirmViewModel(code: String) {
+        viewModel = ViewModelProvider(this).get(VerificationCodeViewModel::class.java)
+
+        viewModel.confirmCode(code).observe(viewLifecycleOwner, { response ->
+
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+                    val action =
+                        VerificationCodeFragmentDirections.actionVerificationCodeFragmentToNewPasswordFragment(
+                            response.data?.data?.key
+                        )
+                    findNavController().navigate(action)
+
+                }
+                is Resource.Error -> {
+                    DialogUtil.dismissDialog()
+                    when (response.code) {
+                        13 -> {
+                            Toast.makeText(
+                                requireContext(),
+                                requireContext().resources.getString(R.string.wrong_code),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+
+            }
+
+        })
+    }
+
+    //endregion
+
+    //region init resend code
+    private fun initForgotViewModel() {
+
+        val viewModel = ViewModelProvider(this).get(ForgetPasswordViewModel::class.java)
+        viewModel.forgotPassword(args.emailArgs!!).observe(viewLifecycleOwner, { response ->
+
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+                    clearText()
+                }
+                is Resource.Error -> {
+                    DialogUtil.dismissDialog()
+                    when (response.code) {
+                        13 -> {
+
+                        }
+                    }
+                }
+
+            }
+
+        })
+
+    }
+
+    //endregion
+
+    //region Reset Data
+    private fun clearText() {
+        currentCode.clear()
+        binding?.ConfirmCodeOneInputLayout?.editText?.setText("")
+        binding?.ConfirmCodeTwoInputLayout?.editText?.setText("")
+        binding?.ConfirmCodeThreeInputLayout?.editText?.setText("")
+        binding?.ConfirmCodeFourInputLayout?.editText?.setText("")
+        binding?.ConfirmCodeOneInputLayout?.editText?.requestFocus()
+    }
+    //endregion
+
+    //region bind email to textView
+    private fun bindEmailTxt() {
+        binding?.tvEmail?.text = args.emailArgs
+    }
+
+    //endregion
 }

@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.itzme.R
-import com.itzme.data.models.registerationAndLogin.request.BodyRegister
+import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyRegister
 import com.itzme.databinding.FragmentJoinNowBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.utilits.*
@@ -30,24 +30,25 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        hideNavigation()
         return bindView(inflater, container, R.layout.fragment_join_now)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initClick()
-        initSearchEdit(binding.userNameInputLayout)
+        initSearchEdit(binding?.userNameInputLayout)
         textValidation()
     }
 
 
     private fun initClick() {
-        binding.joinNowBtn.setOnClickListener {
+        binding?.joinNowBtn?.setOnClickListener {
             if (checkData()) {
                 initJoinViewModel()
             }
         }
-        binding.tvLogin.setOnClickListener {
+        binding?.tvLogin?.setOnClickListener {
             val action = JoinNowFragmentDirections.actionJoinNowFragmentToLoginFragment2()
             findNavController().navigate(action)
         }
@@ -57,30 +58,30 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
 
     //region check data
     private fun checkData(): Boolean {
-        return EditTextValidiation.validEmail(binding.emailInputLayout) &&
-                EditTextValidiation.validUserName(binding.userNameInputLayout) &&
-                EditTextValidiation.validPassword(binding.passwordInputLayout) &&
+        return EditTextValidiation.validEmail(binding?.emailInputLayout!!) &&
+                EditTextValidiation.validUserName(binding?.userNameInputLayout!!) &&
+                EditTextValidiation.validPassword(binding?.passwordInputLayout!!) &&
                 EditTextValidiation.validConfirmPassword(
-                        binding.passwordInputLayout,
-                        binding.confirmPasswordInputLayout
+                        binding?.passwordInputLayout!!,
+                        binding?.confirmPasswordInputLayout!!
                 )
     }
 
     private fun textValidation() {
-        binding.userNameInputLayout.editText?.doOnTextChanged { _, _, _, _ ->
-            EditTextValidiation.validUserName(binding.userNameInputLayout)
+        binding?.userNameInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validUserName(binding?.userNameInputLayout!!)
         }
-        binding.emailInputLayout.editText?.doOnTextChanged { _, _, _, _ ->
-            EditTextValidiation.validEmail(binding.emailInputLayout)
+        binding?.emailInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validEmail(binding?.emailInputLayout!!)
         }
-        binding.passwordInputLayout.editText?.doOnTextChanged { _, _, _, _ ->
-            EditTextValidiation.validPassword(binding.passwordInputLayout)
+        binding?.passwordInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validPassword(binding?.passwordInputLayout!!)
         }
 
-        binding.confirmPasswordInputLayout.editText?.doOnTextChanged { _, _, _, _ ->
+        binding?.confirmPasswordInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
             EditTextValidiation.validConfirmPassword(
-                    binding.passwordInputLayout,
-                    binding.confirmPasswordInputLayout
+                    binding?.passwordInputLayout!!,
+                    binding?.confirmPasswordInputLayout!!
             )
         }
     }
@@ -90,9 +91,9 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
     //region register
     private fun bodyRegister(): BodyRegister {
         return BodyRegister(
-                binding.userNameInputLayout.editText?.text.toString(),
-                binding.emailInputLayout.editText?.text.toString(),
-                binding.passwordInputLayout.editText?.text.toString()
+                binding?.userNameInputLayout?.editText?.text.toString(),
+                binding?.emailInputLayout?.editText?.text.toString(),
+                binding?.passwordInputLayout?.editText?.text.toString()
         )
     }
 
@@ -116,13 +117,11 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                     DialogUtil.dismissDialog()
                     when (response.code) {
                         19 -> {
-                            binding.userNameInputLayout.isErrorEnabled = true
-                            binding.userNameInputLayout.error =
+                            binding?.userNameInputLayout?.error =
                                     requireContext().resources.getString(R.string.name_exist)
                         }
                         20 -> {
-                            binding.emailInputLayout.isErrorEnabled = true
-                            binding.emailInputLayout.error =
+                            binding?.emailInputLayout?.error =
                                     requireContext().resources.getString(R.string.invalid_name)
                         }
                     }
@@ -142,17 +141,15 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                 is Resource.Loading -> {
                 }
                 is Resource.Success -> {
-                    binding.userNameInputLayout.isErrorEnabled = false
                 }
                 is Resource.Error -> {
-                    binding.userNameInputLayout.isErrorEnabled = true
                     when (response.code) {
                         19 -> {
-                            binding.userNameInputLayout.error =
+                            binding?.userNameInputLayout?.error =
                                     requireContext().resources.getString(R.string.name_exist)
                         }
                         20 -> {
-                            binding.userNameInputLayout.error =
+                            binding?.userNameInputLayout?.error =
                                     requireContext().resources.getString(R.string.invalid_name)
                         }
                     }
