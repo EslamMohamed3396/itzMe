@@ -31,9 +31,9 @@
         android:lines="2"
         android:text="Which itzme product would you\n activate ? "
         android:textAlignment="center"
+        android:fontFamily="@font/cairo_bold"
         android:textColor="@color/gray"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
