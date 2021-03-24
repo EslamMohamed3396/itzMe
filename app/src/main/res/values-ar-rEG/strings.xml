@@ -27,4 +27,9 @@
     <string name="my_profile">My Profile</string>
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
+    <string name="change">Change</string>
+    <string name="language">Language</string>
+    <string name="my_account">My Account</string>
+    <string name="english">English</string>
+    <string name="arabic">عربي</string>
 </resources>
