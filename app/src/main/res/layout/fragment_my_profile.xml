@@ -123,6 +123,7 @@
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:text="Edit Profile"
+                    app:cornerRadius="@dimen/radius_8"
                     android:textColor="@color/dark_blue"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/direct_off_btn"
