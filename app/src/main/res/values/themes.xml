@@ -51,6 +51,7 @@
         <item name="android:fontFamily">@font/cairo_bold</item>
         <item name="backgroundTint">@null</item>
         <item name="android:background">@drawable/button_background</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Button</item>
         <item name="cornerRadius">@dimen/radius_8</item>
 
         <item name="android:textStyle">bold</item>

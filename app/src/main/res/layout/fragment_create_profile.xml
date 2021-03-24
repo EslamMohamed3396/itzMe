@@ -60,6 +60,21 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:backgroundTint="@color/light_blue"
+                app:fabSize="mini"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                app:layout_constraintTop_toBottomOf="@+id/profile_image"
+                app:maxImageSize="16dp"
+                app:srcCompat="@drawable/ic_camera"
+                app:tint="@color/white" />
+
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="80dp"
@@ -71,21 +86,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floating_action_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:backgroundTint="@color/dark_blue"
-                app:fabSize="mini"
-                app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-                app:layout_constraintEnd_toEndOf="@+id/profile_image"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/profile_image"
-                app:layout_constraintTop_toBottomOf="@+id/profile_image"
-                app:maxImageSize="16dp"
-                app:srcCompat="@drawable/ic_camera"
-                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -155,8 +155,9 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
                 app:layout_constraintTop_toTopOf="@+id/textView5"
-                app:thumbTint="@color/green"
-                app:track="@drawable/switch_selector" />
+                android:thumb="@drawable/profile_thumb_selector"
+                app:track="@drawable/profile_switch_selector"
+                app:useMaterialThemeColors="false" />
 
             <TextView
                 android:id="@+id/textView12"

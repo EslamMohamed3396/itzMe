@@ -18,6 +18,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical"
             app:adapter="@{menuAdapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -33,17 +35,16 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="32dp"
-            android:background="@drawable/toogle_background"
-            android:checked="true"
+            android:checked="false"
             android:textOff="itz me On"
             android:textOn="itz me Off"
-            android:thumb="@drawable/toggle_on"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:thumbTint="@color/light_light_blue"
-            app:track="@drawable/toggle_selector"
-            app:trackTint="@color/white" />
+            android:thumb="@drawable/menu_thumb_selector"
+            app:track="@drawable/menu_switch_selector"
+            app:trackTint="@color/white"
+            app:useMaterialThemeColors="false" />
 
         <ImageView
             android:id="@+id/imageView19"
