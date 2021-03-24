@@ -1,13 +1,17 @@
 package com.itzme.utilits
 
+import android.content.res.ColorStateList
+import android.widget.Button
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.itzme.R
 
 
 @BindingAdapter("app:loadImageDrawable")
 fun loadImageDrawable(imageView: ImageView, image: Int) {
     imageView.setImageResource(image)
 }
+
 //
 //@BindingAdapter("app:imageBase")
 //fun imageBitmap(imageView: ImageView, base64: String?) {
@@ -52,22 +56,39 @@ fun loadImageDrawable(imageView: ImageView, image: Int) {
 ////    textView.text = "$text"
 //}
 //
-//@BindingAdapter("app:convertLanguageTextView")
-//fun language(textView: TextView, language: String?) {
-//    when (language) {
-//        Constant.AR_LANG_CODE -> {
-//            textView.text = textView.context.getString(R.string.english)
-//        }
-//        Constant.EN_LANG_CODE -> {
-//            textView.text = textView.context.getString(R.string.arabic)
-//        }
-//        else -> {
-//            return
-//        }
-//    }
-////    val text = "$gender ${textView.context.resources.getString(R.string.egp)}"
-////    textView.text = "$text"
-//}
+@BindingAdapter("app:langEn")
+fun langEn(button: Button, language: String?) {
+    when (language) {
+        Constant.ENGLISH_LANGUAGE -> {
+            button.text = button.context.getString(R.string.english)
+            button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
+        }
+        Constant.ARABIC_LANGUAGE -> {
+            button.text = button.context.getString(R.string.english)
+            button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.gray))
+        }
+        else -> {
+            return
+        }
+    }
+}
+
+@BindingAdapter("app:langAr")
+fun langAr(button: Button, language: String?) {
+    when (language) {
+        Constant.ENGLISH_LANGUAGE -> {
+            button.text = button.context.getString(R.string.arabic)
+            button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.gray))
+        }
+        Constant.ARABIC_LANGUAGE -> {
+            button.text = button.context.getString(R.string.english)
+            button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
+        }
+        else -> {
+            return
+        }
+    }
+}
 //
 //@BindingAdapter("app:isFavourite")
 //fun isFavourite(imageView: ImageView, isFavourite: Boolean) {

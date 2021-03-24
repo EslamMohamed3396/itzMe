@@ -61,12 +61,12 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     }
 
     protected fun showNavigation() {
-        (activity as MainActivity).binding?.actionBar?.visibility = View.VISIBLE
-        (activity as MainActivity).binding?.layoutInclude?.visibility = View.VISIBLE
+      //  (activity as MainActivity).binding?.actionBar?.visibility = View.VISIBLE
+       // (activity as MainActivity).binding?.layoutInclude?.visibility = View.VISIBLE
     }
 
     protected fun hideNavigation() {
-        (activity as MainActivity).binding?.actionBar?.visibility = View.GONE
-        (activity as MainActivity).binding?.layoutInclude?.visibility = View.GONE
+      //  (activity as MainActivity).binding?.actionBar?.visibility = View.GONE
+      //  (activity as MainActivity).binding?.layoutInclude?.visibility = View.GONE
     }
 }
