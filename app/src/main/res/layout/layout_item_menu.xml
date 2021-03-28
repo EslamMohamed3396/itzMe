@@ -7,7 +7,7 @@
 
         <variable
             name="menuAdapter"
-            type="com.itzme.ui.activity.main.ItemMenuAdapter" />
+            type="com.itzme.ui.fragment.myProfile.ItemMenuAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,8 +36,12 @@
             android:layout_height="40dp"
             android:layout_marginTop="32dp"
             android:checked="false"
-            android:textOff="itz me On"
-            android:textOn="itz me Off"
+            app:showText="true"
+            android:textColor="@drawable/text_thumb_selector"
+            android:textStyle="bold"
+            android:textColorHint="@color/white"
+            android:textOff="Itzme Off"
+            android:textOn="Itzme On"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

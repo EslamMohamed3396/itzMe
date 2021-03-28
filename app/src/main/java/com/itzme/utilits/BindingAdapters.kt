@@ -1,9 +1,12 @@
 package com.itzme.utilits
 
 import android.content.res.ColorStateList
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.itzme.R
 
 
@@ -12,23 +15,44 @@ fun loadImageDrawable(imageView: ImageView, image: Int) {
     imageView.setImageResource(image)
 }
 
+
+@BindingAdapter("app:imageLoadUrl")
+fun imageLoadUrl(imageView: ImageView, url: String?) {
+    if (url != null) {
+        Glide.with(imageView.context)
+                .load(Constant.BASE_URL + url)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(imageView)
+    }
+}
+
+@BindingAdapter("app:isHiddenTrick")
+fun isHiddenTrick(imageView: ImageView, hidden: Boolean?) {
+    if (hidden!!) {
+        imageView.visibility = View.GONE
+    } else {
+        imageView.visibility = View.VISIBLE
+    }
+}
 //
-//@BindingAdapter("app:imageBase")
-//fun imageBitmap(imageView: ImageView, base64: String?) {
-//    if (base64 != null) {
-//        val data = Base64.decode(base64, Base64.DEFAULT)
-//        Glide.with(imageView.context)
-//            .load(data)
-//            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-//            .into(imageView)
+//@BindingAdapter("app:isHiddenStrock")
+//fun isHiddenStrock(cardView: CardView, hidden: Boolean?) {
+//    if (hidden!!) {
+//        cardView. = View.GONE
+//    } else {
+//        cardView.visibility = View.VISIBLE
 //    }
 //}
-//
-//@BindingAdapter("pointTextView")
-//fun point(textView: TextView, point: String) {
-//    val text = "$point ${textView.context.resources.getString(R.string.egp)}"
-//    textView.text = text
-//}
+
+@BindingAdapter("isDirectOn")
+fun isDirectOn(button: Button, isOn: Boolean) {
+    if (isOn) {
+        button.text = button.context.resources.getString(R.string.direct_on)
+    } else {
+        button.text = button.context.resources.getString(R.string.direct_off)
+    }
+}
+
 //
 //@BindingAdapter("app:fromToHourText")
 //fun workHourText(textView: TextView, fromTo: String) {
@@ -81,7 +105,7 @@ fun langAr(button: Button, language: String?) {
             button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.gray))
         }
         Constant.ARABIC_LANGUAGE -> {
-            button.text = button.context.getString(R.string.english)
+            button.text = button.context.getString(R.string.arabic)
             button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
         }
         else -> {

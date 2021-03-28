@@ -1,7 +1,13 @@
 package com.itzme.ui.fragment.myProfile
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
+import com.itzme.data.network.Client
+import com.itzme.ui.base.BaseViewModel
+import com.itzme.utilits.Resource
 
-class MyProfileViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+class MyProfileViewModel : BaseViewModel<ResponseMyProfile>() {
+    fun myProfile(): LiveData<Resource<ResponseMyProfile>> {
+        return callApi(Client.getInstance()?.myProfile()!!)
+    }
 }

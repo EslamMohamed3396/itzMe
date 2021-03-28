@@ -1,12 +1,17 @@
 package com.itzme.data.network
 
-import com.itzme.data.models.registerLoginModel.checkName.ResponseCheckUserName
-import com.itzme.data.models.registerLoginModel.forgetPassword.response.ResponseForgetPassword
-import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyLogin
-import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyRegister
-import com.itzme.data.models.registerLoginModel.registerationAndLogin.response.ResponseRegisterAndLogin
-import com.itzme.data.models.registerLoginModel.resetPassword.request.BodyResetPassword
-import com.itzme.data.models.registerLoginModel.verficationCode.response.ResponseConfirmCode
+import com.itzme.data.models.account.changeEmail.response.ResponseChangeEmail
+import com.itzme.data.models.account.changePassword.request.BodyChangePassword
+import com.itzme.data.models.account.changePassword.response.ResponseChangePassword
+import com.itzme.data.models.account.checkName.ResponseCheckUserName
+import com.itzme.data.models.account.forgetPassword.response.ResponseForgetPassword
+import com.itzme.data.models.account.registerationAndLogin.request.BodyLogin
+import com.itzme.data.models.account.registerationAndLogin.request.BodyRegister
+import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegisterAndLogin
+import com.itzme.data.models.account.resetPassword.request.BodyResetPassword
+import com.itzme.data.models.account.verficationCode.response.ResponseConfirmCode
+import com.itzme.data.models.contact.response.ResponseMyContact
+import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.utilits.Constant
 import io.reactivex.Observable
 import retrofit2.http.Body
@@ -36,6 +41,36 @@ interface Api {
 
     @POST(Constant.RESET_PASSWORD)
     fun RESET_PASSWORD(@Body bodyResetPassword: BodyResetPassword): Observable<ResponseRegisterAndLogin>
+
+
+    @POST(Constant.CHANGE_PASSWORD)
+    fun CHANGE_PASSWORD(@Body bodyChangePassword: BodyChangePassword): Observable<ResponseChangePassword>
+
+
+    @GET(Constant.CHANGE_EMAIL)
+    fun CHANGE_EMAIL(@Query("Email") email: String): Observable<ResponseChangeEmail>
+
+
+    @GET(Constant.RESEND_CHANGE_EMAIL)
+    fun RESEND_CHANGE_EMAIL(): Observable<ResponseChangeEmail>
+
+
+    @GET(Constant.CONFIRM_CHANGE_EMAIL)
+    fun CONFIRM_CHANGE_EMAIL(@Query("Code") Code: String): Observable<ResponseRegisterAndLogin>
+
+    //endregion
+
+    //region contact
+    @GET(Constant.MY_CONTACT)
+    fun MY_CONTACT(@Query("lang") lang: String = Constant.LANG_APP): Observable<ResponseMyContact>
+
+
+    //endregion
+    //region profile
+
+    @GET(Constant.MY_PROFILE)
+    fun MY_PROFILE(@Query("lang") lang: String = Constant.LANG_APP): Observable<ResponseMyProfile>
+
 
     //endregion
 

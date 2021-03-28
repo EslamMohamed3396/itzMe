@@ -26,9 +26,9 @@ open class BaseViewModel<T> : ViewModel() {
                 disposable = d
             }
 
-            override fun onFailed(error: String?, code: Int, response: String?) {
+            override fun onFailed(error: String?, code: Int?, response: String?) {
                 Timber.d("$response")
-                onFailure(error!!, code)
+                onFailure(error, code)
             }
 
         })
@@ -36,7 +36,7 @@ open class BaseViewModel<T> : ViewModel() {
     }
 
 
-    private fun onFailure(t: String, code: Int) {
+    private fun onFailure(t: String?, code: Int?) {
         responseMutableLiveData.value = Resource.Error(t, code)
 
     }

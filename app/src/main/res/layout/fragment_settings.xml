@@ -5,7 +5,15 @@
 
     <data>
 
-        <import type="com.itzme.utilits.Constant" />
+        <import type="android.content.Context" />
+
+        <variable
+            name="pref"
+            type="com.itzme.utilits.PreferencesUtils" />
+
+        <variable
+            name="constant"
+            type="com.itzme.utilits.Constant" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,6 +54,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:enabled="false"
             android:hint="@string/email"
             app:endIconDrawable="@drawable/btn_chnage"
             app:endIconMode="custom"
@@ -64,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
+                android:text="@{pref.getUserData(constant.USER_DATA_KEY).email}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
@@ -78,6 +88,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:enabled="false"
             android:hint="@string/password"
             app:endIconDrawable="@drawable/btn_chnage"
             app:endIconMode="custom"
@@ -100,11 +111,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/textView27"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/tv_change_email"
+            android:layout_width="60dp"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
-            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/change"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/email_inputLayout"
@@ -112,11 +123,11 @@
             app:layout_constraintTop_toTopOf="@+id/email_inputLayout" />
 
         <TextView
-            android:id="@+id/tv_change2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/tv_change_password"
+            android:layout_width="60dp"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
-            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/change"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/password_input"
@@ -136,7 +147,7 @@
             app:layout_constraintTop_toBottomOf="@+id/password_input" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button"
+            android:id="@+id/btn_eng"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -146,14 +157,14 @@
             android:insetBottom="0dp"
             android:text="@string/english"
             app:backgroundTint="@color/dark_blue"
-            app:langEn="@{Constant.LANG_APP}"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
+            app:langEn="@{constant.LANG_NAME}"
+            app:layout_constraintEnd_toStartOf="@+id/btn_ar"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button2"
+            android:id="@+id/btn_ar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -162,11 +173,10 @@
             android:insetBottom="0dp"
             android:text="@string/arabic"
             app:backgroundTint="@color/dark_blue"
-            app:langAr="@{Constant.LANG_APP}"
+            app:langAr="@{constant.LANG_NAME}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button"
-            app:layout_constraintTop_toTopOf="@+id/button" />
+            app:layout_constraintStart_toEndOf="@+id/btn_eng"
+            app:layout_constraintTop_toTopOf="@+id/btn_eng" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

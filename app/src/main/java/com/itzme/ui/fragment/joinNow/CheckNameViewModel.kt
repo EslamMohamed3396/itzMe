@@ -1,7 +1,7 @@
 package com.itzme.ui.fragment.joinNow
 
 import androidx.lifecycle.LiveData
-import com.itzme.data.models.registerLoginModel.checkName.ResponseCheckUserName
+import com.itzme.data.models.account.checkName.ResponseCheckUserName
 import com.itzme.data.network.Client
 import com.itzme.ui.base.BaseViewModel
 import com.itzme.utilits.Resource

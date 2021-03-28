@@ -16,7 +16,19 @@ object Constant {
     const val FORGET_PASSWORD = ROUTE_ACCOUNT + "ForgotPassword"
     const val CONFIRM_CODE = ROUTE_ACCOUNT + "ValidateForgotPasswordCode"
     const val RESET_PASSWORD = ROUTE_ACCOUNT + "ResetPassword"
+    const val CHANGE_PASSWORD = ROUTE_ACCOUNT + "ChangePassword"
+    const val CHANGE_EMAIL = ROUTE_ACCOUNT + "RequestChangeEmail"
+    const val RESEND_CHANGE_EMAIL = ROUTE_ACCOUNT + "ResendChangeEmailCode"
+    const val CONFIRM_CHANGE_EMAIL = ROUTE_ACCOUNT + "ConfirmChangeEmail"
 
+
+    private const val ROUTE_CONTACT = "contacts/"
+
+    const val MY_CONTACT = ROUTE_CONTACT + "mycontacts"
+
+    private const val ROUTE_PROFILE = "profile/"
+
+    const val MY_PROFILE = ROUTE_PROFILE + "get"
 
     //endregion
 

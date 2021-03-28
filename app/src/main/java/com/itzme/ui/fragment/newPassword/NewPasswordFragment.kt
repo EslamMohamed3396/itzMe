@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.itzme.R
-import com.itzme.data.models.registerLoginModel.resetPassword.request.BodyResetPassword
+import com.itzme.data.models.account.resetPassword.request.BodyResetPassword
 import com.itzme.databinding.FragmentNewPasswordBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.utilits.DialogUtil

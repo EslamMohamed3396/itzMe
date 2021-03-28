@@ -8,6 +8,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.itzme.R
+import com.itzme.data.models.enumVerfications.Verfication
 import com.itzme.databinding.FragmentForgetPasswordBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.utilits.CheckValidData
@@ -78,7 +79,7 @@ class ForgetPasswordFragment : BaseFragment<FragmentForgetPasswordBinding>() {
                     DialogUtil.dismissDialog()
                     val action = ForgetPasswordFragmentDirections
                             .actionForgetPasswordFragmentToVerificationCodeFragment(response.data?.data?.email,
-                                    response.data?.data?.code)
+                                    response.data?.data?.code, Verfication.FORGET_PASSWORD)
                     findNavController().navigate(action)
                 }
                 is Resource.Error -> {

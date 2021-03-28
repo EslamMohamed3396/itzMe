@@ -8,8 +8,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.itzme.R
-import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyLogin
-import com.itzme.data.models.registerLoginModel.registerationAndLogin.response.ResponseRegisterAndLogin
+import com.itzme.data.models.account.registerationAndLogin.request.BodyLogin
+import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegisterAndLogin
 import com.itzme.databinding.FragmentLoginBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.utilits.*

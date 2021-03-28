@@ -8,20 +8,25 @@ import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import com.itzme.R
 import com.itzme.data.models.itemMenu.ItemMenu
+import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.databinding.FragmentMyProfileBinding
-import com.itzme.ui.activity.main.ItemMenuAdapter
 import com.itzme.ui.base.BaseFragment
 import com.itzme.ui.base.IClickOnItems
+import com.itzme.utilits.DialogUtil
+import com.itzme.utilits.PreferencesUtils
+import com.itzme.utilits.Resource
 
 class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItems<ItemMenu> {
 
     private lateinit var toggle: ActionBarDrawerToggle
 
-    private lateinit var viewModel: MyProfileViewModel
 
     private val adapter: ItemMenuAdapter by lazy { ItemMenuAdapter(this) }
+    private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter() }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +34,14 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     ): View? {
         return bindView(inflater, container, R.layout.fragment_my_profile)
 
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initNavDrawer()
+        initClick()
+        fillDataToNavigation()
+        initMyPtofileViewModel()
     }
 
     private fun initClick() {
@@ -39,6 +52,9 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 binding?.drawerLayout?.openDrawer(GravityCompat.START)
             }
         }
+
+        binding?.includeLayout?.toggleButton?.textOn = "Itzme On"
+        binding?.includeLayout?.toggleButton?.textOff = "Itzme Off"
     }
 
     //region navigation drawer
@@ -58,29 +74,21 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     //endregion
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MyProfileViewModel::class.java)
-        initNavDrawer()
-        initClick()
-        fillDataToNavigation()
-    }
-
     //region fill item name & image to navigation menu
 
     private fun fillDataToNavigation() {
         binding?.includeLayout?.menuAdapter = adapter
         val itemMenuList = ArrayList<ItemMenu>()
-        itemMenuList.add(ItemMenu(1, "Home", R.drawable.home))
-        itemMenuList.add(ItemMenu(2, "My Contact", R.drawable.my_contact))
-        itemMenuList.add(ItemMenu(3, "Edit Profile", R.drawable.profile_user))
-        itemMenuList.add(ItemMenu(4, "Activate", R.drawable.active_nfc))
-        itemMenuList.add(ItemMenu(5, "Read Itzme", R.drawable.nfc))
-        itemMenuList.add(ItemMenu(6, "My QR Code ", R.drawable.qr_code))
-        itemMenuList.add(ItemMenu(7, "Buy Itzme", R.drawable.buy_itzme))
-        itemMenuList.add(ItemMenu(8, "How To Use Itzme", R.drawable.question))
-        itemMenuList.add(ItemMenu(9, "Settings", R.drawable.settings))
-        itemMenuList.add(ItemMenu(10, "Log Out", R.drawable.logout))
+        itemMenuList.add(ItemMenu(1, requireContext().resources.getString(R.string.home), R.drawable.home))
+        itemMenuList.add(ItemMenu(2, getString(R.string.my_account), R.drawable.my_contact))
+        itemMenuList.add(ItemMenu(3, getString(R.string.edit_profile), R.drawable.profile_user))
+        itemMenuList.add(ItemMenu(4, getString(R.string.active), R.drawable.active_nfc))
+        itemMenuList.add(ItemMenu(5, getString(R.string.read_itzme), R.drawable.nfc))
+        itemMenuList.add(ItemMenu(6, getString(R.string.my_qr), R.drawable.qr_code))
+        itemMenuList.add(ItemMenu(7, getString(R.string.buy_itzme), R.drawable.buy_itzme))
+        itemMenuList.add(ItemMenu(8, getString(R.string.how_to_use), R.drawable.question))
+        itemMenuList.add(ItemMenu(9, getString(R.string.settings), R.drawable.settings))
+        itemMenuList.add(ItemMenu(10, getString(R.string.log_out), R.drawable.logout))
         adapter.submitList(itemMenuList)
     }
 
@@ -89,7 +97,82 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     //region click on menu
     override fun clickOnItems(item: ItemMenu, postion: Int) {
+        openFragments(item.id)
     }
+
+    //endregion
+
+    private fun openFragments(id: Int) {
+        binding?.drawerLayout?.closeDrawer(GravityCompat.START)
+
+        when (id) {
+            1 -> {
+
+            }
+            2 -> {
+                val action = MyProfileFragmentDirections.actionMyProfileFragmentToContactFragment()
+                findContrller(action)
+            }
+            9 -> {
+                val action = MyProfileFragmentDirections.actionMyProfileFragmentToSettingsFragment()
+                findContrller(action)
+            }
+            10 -> {
+                clearSession()
+                val action = MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
+                findContrller(action)
+            }
+        }
+    }
+
+    private fun clearSession() {
+        PreferencesUtils(requireContext()).clear()
+    }
+
+    private fun findContrller(action: NavDirections) {
+        findNavController().navigate(action)
+    }
+
+    //region bind data
+
+    private fun bindMyProfile(myProfile: ResponseMyProfile) {
+        binding?.myProfile = myProfile
+    }
+
+    private fun bindAdapter() {
+        binding?.myLinkAdapter = myLinkAdapter
+    }
+    //endregion
+
+    //region init view model
+
+    private fun initMyPtofileViewModel() {
+        bindAdapter()
+        val viewModel = ViewModelProvider(this).get(MyProfileViewModel::class.java)
+        viewModel.myProfile().observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+                    bindMyProfile(response.data!!)
+                    myLinkAdapter.submitList(response.data.myLinks!!)
+                }
+                is Resource.Error -> {
+                    DialogUtil.dismissDialog()
+                    when (response.code) {
+                        13, 14 -> {
+
+                        }
+                    }
+                }
+
+            }
+        })
+
+    }
+
 
     //endregion
 }

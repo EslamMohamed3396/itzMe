@@ -11,24 +11,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.itzme.R
+import com.itzme.data.models.enumVerfications.Verfication
 import com.itzme.databinding.FragmentVerificationCodeBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.ui.fragment.forgetPasword.ForgetPasswordViewModel
 import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.Resource
-import timber.log.Timber
 
 
 class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>() {
 
 
-    private lateinit var viewModel: VerificationCodeViewModel
     private val currentCode = StringBuilder()
     private val args: VerificationCodeFragmentArgs by navArgs()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         hideNavigation()
         return bindView(inflater, container, R.layout.fragment_verification_code)
@@ -45,13 +44,20 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
     private fun initClick() {
         binding?.joinNowBtn?.setOnClickListener {
             if (checkData(currentCode.toString())) {
-                initConfirmViewModel(currentCode.toString())
-                Timber.d(currentCode.toString())
+                if (args.fromWhereArgs == Verfication.FORGET_PASSWORD) {
+                    initConfirmViewModel(currentCode.toString())
+                } else {
+                    initConfirmChangeEmailViewModel(currentCode.toString())
+                }
             }
         }
 
         binding?.tvResendCode?.setOnClickListener {
-            initForgotViewModel()
+            if (args.fromWhereArgs == Verfication.FORGET_PASSWORD) {
+                initForgotViewModel()
+            } else {
+                iniResendChangeEmailViewModel()
+            }
         }
 
         binding?.imBack?.setOnClickListener {
@@ -78,14 +84,14 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
                 val edtChar: String =
-                    binding?.ConfirmCodeOneInputLayout?.editText?.text.toString()
+                        binding?.ConfirmCodeOneInputLayout?.editText?.text.toString()
 
                 if (edtChar.length == 1) {
-                    currentCode?.append(edtChar)
+                    currentCode.append(edtChar)
 
                     binding?.ConfirmCodeTwoInputLayout?.editText?.requestFocus()
                 } else if (edtChar.length == 0) {
-                    currentCode?.deleteCharAt(0)
+                    currentCode.deleteCharAt(0)
                     binding?.ConfirmCodeOneInputLayout?.editText?.requestFocus()
                 }
             }
@@ -97,28 +103,28 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
                 val edtChar: String =
-                    binding?.ConfirmCodeTwoInputLayout?.editText?.text.toString()
+                        binding?.ConfirmCodeTwoInputLayout?.editText?.text.toString()
                 if (edtChar.length == 1) {
-                    currentCode?.append(edtChar)
+                    currentCode.append(edtChar)
                     binding?.ConfirmCodeThreeInputLayout?.editText?.requestFocus()
                 } else if (edtChar.length == 0) {
-                    currentCode?.deleteCharAt(1)
+                    currentCode.deleteCharAt(1)
                     binding?.ConfirmCodeOneInputLayout?.editText?.requestFocus()
                 }
             }
         })
         binding?.ConfirmCodeThreeInputLayout?.editText?.addTextChangedListener(object :
-            TextWatcher {
+                TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
                 val edtChar: String =
-                    binding?.ConfirmCodeThreeInputLayout?.editText?.text.toString()
+                        binding?.ConfirmCodeThreeInputLayout?.editText?.text.toString()
                 if (edtChar.length == 1) {
-                    currentCode?.append(edtChar)
+                    currentCode.append(edtChar)
                     binding?.ConfirmCodeFourInputLayout?.editText?.requestFocus()
                 } else if (edtChar.length == 0) {
-                    currentCode?.deleteCharAt(2)
+                    currentCode.deleteCharAt(2)
                     binding?.ConfirmCodeTwoInputLayout?.editText?.requestFocus()
                 }
             }
@@ -128,12 +134,12 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
                 val edtChar: String =
-                    binding?.ConfirmCodeFourInputLayout?.editText?.text.toString()
+                        binding?.ConfirmCodeFourInputLayout?.editText?.text.toString()
                 if (edtChar.length == 1) {
-                    currentCode?.append(edtChar)
+                    currentCode.append(edtChar)
                     binding?.ConfirmCodeFourInputLayout?.editText?.requestFocus()
                 } else if (edtChar.length == 0) {
-                    currentCode?.deleteCharAt(2)
+                    currentCode.deleteCharAt(2)
                     binding?.ConfirmCodeThreeInputLayout?.editText?.requestFocus()
                 }
             }
@@ -143,7 +149,7 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
 
     //region init confirm view model
     private fun initConfirmViewModel(code: String) {
-        viewModel = ViewModelProvider(this).get(VerificationCodeViewModel::class.java)
+        val viewModel = ViewModelProvider(this).get(VerificationCodeViewModel::class.java)
 
         viewModel.confirmCode(code).observe(viewLifecycleOwner, { response ->
 
@@ -154,9 +160,9 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
                     val action =
-                        VerificationCodeFragmentDirections.actionVerificationCodeFragmentToNewPasswordFragment(
-                            response.data?.data?.key
-                        )
+                            VerificationCodeFragmentDirections.actionVerificationCodeFragmentToNewPasswordFragment(
+                                    response.data?.data?.key
+                            )
                     findNavController().navigate(action)
 
                 }
@@ -165,9 +171,44 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                     when (response.code) {
                         13 -> {
                             Toast.makeText(
-                                requireContext(),
-                                requireContext().resources.getString(R.string.wrong_code),
-                                Toast.LENGTH_SHORT
+                                    requireContext(),
+                                    requireContext().resources.getString(R.string.wrong_code),
+                                    Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+
+            }
+
+        })
+    }
+
+    //endregion
+
+    // region init confirm change email view model
+    private fun initConfirmChangeEmailViewModel(code: String) {
+        val viewModel = ViewModelProvider(this).get(ConfirmChangeEmailViewModel::class.java)
+
+        viewModel.confirmChangeEmail(code).observe(viewLifecycleOwner, { response ->
+
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+                    val action = VerificationCodeFragmentDirections.actionVerificationCodeFragmentToSettingsFragment()
+                    findNavController().navigate(action)
+                }
+                is Resource.Error -> {
+                    DialogUtil.dismissDialog()
+                    when (response.code) {
+                        13 -> {
+                            Toast.makeText(
+                                    requireContext(),
+                                    requireContext().resources.getString(R.string.wrong_code),
+                                    Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
@@ -186,6 +227,33 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
         val viewModel = ViewModelProvider(this).get(ForgetPasswordViewModel::class.java)
         viewModel.forgotPassword(args.emailArgs!!).observe(viewLifecycleOwner, { response ->
 
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+                    clearText()
+                }
+                is Resource.Error -> {
+                    DialogUtil.dismissDialog()
+                    when (response.code) {
+                        13 -> {
+
+                        }
+                    }
+                }
+
+            }
+
+        })
+
+    }
+
+    private fun iniResendChangeEmailViewModel() {
+
+        val viewModel = ViewModelProvider(this).get(ResendChangeEmailViewModel::class.java)
+        viewModel.resendChangeEmail().observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Loading -> {
                     DialogUtil.showDialog(requireContext())

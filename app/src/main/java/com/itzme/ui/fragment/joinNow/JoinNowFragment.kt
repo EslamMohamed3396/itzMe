@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.itzme.R
-import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyRegister
+import com.itzme.data.models.account.registerationAndLogin.request.BodyRegister
 import com.itzme.databinding.FragmentJoinNowBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.utilits.*

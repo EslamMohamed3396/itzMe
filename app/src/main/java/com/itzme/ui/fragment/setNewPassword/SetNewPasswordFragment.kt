@@ -4,29 +4,113 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.itzme.R
+import com.itzme.data.models.account.changePassword.request.BodyChangePassword
+import com.itzme.databinding.FragmentSetNewPasswordBinding
+import com.itzme.ui.base.BaseFragment
+import com.itzme.utilits.*
 
-class SetNewPasswordFragment : Fragment() {
+class SetNewPasswordFragment : BaseFragment<FragmentSetNewPasswordBinding>() {
 
-    companion object {
-        fun newInstance() = SetNewPasswordFragment()
-    }
-
-    private lateinit var viewModel: SetNewPasswordViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_set_new_password, container, false)
+        return bindView(inflater, container, R.layout.fragment_set_new_password)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SetNewPasswordViewModel::class.java)
-        // TODO: Use the ViewModel
+        textValidation()
+        initClick()
     }
+
+
+    private fun initClick() {
+        binding?.joinNowBtn?.setOnClickListener {
+            if (checkData()) {
+                initChangePasswordViewModel()
+            }
+        }
+        binding?.toolbar?.toolbarImg?.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+    }
+
+
+    //region check data
+    private fun checkData(): Boolean {
+        return EditTextValidiation.validPassword(binding?.oldPasswordInputLayout!!) &&
+                EditTextValidiation.validPassword(binding?.passwordInputLayout!!) &&
+                EditTextValidiation.validConfirmPassword(
+                        binding?.passwordInputLayout!!,
+                        binding?.confirmPasswordInputLayout!!
+                )
+    }
+
+    private fun textValidation() {
+
+        binding?.passwordInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validPassword(binding?.passwordInputLayout!!)
+        }
+        binding?.oldPasswordInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validPassword(binding?.oldPasswordInputLayout!!)
+        }
+
+        binding?.confirmPasswordInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validConfirmPassword(
+                    binding?.passwordInputLayout!!,
+                    binding?.confirmPasswordInputLayout!!
+            )
+        }
+    }
+
+    //endregion
+
+    //region init view model
+
+    private fun bodyChangePassword(): BodyChangePassword {
+        return BodyChangePassword(
+                binding?.oldPasswordInputLayout?.editText?.text.toString(),
+                binding?.confirmPasswordInputLayout?.editText?.text.toString()
+        )
+    }
+
+    private fun initChangePasswordViewModel() {
+        val viewModel = ViewModelProvider(this).get(SetNewPasswordViewModel::class.java)
+        viewModel.changePassword(bodyChangePassword()).observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+                    Snackbar.make(binding?.root!!, response.data?.errorMessage!!, Snackbar.LENGTH_SHORT)
+                    findNavController().navigateUp()
+                }
+                is Resource.Error -> {
+                    DialogUtil.dismissDialog()
+                    when (response.code) {
+                        14 -> {
+                            binding?.oldPasswordInputLayout?.error =
+                                    requireContext().resources.getString(R.string.invalidPassword)
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+
+            }
+        })
+    }
+
+    //endregion
 
 }

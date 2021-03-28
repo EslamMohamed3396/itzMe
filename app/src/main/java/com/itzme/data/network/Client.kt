@@ -2,13 +2,18 @@ package com.itzme.data.network
 
 import com.google.gson.Gson
 import com.itzme.data.models.baseResponse.ErrorResponse
-import com.itzme.data.models.registerLoginModel.checkName.ResponseCheckUserName
-import com.itzme.data.models.registerLoginModel.forgetPassword.response.ResponseForgetPassword
-import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyLogin
-import com.itzme.data.models.registerLoginModel.registerationAndLogin.request.BodyRegister
-import com.itzme.data.models.registerLoginModel.registerationAndLogin.response.ResponseRegisterAndLogin
-import com.itzme.data.models.registerLoginModel.resetPassword.request.BodyResetPassword
-import com.itzme.data.models.registerLoginModel.verficationCode.response.ResponseConfirmCode
+import com.itzme.data.models.contact.response.ResponseMyContact
+import com.itzme.data.models.account.changeEmail.response.ResponseChangeEmail
+import com.itzme.data.models.account.changePassword.request.BodyChangePassword
+import com.itzme.data.models.account.changePassword.response.ResponseChangePassword
+import com.itzme.data.models.account.checkName.ResponseCheckUserName
+import com.itzme.data.models.account.forgetPassword.response.ResponseForgetPassword
+import com.itzme.data.models.account.registerationAndLogin.request.BodyLogin
+import com.itzme.data.models.account.registerationAndLogin.request.BodyRegister
+import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegisterAndLogin
+import com.itzme.data.models.account.resetPassword.request.BodyResetPassword
+import com.itzme.data.models.account.verficationCode.response.ResponseConfirmCode
+import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.utilits.App
 import com.itzme.utilits.Constant
 import com.itzme.utilits.PreferencesUtils
@@ -39,20 +44,20 @@ object Client {
                 val httpLoggingInterceptor = HttpLoggingInterceptor()
                 httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
                 sBuilder = OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .addInterceptor(httpLoggingInterceptor)
+                        .connectTimeout(60, TimeUnit.SECONDS)
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .addInterceptor(httpLoggingInterceptor)
                 sBuilder!!.addInterceptor(Interceptor { chain: Interceptor.Chain ->
                     val original: Request = chain.request()
                     val request: Request = original.newBuilder()
-                        .header(
-                            Constant.AUTHORIZATION,
-                            Constant.BEARER + PreferencesUtils(App.getContext()).getInstance()
-                                ?.getUserData(
-                                    Constant.USER_DATA_KEY
-                                )?.token
-                        )
-                        .build()
+                            .header(
+                                    Constant.AUTHORIZATION,
+                                    Constant.BEARER + PreferencesUtils(App.getContext()).getInstance()
+                                            ?.getUserData(
+                                                    Constant.USER_DATA_KEY
+                                            )?.token
+                            )
+                            .build()
                     chain.proceed(request)
                 })
 
@@ -65,11 +70,11 @@ object Client {
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(Constant.BASE_URL)
-            .client(getUnsafeOkHttpClient()?.build())
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
+                .baseUrl(Constant.BASE_URL)
+                .client(getUnsafeOkHttpClient()?.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
         apiService = retrofit.create(Api::class.java)
     }
 
@@ -83,32 +88,32 @@ object Client {
 
     fun <T> request(api: Observable<T>, callBackNetwork: ICallBackNetwork<T>) {
         api.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<T> {
-                override fun onSubscribe(d: Disposable) {
-                    callBackNetwork.onDisposable(d)
-                }
-
-                override fun onNext(u: T) {
-                    callBackNetwork.onSuccess(u)
-                }
-
-                override fun onError(e: Throwable) {
-
-                    if (e is HttpException) {
-                        val errorBody: String = e.response()?.errorBody()?.string()!!
-                        val errorResponse: ErrorResponse =
-                            Gson().fromJson(errorBody, ErrorResponse::class.java)
-                        callBackNetwork.onFailed(
-                            e.message(),
-                            errorResponse.errorCode!!,
-                            errorResponse.errorMessage
-                        )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<T> {
+                    override fun onSubscribe(d: Disposable) {
+                        callBackNetwork.onDisposable(d)
                     }
-                }
 
-                override fun onComplete() {}
-            })
+                    override fun onNext(u: T) {
+                        callBackNetwork.onSuccess(u)
+                    }
+
+                    override fun onError(e: Throwable) {
+
+                        if (e is HttpException) {
+                            val errorBody: String = e.response()?.errorBody()?.string()!!
+                            val errorResponse: ErrorResponse =
+                                    Gson().fromJson(errorBody, ErrorResponse::class.java)
+                            callBackNetwork.onFailed(
+                                    e.message(),
+                                    errorResponse.errorCode ?: e.code(),
+                                    errorResponse.errorMessage
+                            )
+                        }
+                    }
+
+                    override fun onComplete() {}
+                })
     }
 
 
@@ -134,6 +139,30 @@ object Client {
 
     fun resetPassword(bodyResetPassword: BodyResetPassword): Observable<ResponseRegisterAndLogin> {
         return apiService?.RESET_PASSWORD(bodyResetPassword)!!
+    }
+
+    fun changePassword(bodyChangePassword: BodyChangePassword): Observable<ResponseChangePassword> {
+        return apiService?.CHANGE_PASSWORD(bodyChangePassword)!!
+    }
+
+    fun changeEmail(email: String): Observable<ResponseChangeEmail> {
+        return apiService?.CHANGE_EMAIL(email)!!
+    }
+
+    fun resendChangeEmail(): Observable<ResponseChangeEmail> {
+        return apiService?.RESEND_CHANGE_EMAIL()!!
+    }
+
+    fun confirmChangeEmail(code: String): Observable<ResponseRegisterAndLogin> {
+        return apiService?.CONFIRM_CHANGE_EMAIL(code)!!
+    }
+
+    fun myContact(): Observable<ResponseMyContact> {
+        return apiService?.MY_CONTACT()!!
+    }
+
+    fun myProfile(): Observable<ResponseMyProfile> {
+        return apiService?.MY_PROFILE()!!
     }
 
 }

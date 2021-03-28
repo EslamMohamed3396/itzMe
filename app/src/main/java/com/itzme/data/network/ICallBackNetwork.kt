@@ -7,5 +7,5 @@ interface ICallBackNetwork<U> {
 
     fun onDisposable(d: Disposable?)
 
-    fun onFailed(error: String?, code: Int, response: String?)
+    fun onFailed(error: String?, code: Int?, response: String?)
 }

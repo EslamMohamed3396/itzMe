@@ -8,10 +8,10 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.itzme.ui.activity.main.MainActivity
 import com.itzme.utilits.Constant
 import com.itzme.utilits.LanguageUtils
 import com.itzme.utilits.PreferencesUtils
+import timber.log.Timber
 import java.util.*
 
 
@@ -33,12 +33,13 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
         return binding?.root
     }
 
+
     private fun checkLang() {
         var lang = ""
         if (PreferencesUtils(context).getInstance()?.getString(Constant.LANGUAGE_KEY)
                         .isNullOrEmpty()
         ) {
-            when (Locale.getDefault().displayLanguage) {
+            Constant.LANG_NAME = when (Locale.getDefault().displayLanguage) {
                 Constant.ARABIC_LANGUAGE -> Constant.ARABIC_LANGUAGE
                 else -> Constant.ENGLISH_LANGUAGE
             }
@@ -51,7 +52,6 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
                     }
             lang = PreferencesUtils(context).getInstance()?.getString(Constant.LANGUAGE_KEY)!!
         }
-        PreferencesUtils(context).getInstance()?.putString(Constant.LANGUAGE_KEY, lang)
         LanguageUtils.setLocale(requireContext(), lang)
     }
 
@@ -61,12 +61,12 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     }
 
     protected fun showNavigation() {
-      //  (activity as MainActivity).binding?.actionBar?.visibility = View.VISIBLE
-       // (activity as MainActivity).binding?.layoutInclude?.visibility = View.VISIBLE
+        //  (activity as MainActivity).binding?.actionBar?.visibility = View.VISIBLE
+        // (activity as MainActivity).binding?.layoutInclude?.visibility = View.VISIBLE
     }
 
     protected fun hideNavigation() {
-      //  (activity as MainActivity).binding?.actionBar?.visibility = View.GONE
-      //  (activity as MainActivity).binding?.layoutInclude?.visibility = View.GONE
+        //  (activity as MainActivity).binding?.actionBar?.visibility = View.GONE
+        //  (activity as MainActivity).binding?.layoutInclude?.visibility = View.GONE
     }
 }
