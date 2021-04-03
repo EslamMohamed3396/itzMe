@@ -138,6 +138,16 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popUpTo="@id/myProfileFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_myQrCodeFragment"
+            app:destination="@id/myQrCodeFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -184,5 +194,55 @@
         android:id="@+id/contactFragment"
         android:name="com.itzme.ui.fragment.contacts.ContactFragment"
         android:label="ContactFragment" />
+    <fragment
+        android:id="@+id/myQrCodeFragment"
+        android:name="com.itzme.ui.fragment.myQrCode.MyQrCodeFragment"
+        android:label="MyQrCodeFragment" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.itzme.ui.fragment.editProfile.EditProfileFragment"
+        android:label="EditProfileFragment">
+        <action
+            android:id="@+id/action_editProfileFragment_to_addLinkSheet"
+            app:destination="@id/addLinkSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_addFindMeSheet"
+            app:destination="@id/addFindMeSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_addPetSheet"
+            app:destination="@id/addPetSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+    </fragment>
+    <dialog
+        android:id="@+id/addLinkSheet"
+        android:name="com.itzme.ui.fragment.editProfile.AddLinkSheet"
+        android:label="AddLinkSheet">
+        <argument
+            android:name="add_link_args"
+            app:argType="com.itzme.data.models.profile.myProfile.response.Link" />
+    </dialog>
+    <dialog
+        android:id="@+id/addFindMeSheet"
+        android:name="com.itzme.ui.fragment.editProfile.AddFindMeSheet"
+        android:label="AddFindMeSheet">
+        <argument
+            android:name="find_me_args"
+            app:argType="com.itzme.data.models.profile.myProfile.response.ResponseMyProfile"
+            app:nullable="true" />
+    </dialog>
+    <dialog
+        android:id="@+id/addPetSheet"
+        android:name="com.itzme.ui.fragment.editProfile.AddPetSheet"
+        android:label="AddPetSheet">
+        <argument
+            android:name="pet_args"
+            app:argType="com.itzme.data.models.profile.myProfile.response.PetData"
+            app:nullable="true" />
+    </dialog>
 
 </navigation>

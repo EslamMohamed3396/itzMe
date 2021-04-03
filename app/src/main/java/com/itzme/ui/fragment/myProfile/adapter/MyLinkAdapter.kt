@@ -1,4 +1,4 @@
-package com.itzme.ui.fragment.myProfile
+package com.itzme.ui.fragment.myProfile.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,6 @@ import com.itzme.data.models.profile.myProfile.response.MyLink
 import com.itzme.databinding.ItemMyLinkBinding
 import com.itzme.ui.base.BaseViewHolder
 import com.itzme.ui.base.DiffCallback
-import com.itzme.ui.base.IClickOnItems
 
 class MyLinkAdapter :
         RecyclerView.Adapter<BaseViewHolder<*>>() {

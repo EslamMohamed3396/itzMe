@@ -12,10 +12,15 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.itzme.R
 import com.itzme.data.models.itemMenu.ItemMenu
+import com.itzme.data.models.profile.myProfile.response.MyLink
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.databinding.FragmentMyProfileBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.ui.base.IClickOnItems
+import com.itzme.ui.fragment.myProfile.adapter.ItemMenuAdapter
+import com.itzme.ui.fragment.myProfile.adapter.MyLinkAdapter
+import com.itzme.ui.fragment.myProfile.viewModels.DirectOnOffViewModel
+import com.itzme.ui.fragment.myProfile.viewModels.MyProfileViewModel
 import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.PreferencesUtils
 import com.itzme.utilits.Resource
@@ -27,7 +32,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     private val adapter: ItemMenuAdapter by lazy { ItemMenuAdapter(this) }
     private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter() }
-
+    private var myLink: MyLink? = null
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -41,7 +46,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         initNavDrawer()
         initClick()
         fillDataToNavigation()
-        initMyPtofileViewModel()
+        initMyProfileViewModel()
     }
 
     private fun initClick() {
@@ -53,13 +58,27 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             }
         }
 
-        binding?.includeLayout?.toggleButton?.textOn = "Itzme On"
-        binding?.includeLayout?.toggleButton?.textOff = "Itzme Off"
+        binding?.directOffBtn?.setOnClickListener {
+            if (myLink != null) {
+                initDirectOnOffViewModel()
+            }
+        }
+
+        binding?.editProfileBtn?.setOnClickListener {
+            val action = MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
+            findContrller(action)
+        }
+
     }
 
     //region navigation drawer
     private fun initNavDrawer() {
-        toggle = ActionBarDrawerToggle(requireActivity(), binding?.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        toggle = ActionBarDrawerToggle(
+                requireActivity(),
+                binding?.drawerLayout,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        )
         binding?.drawerLayout?.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -79,7 +98,13 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     private fun fillDataToNavigation() {
         binding?.includeLayout?.menuAdapter = adapter
         val itemMenuList = ArrayList<ItemMenu>()
-        itemMenuList.add(ItemMenu(1, requireContext().resources.getString(R.string.home), R.drawable.home))
+        itemMenuList.add(
+                ItemMenu(
+                        1,
+                        requireContext().resources.getString(R.string.home),
+                        R.drawable.home
+                )
+        )
         itemMenuList.add(ItemMenu(2, getString(R.string.my_account), R.drawable.my_contact))
         itemMenuList.add(ItemMenu(3, getString(R.string.edit_profile), R.drawable.profile_user))
         itemMenuList.add(ItemMenu(4, getString(R.string.active), R.drawable.active_nfc))
@@ -111,6 +136,15 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             }
             2 -> {
                 val action = MyProfileFragmentDirections.actionMyProfileFragmentToContactFragment()
+                findContrller(action)
+            }
+            3 -> {
+                val action =
+                        MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
+                findContrller(action)
+            }
+            6 -> {
+                val action = MyProfileFragmentDirections.actionMyProfileFragmentToMyQrCodeFragment()
                 findContrller(action)
             }
             9 -> {
@@ -146,7 +180,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     //region init view model
 
-    private fun initMyPtofileViewModel() {
+    private fun initMyProfileViewModel() {
         bindAdapter()
         val viewModel = ViewModelProvider(this).get(MyProfileViewModel::class.java)
         viewModel.myProfile().observe(viewLifecycleOwner, { response ->
@@ -157,10 +191,36 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
                     bindMyProfile(response.data!!)
-                    myLinkAdapter.submitList(response.data.myLinks!!)
+                    if (response.data.myLinks?.isNotEmpty()!!) {
+                        myLinkAdapter.submitList(response.data.myLinks)
+                        myLink = response.data.myLinks[0]
+                    }
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()
+                    when (response.code) {
+                        13, 14 -> {
+
+                        }
+                    }
+                }
+
+            }
+        })
+
+    }
+
+    private fun initDirectOnOffViewModel() {
+        bindAdapter()
+        val viewModel = ViewModelProvider(this).get(DirectOnOffViewModel::class.java)
+        viewModel.directOnOff(true, myLink?.linkType!!).observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                    initMyProfileViewModel()
+                }
+                is Resource.Error -> {
                     when (response.code) {
                         13, 14 -> {
 

@@ -5,7 +5,8 @@ import android.Manifest
 object Constant {
 
     //region base url
-    const val BASE_URL = "http://itzme.somee.com/api/"
+    const val BASE_URL = "http://itzme.co/api/"
+    const val BASE_URL_IMAGE = "http://itzme.co/"
     const val AUTHORIZATION = "Authorization"
     const val BEARER = "Bearer "
 
@@ -29,9 +30,19 @@ object Constant {
     private const val ROUTE_PROFILE = "profile/"
 
     const val MY_PROFILE = ROUTE_PROFILE + "get"
+    const val DIRECT_ON_OFF = ROUTE_PROFILE + "ToggleDirect"
+    const val UPDATE_PROFILE = ROUTE_PROFILE + "Update"
+    const val UPDATE_LINK = ROUTE_PROFILE + "UpdateLink"
 
     //endregion
 
+
+    //region link type
+    const val LINK_PET = 42
+    const val LINK_FIND_ME = 43
+
+
+    //endregion
 
     //shared Preference
     const val PRIVATE_MODE = 0
@@ -52,17 +63,6 @@ object Constant {
     const val AUTH_KEY = "auth_key"
     const val USER_DATA_KEY = "user_data_key"
     const val LANG_APP = "lang"
-
-    //navigation args
-    const val CIRCLE_ID_ARGS = "circle_Id_args"
-    const val MAX_VALUE_ARGS = "max_value_args"
-    const val MIN_VALUE_ARGS = "min_value_args"
-    const val IMAGE_ARGS = "image_args"
-    const val FROM_WISH_LIST_ARGS = "wish_list_args"
-    const val QUESTION_ARGS = "question_args"
-    const val ANSWER_ARGS = "answer_args"
-    const val CATEGORY_ARGS = "category_args"
-    const val MONTH_ARGS = "month_args"
 
 
     //Language key
@@ -89,7 +89,12 @@ object Constant {
 
     //Manifest Permission
     const val cameraPermission = Manifest.permission.CAMERA
-    const val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+    const val writeStoragePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+    const val readStoragePermission = Manifest.permission.READ_EXTERNAL_STORAGE
+    const val IMAGE_PICK_CODE = 22
+    const val CAMERA_CODE = 23
+    const val MEDIA_REQUEST_CODE = 24
+
 
     // my circle tab number
     const val ACTIVE_NUMBER = 0

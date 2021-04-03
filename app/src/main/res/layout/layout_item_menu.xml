@@ -7,7 +7,7 @@
 
         <variable
             name="menuAdapter"
-            type="com.itzme.ui.fragment.myProfile.ItemMenuAdapter" />
+            type="com.itzme.ui.fragment.myProfile.adapter.ItemMenuAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

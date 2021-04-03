@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Itzme</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
     <string name="invalidPassword">The password must be greater than 4 characters </string>
     <string name="password_match">Password doesn\'t match</string>
     <string name="invalidemail">Invalid Email</string>
@@ -47,4 +49,34 @@
     <string name="email_exist">This email is already exists</string>
     <string name="direct_off">Direct Off</string>
     <string name="direct_on">Direct On</string>
+    <string name="share_profile_link">Share profile link</string>
+    <string name="my_qr_code">My QR Code</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="bio">Bio</string>
+    <string name="you_didn_t_add_any_link_yet">You didn\'t add any link yet</string>
+    <string name="my_links">My Links</string>
+    <string name="make_profile_public">Make profile public</string>
+    <string name="allow_others_to_view_profile_online_tap_here_to_add_link_to_any_bio">Allow others to view profile online . Tap here to add link to any bio.</string>
+    <string name="all_links">All Links</string>
+    <string name="contacts">Contacts</string>
+    <string name="link">Link</string>
+    <string name="invalid_link">Invalid Link</string>
+    <string name="open">Open</string>
+    <string name="change_name">Change Name</string>
+    <string name="activate">ACTIVATE</string>
+    <string name="about_pet">About Pet</string>
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="pet_type">Pet type</string>
+    <string name="pet_name">Pet name</string>
+    <string name="information">Information</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="invalid">Invalid</string>
+    <string name="invalidPhone">Invalid Phone</string>
+    <string name="for_pets">For Pets</string>
+    <string name="address">Address</string>
+    <string name="blood_type">Blood Type</string>
+    <string name="about">About</string>
+    <string name="deactive">DEACTIVATE</string>
 </resources>

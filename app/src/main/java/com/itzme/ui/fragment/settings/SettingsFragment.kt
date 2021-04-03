@@ -64,6 +64,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     }
 
     private fun callSettingFragment() {
+        //(activity as MainActivity).recreate()
+
         (activity as MainActivity).finish()
         (activity as MainActivity).overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left)
         (activity as MainActivity).startActivity((activity as MainActivity).intent)

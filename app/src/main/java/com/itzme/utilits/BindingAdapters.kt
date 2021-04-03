@@ -1,13 +1,20 @@
 package com.itzme.utilits
 
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
 import com.itzme.R
+import timber.log.Timber
 
 
 @BindingAdapter("app:loadImageDrawable")
@@ -20,11 +27,37 @@ fun loadImageDrawable(imageView: ImageView, image: Int) {
 fun imageLoadUrl(imageView: ImageView, url: String?) {
     if (url != null) {
         Glide.with(imageView.context)
-                .load(Constant.BASE_URL + url)
+                .load(Constant.BASE_URL_IMAGE + url)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(imageView)
     }
 }
+
+@BindingAdapter("app:imageLoadQrCode")
+fun imageLoadQrCode(imageView: ImageView, linkeName: String?) {
+    if (linkeName != null) {
+        val width = 500
+        val height = 500
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val codeWriter = MultiFormatWriter()
+        try {
+            val bitMatrix = codeWriter.encode(linkeName, BarcodeFormat.QR_CODE, width, height)
+            for (x in 0 until width) {
+                for (y in 0 until height) {
+                    bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+                }
+            }
+        } catch (e: WriterException) {
+            Timber.d("${e.message}")
+        }
+
+        Glide.with(imageView.context)
+                .load(bitmap)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(imageView)
+    }
+}
+
 
 @BindingAdapter("app:isHiddenTrick")
 fun isHiddenTrick(imageView: ImageView, hidden: Boolean?) {
@@ -47,9 +80,29 @@ fun isHiddenTrick(imageView: ImageView, hidden: Boolean?) {
 @BindingAdapter("isDirectOn")
 fun isDirectOn(button: Button, isOn: Boolean) {
     if (isOn) {
-        button.text = button.context.resources.getString(R.string.direct_on)
+        button.text = button.context.getString(R.string.direct_on)
     } else {
         button.text = button.context.resources.getString(R.string.direct_off)
+    }
+}
+
+@BindingAdapter("isProfilePrivate")
+fun isProfilePrivate(button: SwitchMaterial, isPrivate: Boolean) {
+    button.isChecked = !isPrivate
+}
+
+@BindingAdapter("isActive")
+fun isActive(button: SwitchMaterial, isActive: Boolean) {
+    button.isChecked = isActive
+}
+
+@BindingAdapter("isActiveForButton")
+fun isActiveForButton(button: Button, isActive: Boolean) {
+    if (isActive) {
+        button.setTextColor(ColorStateList.valueOf(button.context.getColor(R.color.white)))
+        button.text = button.context.getString(R.string.deactive)
+        button.backgroundTintList =
+                ColorStateList.valueOf(button.context.getColor(R.color.green))
     }
 }
 
@@ -85,11 +138,13 @@ fun langEn(button: Button, language: String?) {
     when (language) {
         Constant.ENGLISH_LANGUAGE -> {
             button.text = button.context.getString(R.string.english)
-            button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
+            button.backgroundTintList =
+                    ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
         }
         Constant.ARABIC_LANGUAGE -> {
             button.text = button.context.getString(R.string.english)
-            button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.gray))
+            button.backgroundTintList =
+                    ColorStateList.valueOf(button.context.getColor(R.color.gray))
         }
         else -> {
             return
@@ -102,11 +157,13 @@ fun langAr(button: Button, language: String?) {
     when (language) {
         Constant.ENGLISH_LANGUAGE -> {
             button.text = button.context.getString(R.string.arabic)
-            button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.gray))
+            button.backgroundTintList =
+                    ColorStateList.valueOf(button.context.getColor(R.color.gray))
         }
         Constant.ARABIC_LANGUAGE -> {
             button.text = button.context.getString(R.string.arabic)
-            button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
+            button.backgroundTintList =
+                    ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
         }
         else -> {
             return

@@ -6,6 +6,7 @@ plugins {
 //    id 'com.google.firebase.crashlytics'
 //    id 'com.google.gms.google-services'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -68,11 +69,7 @@ dependencies {
     //timber
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
-//    //Firebase
-//    implementation platform('com.google.firebase:firebase-bom:26.0.0')
-//    implementation 'com.google.firebase:firebase-analytics-ktx'
-//    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-//    implementation 'com.google.firebase:firebase-messaging-ktx'
+
 
 
     //Navigation
@@ -113,4 +110,19 @@ dependencies {
     //viewpagerdotsindicator
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
 
+
+    //generate qr code
+    implementation 'com.google.zxing:core:3.4.0'
+
+
+    //image picker and capture
+    implementation 'com.github.jrvansuita:PickImage:2.5.2'
+
+    //expandble layout
+    implementation 'com.github.cachapa:ExpandableLayout:2.9.2'
+
+
+    //firebase
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation platform('com.google.firebase:firebase-bom:26.8.0')
 }

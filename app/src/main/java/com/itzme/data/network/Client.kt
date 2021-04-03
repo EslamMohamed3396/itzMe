@@ -1,8 +1,6 @@
 package com.itzme.data.network
 
 import com.google.gson.Gson
-import com.itzme.data.models.baseResponse.ErrorResponse
-import com.itzme.data.models.contact.response.ResponseMyContact
 import com.itzme.data.models.account.changeEmail.response.ResponseChangeEmail
 import com.itzme.data.models.account.changePassword.request.BodyChangePassword
 import com.itzme.data.models.account.changePassword.response.ResponseChangePassword
@@ -13,6 +11,12 @@ import com.itzme.data.models.account.registerationAndLogin.request.BodyRegister
 import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegisterAndLogin
 import com.itzme.data.models.account.resetPassword.request.BodyResetPassword
 import com.itzme.data.models.account.verficationCode.response.ResponseConfirmCode
+import com.itzme.data.models.baseResponse.ErrorResponse
+import com.itzme.data.models.contact.response.ResponseMyContact
+import com.itzme.data.models.profile.directOnOff.response.ResponseDirectOnOff
+import com.itzme.data.models.profile.editLink.request.BodyEditLink
+import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
+import com.itzme.data.models.profile.editProfile.response.ResponseEditProfile
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.utilits.App
 import com.itzme.utilits.Constant
@@ -163,6 +167,21 @@ object Client {
 
     fun myProfile(): Observable<ResponseMyProfile> {
         return apiService?.MY_PROFILE()!!
+    }
+
+    fun directOnOff(
+            isToggleStatus: Boolean,
+            type: Int
+    ): Observable<ResponseDirectOnOff> {
+        return apiService?.DIRECT_ON_OFF(isToggleStatus, type)!!
+    }
+
+    fun updateProfile(bodyEditProfile: BodyEditProfile): Observable<ResponseEditProfile> {
+        return apiService?.UPDATE_PROFILE(bodyEditProfile)!!
+    }
+
+    fun updateLink(bodyEditLink: BodyEditLink): Observable<ResponseEditProfile> {
+        return apiService?.UPDATE_LINK(bodyEditLink)!!
     }
 
 }

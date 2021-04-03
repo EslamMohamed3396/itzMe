@@ -1,4 +1,4 @@
-package com.itzme.ui.fragment.myProfile
+package com.itzme.ui.fragment.myProfile.viewModels
 
 import androidx.lifecycle.LiveData
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile

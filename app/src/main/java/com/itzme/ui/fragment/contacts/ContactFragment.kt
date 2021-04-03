@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.itzme.R
 import com.itzme.data.models.contact.response.Data
@@ -26,12 +27,22 @@ class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Da
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        binding?.toolbar?.titleTv?.text = requireContext().resources.getString(R.string.contacts)
         initMyContactViewModel()
+        initSearch()
     }
 
     private fun initAdapter() {
         binding?.contactAdapter = myContactAdapter
     }
+
+    private fun initSearch() {
+        binding?.searchInputLayoutLogin?.editText?.doOnTextChanged { text, _, _, _ ->
+            myContactAdapter.filter.filter(text)
+        }
+
+    }
+
 
     private fun initMyContactViewModel() {
         initAdapter()
@@ -61,6 +72,7 @@ class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Da
     }
 
     override fun clickOnItems(item: Data, postion: Int) {
+
     }
 
 }

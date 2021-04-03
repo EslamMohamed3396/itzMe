@@ -60,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:gravity="center"
             android:text="@{myLink.linkTypeName}"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"

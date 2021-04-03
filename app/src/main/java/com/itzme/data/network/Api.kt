@@ -11,13 +11,14 @@ import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegi
 import com.itzme.data.models.account.resetPassword.request.BodyResetPassword
 import com.itzme.data.models.account.verficationCode.response.ResponseConfirmCode
 import com.itzme.data.models.contact.response.ResponseMyContact
+import com.itzme.data.models.profile.directOnOff.response.ResponseDirectOnOff
+import com.itzme.data.models.profile.editLink.request.BodyEditLink
+import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
+import com.itzme.data.models.profile.editProfile.response.ResponseEditProfile
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.utilits.Constant
 import io.reactivex.Observable
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface Api {
 
@@ -62,14 +63,26 @@ interface Api {
 
     //region contact
     @GET(Constant.MY_CONTACT)
-    fun MY_CONTACT(@Query("lang") lang: String = Constant.LANG_APP): Observable<ResponseMyContact>
+    fun MY_CONTACT(@Query("lang") lang: String = Constant.LANG_NAME): Observable<ResponseMyContact>
 
 
     //endregion
     //region profile
 
     @GET(Constant.MY_PROFILE)
-    fun MY_PROFILE(@Query("lang") lang: String = Constant.LANG_APP): Observable<ResponseMyProfile>
+    fun MY_PROFILE(@Query("lang") lang: String = Constant.LANG_NAME): Observable<ResponseMyProfile>
+
+    @GET(Constant.DIRECT_ON_OFF)
+    fun DIRECT_ON_OFF(
+            @Query("IsToggleStatus") isToggleStatus: Boolean,
+            @Query("type") type: Int
+    ): Observable<ResponseDirectOnOff>
+
+    @PUT(Constant.UPDATE_PROFILE)
+    fun UPDATE_PROFILE(@Body bodyEditProfile: BodyEditProfile): Observable<ResponseEditProfile>
+
+    @POST(Constant.UPDATE_LINK)
+    fun UPDATE_LINK(@Body bodyEditLink: BodyEditLink): Observable<ResponseEditProfile>
 
 
     //endregion

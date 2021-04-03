@@ -53,11 +53,13 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
             lang = PreferencesUtils(context).getInstance()?.getString(Constant.LANGUAGE_KEY)!!
         }
         LanguageUtils.setLocale(requireContext(), lang)
+        Timber.d("lang : $lang")
+        Timber.d("LANG_NAME : ${Constant.LANG_NAME}")
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
+    override fun onPause() {
+        super.onPause()
+        binding?.unbind()
     }
 
     protected fun showNavigation() {

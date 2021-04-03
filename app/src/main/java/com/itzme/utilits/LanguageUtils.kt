@@ -22,7 +22,7 @@ object LanguageUtils {
     }
 
     private fun getPersistedData(context: Context): String? {
-        return checkLan(context)
+        return checkLang(context)
     }
 
     private fun persist(context: Context, language: String?) {
@@ -52,25 +52,27 @@ object LanguageUtils {
         return context
     }
 
-    fun checkLan(context: Context): String {
+
+    private fun checkLang(context: Context): String {
         var lang = ""
         if (PreferencesUtils(context).getInstance()?.getString(Constant.LANGUAGE_KEY)
-                .isNullOrEmpty()
+                        .isNullOrEmpty()
         ) {
-            when (Locale.getDefault().displayLanguage) {
+            Constant.LANG_NAME = when (Locale.getDefault().displayLanguage) {
                 Constant.ARABIC_LANGUAGE -> Constant.ARABIC_LANGUAGE
                 else -> Constant.ENGLISH_LANGUAGE
             }
             lang = Locale.getDefault().displayLanguage
         } else {
             Constant.LANG_NAME =
-                when (PreferencesUtils(context).getInstance()?.getString(Constant.LANGUAGE_KEY)) {
-                    Constant.ARABIC_LANGUAGE -> Constant.ARABIC_LANGUAGE
-                    else -> Constant.ENGLISH_LANGUAGE
-                }
-            lang = PreferencesUtils(context).getString(Constant.LANGUAGE_KEY)!!
+                    when (PreferencesUtils(context).getInstance()?.getString(Constant.LANGUAGE_KEY)) {
+                        Constant.ARABIC_LANGUAGE -> Constant.ARABIC_LANGUAGE
+                        else -> Constant.ENGLISH_LANGUAGE
+                    }
+            lang = PreferencesUtils(context).getInstance()?.getString(Constant.LANGUAGE_KEY)!!
         }
         return lang
     }
+
 
 }

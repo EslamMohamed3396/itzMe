@@ -1,10 +1,13 @@
 package com.itzme.utilits
 
+import android.util.Patterns
+import android.webkit.URLUtil
 import com.google.android.material.textfield.TextInputLayout
 import com.itzme.R
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+
 
 object EditTextValidiation {
     fun validEmail(
@@ -20,15 +23,31 @@ object EditTextValidiation {
             true
         } else {
             textInputLayout.error =
-                textInputLayout.context.resources.getString(R.string.invalidemail)
+                    textInputLayout.context.resources.getString(R.string.invalidemail)
             textInputLayout.editText?.requestFocus()
             false
         }
     }
 
+    fun isValidUrl(textInputLayout: TextInputLayout): Boolean {
+
+        val validUrl = textInputLayout.editText?.text.toString()
+
+        return if (URLUtil.isValidUrl(validUrl) && Patterns.WEB_URL.matcher(validUrl).matches()) {
+            textInputLayout.error = null
+            true
+        } else {
+            textInputLayout.error =
+                    textInputLayout.context.resources.getString(R.string.invalid_link)
+            textInputLayout.editText?.requestFocus()
+            false
+        }
+
+    }
+
 
     fun validPassword(
-        textInputLayout: TextInputLayout
+            textInputLayout: TextInputLayout
     ): Boolean {
         val pattern: Pattern
         val matcher: Matcher
@@ -69,7 +88,7 @@ object EditTextValidiation {
     ): Boolean {
         val validName = "^(?![ .]*$)[\\p{L} .]*$"
 
-        val mName = textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT)
+        val mName = textInputLayout.editText?.text.toString().trim().toLowerCase(Locale.ROOT)
         val matcherName: Matcher = Pattern.compile(validName).matcher(mName)
         return if (matcherName.matches() && textInputLayout.editText?.text.toString()
                 .trim().isNotEmpty()
@@ -78,12 +97,33 @@ object EditTextValidiation {
             true
         } else {
             textInputLayout.error =
-                textInputLayout.context.resources.getString(R.string.invalid_name)
+                    textInputLayout.context.resources.getString(R.string.invalid_name)
             textInputLayout.editText?.requestFocus()
             false
         }
     }
-//
+
+    fun validName(
+            textInputLayout: TextInputLayout
+    ): Boolean {
+        val validName = "^(?![ .]*$)[\\p{L} .]*$"
+
+        val mName = textInputLayout.editText?.text.toString().trim().toLowerCase(Locale.ROOT)
+        val matcherName: Matcher = Pattern.compile(validName).matcher(mName)
+        return if (matcherName.matches() && textInputLayout.editText?.text.toString()
+                        .trim().isNotEmpty()
+        ) {
+            textInputLayout.error = null
+            true
+        } else {
+            textInputLayout.error =
+                    textInputLayout.context.resources.getString(R.string.invalid)
+            textInputLayout.editText?.requestFocus()
+            false
+        }
+    }
+
+    //
 //    fun validName(
 //        textInputLayout: TextInputLayout
 //    ): Boolean {
@@ -126,22 +166,22 @@ object EditTextValidiation {
 //        }
 //    }
 //
-//    fun validPhone(
-//        textInputLayout: TextInputLayout
-//    ): Boolean {
-//        val passwordPattern = "([0-9]{11})"
-//        val mName = textInputLayout.editText?.text.toString()
-//        val matcherName: Matcher = Pattern.compile(passwordPattern).matcher(mName)
-//        return if (matcherName.matches()) {
-//            textInputLayout.error = null
-//            true
-//        } else {
-//            textInputLayout.error =
-//                textInputLayout.context.resources.getString(R.string.invalidPhone)
-//            textInputLayout.editText?.requestFocus()
-//            false
-//        }
-//    }
+    fun validPhone(
+            textInputLayout: TextInputLayout
+    ): Boolean {
+        val passwordPattern = "([0-9]{11})"
+        val mName = textInputLayout.editText?.text.toString()
+        val matcherName: Matcher = Pattern.compile(passwordPattern).matcher(mName)
+        return if (matcherName.matches()) {
+            textInputLayout.error = null
+            true
+        } else {
+            textInputLayout.error =
+                    textInputLayout.context.resources.getString(R.string.invalidPhone)
+            textInputLayout.editText?.requestFocus()
+            false
+        }
+    }
 //
 //    fun validCode(
 //        textInputLayout: TextInputLayout

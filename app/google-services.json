@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "131785785180",
+    "project_id": "itzme-8002e",
+    "storage_bucket": "itzme-8002e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131785785180:android:87240f657fe1bb85fecb99",
+        "android_client_info": {
+          "package_name": "com.itzme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131785785180-tqpvgo3gb21tuvn8dnac7eobd5j5vafe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6zoOfK4BPjuhUYgqOVwrI9xyKdgXVkjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131785785180-tqpvgo3gb21tuvn8dnac7eobd5j5vafe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
