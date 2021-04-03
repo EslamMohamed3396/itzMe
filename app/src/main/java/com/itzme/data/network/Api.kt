@@ -5,17 +5,22 @@ import com.itzme.data.models.account.changePassword.request.BodyChangePassword
 import com.itzme.data.models.account.changePassword.response.ResponseChangePassword
 import com.itzme.data.models.account.checkName.ResponseCheckUserName
 import com.itzme.data.models.account.forgetPassword.response.ResponseForgetPassword
+import com.itzme.data.models.account.logOut.response.ResponseLogOut
 import com.itzme.data.models.account.registerationAndLogin.request.BodyLogin
 import com.itzme.data.models.account.registerationAndLogin.request.BodyRegister
 import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegisterAndLogin
 import com.itzme.data.models.account.resetPassword.request.BodyResetPassword
 import com.itzme.data.models.account.verficationCode.response.ResponseConfirmCode
+import com.itzme.data.models.contact.removeContact.response.ResponseRemoveContact
 import com.itzme.data.models.contact.response.ResponseMyContact
+import com.itzme.data.models.notification.request.BodyAddToken
+import com.itzme.data.models.notification.response.ResponsePutToken
 import com.itzme.data.models.profile.directOnOff.response.ResponseDirectOnOff
 import com.itzme.data.models.profile.editLink.request.BodyEditLink
 import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
 import com.itzme.data.models.profile.editProfile.response.ResponseEditProfile
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
+import com.itzme.data.models.tags.tagType.response.ResponseTagType
 import com.itzme.utilits.Constant
 import io.reactivex.Observable
 import retrofit2.http.*
@@ -59,14 +64,35 @@ interface Api {
     @GET(Constant.CONFIRM_CHANGE_EMAIL)
     fun CONFIRM_CHANGE_EMAIL(@Query("Code") Code: String): Observable<ResponseRegisterAndLogin>
 
+    @POST(Constant.LOG_OUT)
+    fun LOG_OUT(@Body bodyAddToken: BodyAddToken): Observable<ResponseLogOut>
+
     //endregion
 
     //region contact
     @GET(Constant.MY_CONTACT)
     fun MY_CONTACT(@Query("lang") lang: String = Constant.LANG_NAME): Observable<ResponseMyContact>
 
+    @DELETE(Constant.DELETE_CONTACT)
+    fun DELETE_CONTACT(@Query("ContactId") contactId: Int): Observable<ResponseRemoveContact>
+
 
     //endregion
+
+    //region contact
+    @POST(Constant.ADD_TOKEN)
+    fun ADD_TOKEN(@Body bodyAddToken: BodyAddToken): Observable<ResponsePutToken>
+
+
+    //endregion
+
+    //region contact
+    @GET(Constant.TAG_TYPE)
+    fun TAG_TYPE(@Query("lang") lang: String = Constant.LANG_NAME): Observable<ResponseTagType>
+
+
+    //endregion
+
     //region profile
 
     @GET(Constant.MY_PROFILE)

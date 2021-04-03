@@ -6,18 +6,23 @@ import com.itzme.data.models.account.changePassword.request.BodyChangePassword
 import com.itzme.data.models.account.changePassword.response.ResponseChangePassword
 import com.itzme.data.models.account.checkName.ResponseCheckUserName
 import com.itzme.data.models.account.forgetPassword.response.ResponseForgetPassword
+import com.itzme.data.models.account.logOut.response.ResponseLogOut
 import com.itzme.data.models.account.registerationAndLogin.request.BodyLogin
 import com.itzme.data.models.account.registerationAndLogin.request.BodyRegister
 import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegisterAndLogin
 import com.itzme.data.models.account.resetPassword.request.BodyResetPassword
 import com.itzme.data.models.account.verficationCode.response.ResponseConfirmCode
 import com.itzme.data.models.baseResponse.ErrorResponse
+import com.itzme.data.models.contact.removeContact.response.ResponseRemoveContact
 import com.itzme.data.models.contact.response.ResponseMyContact
+import com.itzme.data.models.notification.request.BodyAddToken
+import com.itzme.data.models.notification.response.ResponsePutToken
 import com.itzme.data.models.profile.directOnOff.response.ResponseDirectOnOff
 import com.itzme.data.models.profile.editLink.request.BodyEditLink
 import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
 import com.itzme.data.models.profile.editProfile.response.ResponseEditProfile
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
+import com.itzme.data.models.tags.tagType.response.ResponseTagType
 import com.itzme.utilits.App
 import com.itzme.utilits.Constant
 import com.itzme.utilits.PreferencesUtils
@@ -161,8 +166,24 @@ object Client {
         return apiService?.CONFIRM_CHANGE_EMAIL(code)!!
     }
 
+    fun logout(bodyAddToken: BodyAddToken): Observable<ResponseLogOut> {
+        return apiService?.LOG_OUT(bodyAddToken)!!
+    }
+
     fun myContact(): Observable<ResponseMyContact> {
         return apiService?.MY_CONTACT()!!
+    }
+
+    fun deleteContact(contactId: Int): Observable<ResponseRemoveContact> {
+        return apiService?.DELETE_CONTACT(contactId)!!
+    }
+
+    fun addToken(bodyAddToken: BodyAddToken): Observable<ResponsePutToken> {
+        return apiService?.ADD_TOKEN(bodyAddToken)!!
+    }
+
+    fun tagType(): Observable<ResponseTagType> {
+        return apiService?.TAG_TYPE()!!
     }
 
     fun myProfile(): Observable<ResponseMyProfile> {

@@ -1,7 +1,6 @@
 package com.itzme.ui.fragment.editProfile.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -13,16 +12,14 @@ import com.itzme.databinding.ItemHeaderLinksBinding
 import com.itzme.ui.base.BaseViewHolder
 import com.itzme.ui.base.DiffCallback
 import com.itzme.ui.base.IClickOnItems
-import net.cachapa.expandablelayout.ExpandableLayout
 import timber.log.Timber
 
 
 class LinkHeaderAdapter(val iClickOnItems: IClickOnItems<Link>) :
         RecyclerView.Adapter<BaseViewHolder<*>>(), IClickOnItems<Link> {
     private val differ = AsyncListDiffer(this, DiffCallback<AllLink>())
-    private val UNSELECTED = -1
+    private var isCollapse = false
 
-    private var selectedItem = UNSELECTED
 
     fun submitList(list: List<AllLink?>?) {
         differ.submitList(list)
@@ -44,7 +41,7 @@ class LinkHeaderAdapter(val iClickOnItems: IClickOnItems<Link>) :
 
         (holder as LinkHeaderAdapterViewHolder).binding.itemTitle.text = sectionName
 
-        Timber.d("${singleSectionItems}")
+        holder.bind(item)
 
         val itemListDataAdapter = LinkContentAdapter(this)
 
@@ -53,7 +50,7 @@ class LinkHeaderAdapter(val iClickOnItems: IClickOnItems<Link>) :
         holder.binding.recyclerViewList.adapter = itemListDataAdapter
         itemListDataAdapter.submitList(singleSectionItems)
 
-        // holder.bind()
+
     }
 
     override fun getItemCount(): Int {
@@ -61,40 +58,23 @@ class LinkHeaderAdapter(val iClickOnItems: IClickOnItems<Link>) :
     }
 
     inner class LinkHeaderAdapterViewHolder(val binding: ItemHeaderLinksBinding) :
-            BaseViewHolder<AllLink>(binding), ExpandableLayout.OnExpansionUpdateListener,
-            View.OnClickListener {
+            BaseViewHolder<AllLink>(binding) {
         override fun bind(item: AllLink) {
             binding.executePendingBindings()
-            //   binding.cardView.setOnClickListener(this)
-            //   binding.expandableLayout.setOnExpansionUpdateListener(this);
-        }
-
-        fun bind() {
-            val position = adapterPosition
-            val isSelected = position == selectedItem
-//            binding.cardView.isSelected = isSelected
-            binding.expandableLayout.setExpanded(isSelected, false)
-        }
-
-        override fun onClick(view: View?) {
-
-            // binding.cardView.isSelected = false
-            binding.expandableLayout.collapse()
-            val position = adapterPosition
-            selectedItem = if (position == selectedItem) {
-                UNSELECTED
-            } else {
-                //  binding.cardView.isSelected = true
-                binding.expandableLayout.expand()
-                position
+            binding.linearLayout2.setOnClickListener {
+                Timber.d("OnClick")
+                isCollapse = if (isCollapse) {
+                    binding.imOpenClose.setImageResource(R.drawable.left_arrow)
+                    binding.expandableLayout.collapse()
+                    false
+                } else {
+                    binding.imOpenClose.setImageResource(R.drawable.down_arrow)
+                    binding.expandableLayout.expand()
+                    true
+                }
             }
         }
 
-        override fun onExpansionUpdate(expansionFraction: Float, state: Int) {
-            if (state == ExpandableLayout.State.EXPANDING) {
-                binding.recyclerViewList.smoothScrollToPosition(adapterPosition)
-            }
-        }
     }
 
     override fun clickOnItems(item: Link, postion: Int) {

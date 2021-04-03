@@ -121,13 +121,13 @@
             android:layout_marginBottom="16dp"
             android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/join_now_btn"
+            app:layout_constraintEnd_toStartOf="@+id/btn_open"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/link_inputLayout" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/join_now_btn"
+            android:id="@+id/btn_open"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

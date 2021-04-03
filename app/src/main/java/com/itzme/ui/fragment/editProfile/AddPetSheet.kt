@@ -50,7 +50,7 @@ class AddPetSheet : BottomSheetDialogFragment() {
 
     private fun bindData() {
         binding.petData = args.petArgs
-        isActive = args.petArgs.isActive!!
+        isActive = args.petArgs?.isActive!!
     }
 
     //endregion

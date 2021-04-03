@@ -1,5 +1,8 @@
 package com.itzme.ui.fragment.editProfile
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -74,6 +77,11 @@ class AddLinkSheet : BottomSheetDialogFragment() {
                 initEditLinkViewModel()
             }
         }
+        binding.btnOpen.setOnClickListener {
+            if (checkData()) {
+                openNewTabWindow(binding.linkInputLayout.editText?.text.toString(), requireContext())
+            }
+        }
     }
     //endregion
 
@@ -132,5 +140,18 @@ class AddLinkSheet : BottomSheetDialogFragment() {
 
     //endregion
 
+
+    //region open link
+
+    fun openNewTabWindow(urls: String, context: Context) {
+        val uris = Uri.parse(urls)
+        val intents = Intent(Intent.ACTION_VIEW, uris)
+        val b = Bundle()
+        b.putBoolean("new_window", true)
+        intents.putExtras(b)
+        context.startActivity(intents)
+    }
+
+    //endregion
 
 }

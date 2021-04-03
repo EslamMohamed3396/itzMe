@@ -43,12 +43,22 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/icon_menu" />
 
+                <ImageView
+                    android:id="@+id/im_qr"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/qr_code" />
+
 
                 <TextView
                     android:id="@+id/title_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/cairo_bold"
                     android:maxLines="1"
@@ -58,7 +68,7 @@
                     android:textSize="16sp"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/im_qr"
                     app:layout_constraintStart_toEndOf="@+id/toolbar_img"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="My Profile" />

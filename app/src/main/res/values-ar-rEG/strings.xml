@@ -76,4 +76,12 @@
     <string name="blood_type">Blood Type</string>
     <string name="about">About</string>
     <string name="deactive">DEACTIVATE</string>
+    <string name="no_contact_found">No contact found</string>
+    <string name="error">حدث خطأ</string>
+    <string name="which_itzme_product_would_you_n_activate">Which itzme product would you\n activate ?</string>
+    <string name="tap_here_to_activate">Tap Here To Activate</string>
+    <string name="your_itzme_will_be_activated_with_the_profile">your itzme will be activated with the profile</string>
+    <string name="no_product_found">No Product Found</string>
+    <string name="skip">Skip</string>
+
 </resources>

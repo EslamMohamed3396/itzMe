@@ -4,29 +4,44 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.itzme.R
+import com.itzme.databinding.ActiveProductFragmentBinding
+import com.itzme.ui.base.BaseFragment
+import com.itzme.utilits.Constant
+import com.itzme.utilits.PreferencesUtils
 
-class ActiveProductFragment : Fragment() {
+class ActiveProductFragment : BaseFragment<ActiveProductFragmentBinding>() {
 
-    companion object {
-        fun newInstance() = ActiveProductFragment()
-    }
-
-    private lateinit var viewModel: ActiveProductViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.active_product_fragment, container, false)
+        return bindView(inflater, container, R.layout.active_product_fragment)
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ActiveProductViewModel::class.java)
-        // TODO: Use the ViewModel
+        initClick()
+        bindData()
     }
 
+    //region init click
+    private fun initClick() {
+        binding?.toolbar?.toolbarImg?.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+    //endregion
+
+
+    //region bind data
+    private fun bindData() {
+        binding?.myLink = PreferencesUtils(requireContext()).getInstance()?.getUserData(Constant.USER_DATA_KEY)?.linkName
+    }
+
+
+    //endregion
 }

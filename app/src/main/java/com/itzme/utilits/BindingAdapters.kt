@@ -81,8 +81,10 @@ fun isHiddenTrick(imageView: ImageView, hidden: Boolean?) {
 fun isDirectOn(button: Button, isOn: Boolean) {
     if (isOn) {
         button.text = button.context.getString(R.string.direct_on)
+        button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.purple_200))
     } else {
         button.text = button.context.resources.getString(R.string.direct_off)
+        button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
     }
 }
 

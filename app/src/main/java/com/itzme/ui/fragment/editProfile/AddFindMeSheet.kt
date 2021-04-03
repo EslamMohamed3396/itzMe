@@ -80,8 +80,8 @@ class AddFindMeSheet : BottomSheetDialogFragment() {
 
     private fun bindData() {
         binding.findMeData = args.findMeArgs
-        convertImage(args.findMeArgs.imageUrl)
-        isActive = args.findMeArgs.findMeData.isActive!!
+        convertImage(args.findMeArgs?.imageUrl)
+        isActive = args.findMeArgs?.findMeData?.isActive!!
 
     }
 

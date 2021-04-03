@@ -21,11 +21,13 @@ object Constant {
     const val CHANGE_EMAIL = ROUTE_ACCOUNT + "RequestChangeEmail"
     const val RESEND_CHANGE_EMAIL = ROUTE_ACCOUNT + "ResendChangeEmailCode"
     const val CONFIRM_CHANGE_EMAIL = ROUTE_ACCOUNT + "ConfirmChangeEmail"
+    const val LOG_OUT = ROUTE_ACCOUNT + "logout"
 
 
     private const val ROUTE_CONTACT = "contacts/"
 
     const val MY_CONTACT = ROUTE_CONTACT + "mycontacts"
+    const val DELETE_CONTACT = ROUTE_CONTACT + "Delete"
 
     private const val ROUTE_PROFILE = "profile/"
 
@@ -33,6 +35,16 @@ object Constant {
     const val DIRECT_ON_OFF = ROUTE_PROFILE + "ToggleDirect"
     const val UPDATE_PROFILE = ROUTE_PROFILE + "Update"
     const val UPDATE_LINK = ROUTE_PROFILE + "UpdateLink"
+
+    private const val ROUTE_NOTIFICATIONS = "PushTokens/"
+
+    const val ADD_TOKEN = ROUTE_NOTIFICATIONS + "Add"
+
+
+    private const val TAGS = "tags/"
+
+    const val TAG_TYPE = TAGS + "gettypes"
+
 
     //endregion
 

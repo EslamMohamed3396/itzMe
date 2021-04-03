@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.itzme.R
 import com.itzme.data.models.itemMenu.ItemMenu
+import com.itzme.data.models.notification.request.BodyAddToken
 import com.itzme.data.models.profile.myProfile.response.MyLink
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.databinding.FragmentMyProfileBinding
@@ -19,8 +20,11 @@ import com.itzme.ui.base.BaseFragment
 import com.itzme.ui.base.IClickOnItems
 import com.itzme.ui.fragment.myProfile.adapter.ItemMenuAdapter
 import com.itzme.ui.fragment.myProfile.adapter.MyLinkAdapter
+import com.itzme.ui.fragment.myProfile.viewModels.AddTokenViewModel
 import com.itzme.ui.fragment.myProfile.viewModels.DirectOnOffViewModel
+import com.itzme.ui.fragment.myProfile.viewModels.LogOutViewModel
 import com.itzme.ui.fragment.myProfile.viewModels.MyProfileViewModel
+import com.itzme.utilits.App
 import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.PreferencesUtils
 import com.itzme.utilits.Resource
@@ -29,6 +33,10 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     private lateinit var toggle: ActionBarDrawerToggle
 
+    private val viewModel: MyProfileViewModel by viewModels()
+    private val viewModelToken: AddTokenViewModel by viewModels()
+    private val viewModelDirect: DirectOnOffViewModel by viewModels()
+    private val viewModelLogOut: LogOutViewModel by viewModels()
 
     private val adapter: ItemMenuAdapter by lazy { ItemMenuAdapter(this) }
     private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter() }
@@ -47,6 +55,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         initClick()
         fillDataToNavigation()
         initMyProfileViewModel()
+        initAddTokenViewModel()
     }
 
     private fun initClick() {
@@ -66,6 +75,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
         binding?.editProfileBtn?.setOnClickListener {
             val action = MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
+            findContrller(action)
+        }
+
+        binding?.imQr?.setOnClickListener {
+            val action = MyProfileFragmentDirections.actionMyProfileFragmentToMyQrCodeFragment()
             findContrller(action)
         }
 
@@ -143,8 +157,17 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                         MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
                 findContrller(action)
             }
+            4 -> {
+                val action =
+                        MyProfileFragmentDirections.actionMyProfileFragmentToActiveListFragment()
+                findContrller(action)
+            }
             6 -> {
                 val action = MyProfileFragmentDirections.actionMyProfileFragmentToMyQrCodeFragment()
+                findContrller(action)
+            }
+            8 -> {
+                val action = MyProfileFragmentDirections.actionMyProfileFragmentToHowToUseFragment()
                 findContrller(action)
             }
             9 -> {
@@ -152,9 +175,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 findContrller(action)
             }
             10 -> {
-                clearSession()
-                val action = MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
-                findContrller(action)
+                initLogOutViewModel()
             }
         }
     }
@@ -182,14 +203,15 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     private fun initMyProfileViewModel() {
         bindAdapter()
-        val viewModel = ViewModelProvider(this).get(MyProfileViewModel::class.java)
         viewModel.myProfile().observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Loading -> {
                     DialogUtil.showDialog(requireContext())
                 }
                 is Resource.Success -> {
+
                     DialogUtil.dismissDialog()
+
                     bindMyProfile(response.data!!)
                     if (response.data.myLinks?.isNotEmpty()!!) {
                         myLinkAdapter.submitList(response.data.myLinks)
@@ -198,6 +220,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()
+
                     when (response.code) {
                         13, 14 -> {
 
@@ -211,9 +234,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     }
 
     private fun initDirectOnOffViewModel() {
-        bindAdapter()
-        val viewModel = ViewModelProvider(this).get(DirectOnOffViewModel::class.java)
-        viewModel.directOnOff(true, myLink?.linkType!!).observe(viewLifecycleOwner, { response ->
+        viewModelDirect.directOnOff(true, myLink?.linkType!!).observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Loading -> {
                 }
@@ -231,6 +252,60 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             }
         })
 
+    }
+
+    private fun initAddTokenViewModel() {
+        viewModelToken.addToken(bodyAddToken()).observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+
+                }
+                is Resource.Error -> {
+                    when (response.code) {
+                        401 -> {
+
+                        }
+                    }
+                }
+
+            }
+        })
+
+    }
+
+    private fun initLogOutViewModel() {
+        viewModelLogOut.logOut(bodyAddToken()).observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+
+                    clearSession()
+                    val action = MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
+                    findContrller(action)
+                }
+                is Resource.Error -> {
+                    DialogUtil.dismissDialog()
+
+                    when (response.code) {
+                        401 -> {
+
+                        }
+                    }
+                }
+
+            }
+        })
+
+    }
+
+    private fun bodyAddToken(): BodyAddToken {
+        return BodyAddToken(pushToken = App.getToken())
     }
 
 

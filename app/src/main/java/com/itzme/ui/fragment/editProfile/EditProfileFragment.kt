@@ -98,20 +98,20 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
             isProfilePrivate = isChecked
         }
 
-        binding?.switchForFindMe?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                initEditLinkViewModel(bodyEditLinkFindMe(1))
-            } else {
-                initEditLinkViewModel(bodyEditLinkFindMe(0))
-            }
-        }
-        binding?.switchForPets?.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                initEditLinkViewModel(bodyEditLinkPet(1))
-            } else {
-                initEditLinkViewModel(bodyEditLinkPet(0))
-            }
-        }
+//        binding?.switchForFindMe?.setOnCheckedChangeListener { _, isChecked ->
+//            if (isChecked) {
+//                initEditLinkViewModel(bodyEditLinkFindMe(1))
+//            } else {
+//                initEditLinkViewModel(bodyEditLinkFindMe(0))
+//            }
+//        }
+//        binding?.switchForPets?.setOnCheckedChangeListener { _, isChecked ->
+//            if (isChecked) {
+//                initEditLinkViewModel(bodyEditLinkPet(1))
+//            } else {
+//                initEditLinkViewModel(bodyEditLinkPet(0))
+//            }
+//        }
         binding?.btnCancel?.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -188,7 +188,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     if (response.data.myLinks?.isNotEmpty()!!) {
                         myLinkAdapter.submitList(response.data.myLinks)
                     } else {
-                        binding?.tvEmpty?.visibility = View.GONE
+                        binding?.tvEmpty?.visibility = View.VISIBLE
                     }
                 }
                 is Resource.Error -> {

@@ -16,7 +16,7 @@ import com.itzme.ui.base.IClickOnItems
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MyContactAdapter(val iClickOnItems: IClickOnItems<Data>) :
+class MyContactAdapter(val iClickOnItems: IClickOnItems<Data>, val clickOnDeleteContact: ClickOnDeleteContact) :
         RecyclerView.Adapter<BaseViewHolder<*>>(), Filterable {
     private val differ = AsyncListDiffer(this, DiffCallback<Data>())
     private var contactListSearch = mutableListOf<Data>()
@@ -50,10 +50,8 @@ class MyContactAdapter(val iClickOnItems: IClickOnItems<Data>) :
                 constraint: CharSequence,
                 results: FilterResults
         ) {
-//            if (faqList != null) {
             contactList.clear()
             contactList.addAll(results.values as MutableList<Data>)
-//            }
             notifyDataSetChanged()
         }
     }
@@ -62,6 +60,10 @@ class MyContactAdapter(val iClickOnItems: IClickOnItems<Data>) :
         return companiesFilter
     }
 
+
+    interface ClickOnDeleteContact {
+        fun clickOnDelete(item: Data)
+    }
 
     fun submitList(list: List<Data?>?) {
         differ.submitList(list)
@@ -92,7 +94,7 @@ class MyContactAdapter(val iClickOnItems: IClickOnItems<Data>) :
             binding.myContact = item
             binding.executePendingBindings()
             binding.imageView7.setOnClickListener {
-                iClickOnItems.clickOnItems(item, -1)
+                clickOnDeleteContact.clickOnDelete(item)
             }
             binding.root.setOnClickListener {
                 iClickOnItems.clickOnItems(item, adapterPosition)

@@ -1,16 +1,11 @@
 package com.itzme.ui.activity.main
 
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import com.itzme.R
-import com.itzme.data.models.itemMenu.ItemMenu
 import com.itzme.databinding.ActivityMainBinding
-import com.itzme.ui.base.IClickOnItems
 import com.itzme.utilits.LanguageUtils
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +15,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         initDataBinding()
 
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(LanguageUtils.onAttach(newBase!!))
     }
 
     //region init
