@@ -95,7 +95,7 @@ fun isProfilePrivate(button: SwitchMaterial, isPrivate: Boolean) {
 
 @BindingAdapter("isActive")
 fun isActive(button: SwitchMaterial, isActive: Boolean) {
-    button.isChecked = isActive
+    button.isChecked = !isActive
 }
 
 @BindingAdapter("isActiveForButton")

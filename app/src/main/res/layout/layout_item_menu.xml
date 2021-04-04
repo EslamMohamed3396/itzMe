@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="myProfile"
-            type="com.itzme.data.models.profile.turnOnOffProfile.response.Data" />
+            name="isPrivate"
+            type="Boolean" />
 
         <variable
             name="menuAdapter"
@@ -39,14 +39,13 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="32dp"
-            android:checked="false"
+            android:checked="@{!isPrivate}"
             android:textColor="@drawable/text_thumb_selector"
             android:textColorHint="@color/white"
             android:textOff="@string/itzme_off"
             android:textOn="@string/itzme_on"
             android:textStyle="bold"
             android:thumb="@drawable/menu_thumb_selector"
-            app:isProfilePrivate="@{myProfile.isProfilePrivate}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -81,8 +81,10 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             findContrller(action)
         }
 
-        binding?.includeLayout?.toggleButton?.setOnClickListener {
-            initTurnOnOffProfileViewModel()
+        binding?.includeLayout?.toggleButton?.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.isPressed) {
+                initTurnOnOffProfileViewModel()
+            }
         }
 
     }
@@ -215,6 +217,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     DialogUtil.dismissDialog()
 
                     bindMyProfile(response.data!!)
+                    binding?.includeLayout?.isPrivate = response.data.isProfilePrivate
                     if (response.data.myLinks?.isNotEmpty()!!) {
                         myLinkAdapter.submitList(response.data.myLinks)
                         myLink = response.data.myLinks[0]
@@ -264,7 +267,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    binding?.includeLayout?.myProfile = response.data?.data
+                    binding?.includeLayout?.isPrivate = response.data?.data?.isProfilePrivate
                 }
                 is Resource.Error -> {
                     when (response.code) {

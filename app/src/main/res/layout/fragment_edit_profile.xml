@@ -203,7 +203,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:thumb="@drawable/profile_thumb_selector"
-                app:isProfilePrivate="@{isPrivate}"
+                android:checked="@{!isPrivate}"
                 app:layout_constraintBottom_toBottomOf="@+id/textView5"
                 app:layout_constraintEnd_toEndOf="@+id/bio_inputLayout"
                 app:layout_constraintHorizontal_bias="1.0"

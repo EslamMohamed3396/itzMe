@@ -99,24 +99,30 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
             pickImage()
         }
 
-        binding?.switchMaterial?.setOnCheckedChangeListener { _, isChecked ->
-            initTurnOnOffProfileViewModel()
+        binding?.switchMaterial?.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.isPressed) {
+                initTurnOnOffProfileViewModel()
+            }
         }
 
-//        binding?.switchForFindMe?.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                initEditLinkViewModel(bodyEditLinkFindMe(1))
-//            } else {
-//                initEditLinkViewModel(bodyEditLinkFindMe(0))
-//            }
-//        }
-//        binding?.switchForPets?.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                initEditLinkViewModel(bodyEditLinkPet(1))
-//            } else {
-//                initEditLinkViewModel(bodyEditLinkPet(0))
-//            }
-//        }
+        binding?.switchForFindMe?.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.isPressed) {
+                if (isChecked) {
+                    initEditLinkViewModel(bodyEditLinkFindMe(1))
+                } else {
+                    initEditLinkViewModel(bodyEditLinkFindMe(0))
+                }
+            }
+        }
+        binding?.switchForPets?.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.isPressed) {
+                if (isChecked) {
+                    initEditLinkViewModel(bodyEditLinkPet(1))
+                } else {
+                    initEditLinkViewModel(bodyEditLinkPet(0))
+                }
+            }
+        }
         binding?.btnCancel?.setOnClickListener {
             findNavController().navigateUp()
         }
