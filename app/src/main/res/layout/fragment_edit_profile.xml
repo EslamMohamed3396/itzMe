@@ -16,6 +16,10 @@
         <variable
             name="myProfile"
             type="com.itzme.data.models.profile.myProfile.response.ResponseMyProfile" />
+
+        <variable
+            name="isPrivate"
+            type="Boolean" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -199,7 +203,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:thumb="@drawable/profile_thumb_selector"
-                app:isProfilePrivate="@{myProfile.isProfilePrivate}"
+                app:isProfilePrivate="@{isPrivate}"
                 app:layout_constraintBottom_toBottomOf="@+id/textView5"
                 app:layout_constraintEnd_toEndOf="@+id/bio_inputLayout"
                 app:layout_constraintHorizontal_bias="1.0"

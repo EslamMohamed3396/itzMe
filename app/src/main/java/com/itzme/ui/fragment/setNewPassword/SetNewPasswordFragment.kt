@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.itzme.R
 import com.itzme.data.models.account.changePassword.request.BodyChangePassword
 import com.itzme.databinding.FragmentSetNewPasswordBinding
 import com.itzme.ui.base.BaseFragment
-import com.itzme.utilits.*
+import com.itzme.utilits.DialogUtil
+import com.itzme.utilits.EditTextValidiation
+import com.itzme.utilits.Resource
 
 class SetNewPasswordFragment : BaseFragment<FragmentSetNewPasswordBinding>() {
 
@@ -26,6 +28,7 @@ class SetNewPasswordFragment : BaseFragment<FragmentSetNewPasswordBinding>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        binding?.toolbar?.titleTv?.text = requireContext().resources.getString(R.string.set_new_password)
         textValidation()
         initClick()
     }
@@ -91,7 +94,7 @@ class SetNewPasswordFragment : BaseFragment<FragmentSetNewPasswordBinding>() {
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    Snackbar.make(binding?.root!!, response.data?.errorMessage!!, Snackbar.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), response.data?.errorMessage!!, Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
                 is Resource.Error -> {

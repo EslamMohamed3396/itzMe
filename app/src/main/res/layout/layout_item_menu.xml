@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="myProfile"
+            type="com.itzme.data.models.profile.turnOnOffProfile.response.Data" />
+
+        <variable
             name="menuAdapter"
             type="com.itzme.ui.fragment.myProfile.adapter.ItemMenuAdapter" />
     </data>
@@ -36,16 +40,17 @@
             android:layout_height="40dp"
             android:layout_marginTop="32dp"
             android:checked="false"
-            app:showText="true"
             android:textColor="@drawable/text_thumb_selector"
-            android:textStyle="bold"
             android:textColorHint="@color/white"
-            android:textOff="Itzme Off"
-            android:textOn="Itzme On"
+            android:textOff="@string/itzme_off"
+            android:textOn="@string/itzme_on"
+            android:textStyle="bold"
+            android:thumb="@drawable/menu_thumb_selector"
+            app:isProfilePrivate="@{myProfile.isProfilePrivate}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:thumb="@drawable/menu_thumb_selector"
+            app:showText="true"
             app:track="@drawable/menu_switch_selector"
             app:trackTint="@color/white"
             app:useMaterialThemeColors="false" />

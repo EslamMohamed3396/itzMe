@@ -86,4 +86,9 @@
     <string name="your_itzme_will_be_activated_with_the_profile">your itzme will be activated with the profile</string>
     <string name="no_product_found">No Product Found</string>
     <string name="skip">Skip</string>
+    <string name="your_new_password">Your new password</string>
+    <string name="your_identity_has_been_verified_set_your_new_password">Your identity has been verified set your new password</string>
+    <string name="set_new_password">Set New Password</string>
+    <string name="itzme_on">Itzme On</string>
+    <string name="itzme_off">Itzme Off</string>
 </resources>

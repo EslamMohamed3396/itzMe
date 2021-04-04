@@ -60,6 +60,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
             }
         }
         binding?.tvChangePassword?.setOnClickListener {
+            val action = SettingsFragmentDirections.actionSettingsFragmentToSetNewPasswordFragment()
+            findNavController().navigate(action)
         }
     }
 

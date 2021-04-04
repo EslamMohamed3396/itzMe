@@ -35,6 +35,7 @@ object Constant {
     const val DIRECT_ON_OFF = ROUTE_PROFILE + "ToggleDirect"
     const val UPDATE_PROFILE = ROUTE_PROFILE + "Update"
     const val UPDATE_LINK = ROUTE_PROFILE + "UpdateLink"
+    const val TURN_ON_OFF_PROFILE = ROUTE_PROFILE + "togglevisibility"
 
     private const val ROUTE_NOTIFICATIONS = "PushTokens/"
 

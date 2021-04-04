@@ -90,7 +90,7 @@ fun isDirectOn(button: Button, isOn: Boolean) {
 
 @BindingAdapter("isProfilePrivate")
 fun isProfilePrivate(button: SwitchMaterial, isPrivate: Boolean) {
-    button.isChecked = !isPrivate
+    button.isChecked = isPrivate
 }
 
 @BindingAdapter("isActive")

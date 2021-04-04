@@ -24,6 +24,7 @@ import com.itzme.ui.fragment.editProfile.viewModel.EditLinkViewModel
 import com.itzme.ui.fragment.editProfile.viewModel.EditProfileViewModel
 import com.itzme.ui.fragment.myProfile.adapter.MyLinkAdapter
 import com.itzme.ui.fragment.myProfile.viewModels.MyProfileViewModel
+import com.itzme.ui.fragment.myProfile.viewModels.TurnOnOffProfileViewModel
 import com.itzme.utilits.*
 import com.vansuita.pickimage.bundle.PickSetup
 import com.vansuita.pickimage.dialog.PickImageDialog
@@ -34,6 +35,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
     private val viewModel: EditProfileViewModel by viewModels()
     private val viewModelEditLink: EditLinkViewModel by viewModels()
+    private val viewModelTurnOnOff: TurnOnOffProfileViewModel by viewModels()
 
     private var imageBitmap: String? = null
     private var isProfilePrivate: Boolean = true
@@ -93,9 +95,12 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         binding?.imLayout?.setOnClickListener {
             pickImage()
         }
+        binding?.btnImage?.setOnClickListener {
+            pickImage()
+        }
 
         binding?.switchMaterial?.setOnCheckedChangeListener { _, isChecked ->
-            isProfilePrivate = isChecked
+            initTurnOnOffProfileViewModel()
         }
 
 //        binding?.switchForFindMe?.setOnCheckedChangeListener { _, isChecked ->
@@ -182,6 +187,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     if (!response.data.imageUrl.isNullOrEmpty()) {
                         convertImage(response.data.imageUrl)
                     }
+                    binding?.isPrivate = response.data.isProfilePrivate
                     allLinkAdapter.submitList(response.data.allLinks)
                     petData = response.data.petData
                     findMeData = response.data
@@ -318,6 +324,32 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 petData?.type,
                 null
         )
+    }
+
+    //endregion
+
+    //region init turn on off viewmodel
+    private fun initTurnOnOffProfileViewModel() {
+        viewModelTurnOnOff.turnOnOffProfile().observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+                    binding?.isPrivate = response.data?.data?.isProfilePrivate
+                }
+                is Resource.Error -> {
+                    when (response.code) {
+                        13, 14 -> {
+
+                        }
+                    }
+                }
+
+            }
+        })
+
     }
 
     //endregion

@@ -22,6 +22,7 @@ import com.itzme.data.models.profile.editLink.request.BodyEditLink
 import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
 import com.itzme.data.models.profile.editProfile.response.ResponseEditProfile
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
+import com.itzme.data.models.profile.turnOnOffProfile.response.ResponseProfileOnOff
 import com.itzme.data.models.tags.tagType.response.ResponseTagType
 import com.itzme.utilits.App
 import com.itzme.utilits.Constant
@@ -203,6 +204,10 @@ object Client {
 
     fun updateLink(bodyEditLink: BodyEditLink): Observable<ResponseEditProfile> {
         return apiService?.UPDATE_LINK(bodyEditLink)!!
+    }
+
+    fun turnOnOffProfile(): Observable<ResponseProfileOnOff> {
+        return apiService?.TURN_ON_OFF_PROFILE()!!
     }
 
 }

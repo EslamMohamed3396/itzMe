@@ -20,6 +20,7 @@ import com.itzme.data.models.profile.editLink.request.BodyEditLink
 import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
 import com.itzme.data.models.profile.editProfile.response.ResponseEditProfile
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
+import com.itzme.data.models.profile.turnOnOffProfile.response.ResponseProfileOnOff
 import com.itzme.data.models.tags.tagType.response.ResponseTagType
 import com.itzme.utilits.Constant
 import io.reactivex.Observable
@@ -109,6 +110,10 @@ interface Api {
 
     @POST(Constant.UPDATE_LINK)
     fun UPDATE_LINK(@Body bodyEditLink: BodyEditLink): Observable<ResponseEditProfile>
+
+
+    @GET(Constant.TURN_ON_OFF_PROFILE)
+    fun TURN_ON_OFF_PROFILE(): Observable<ResponseProfileOnOff>
 
 
     //endregion

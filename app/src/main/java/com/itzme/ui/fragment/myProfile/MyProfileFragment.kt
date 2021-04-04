@@ -20,10 +20,7 @@ import com.itzme.ui.base.BaseFragment
 import com.itzme.ui.base.IClickOnItems
 import com.itzme.ui.fragment.myProfile.adapter.ItemMenuAdapter
 import com.itzme.ui.fragment.myProfile.adapter.MyLinkAdapter
-import com.itzme.ui.fragment.myProfile.viewModels.AddTokenViewModel
-import com.itzme.ui.fragment.myProfile.viewModels.DirectOnOffViewModel
-import com.itzme.ui.fragment.myProfile.viewModels.LogOutViewModel
-import com.itzme.ui.fragment.myProfile.viewModels.MyProfileViewModel
+import com.itzme.ui.fragment.myProfile.viewModels.*
 import com.itzme.utilits.App
 import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.PreferencesUtils
@@ -37,6 +34,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     private val viewModelToken: AddTokenViewModel by viewModels()
     private val viewModelDirect: DirectOnOffViewModel by viewModels()
     private val viewModelLogOut: LogOutViewModel by viewModels()
+    private val viewModelTurnOnOff: TurnOnOffProfileViewModel by viewModels()
 
     private val adapter: ItemMenuAdapter by lazy { ItemMenuAdapter(this) }
     private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter() }
@@ -81,6 +79,10 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         binding?.imQr?.setOnClickListener {
             val action = MyProfileFragmentDirections.actionMyProfileFragmentToMyQrCodeFragment()
             findContrller(action)
+        }
+
+        binding?.includeLayout?.toggleButton?.setOnClickListener {
+            initTurnOnOffProfileViewModel()
         }
 
     }
@@ -240,6 +242,29 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 }
                 is Resource.Success -> {
                     initMyProfileViewModel()
+                }
+                is Resource.Error -> {
+                    when (response.code) {
+                        13, 14 -> {
+
+                        }
+                    }
+                }
+
+            }
+        })
+
+    }
+
+    private fun initTurnOnOffProfileViewModel() {
+        viewModelTurnOnOff.turnOnOffProfile().observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+                    binding?.includeLayout?.myProfile = response.data?.data
                 }
                 is Resource.Error -> {
                     when (response.code) {

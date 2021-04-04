@@ -11,7 +11,6 @@ import com.itzme.R
 import com.itzme.data.models.enumVerfications.Verfication
 import com.itzme.databinding.FragmentChangeEmailBinding
 import com.itzme.ui.base.BaseFragment
-import com.itzme.ui.fragment.forgetPasword.ForgetPasswordFragmentDirections
 import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.EditTextValidiation
 import com.itzme.utilits.Resource
@@ -74,8 +73,8 @@ class ChangeEmailFragment : BaseFragment<FragmentChangeEmailBinding>() {
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    val action = ForgetPasswordFragmentDirections
-                            .actionForgetPasswordFragmentToVerificationCodeFragment(response.data?.data?.email,
+                    val action = ChangeEmailFragmentDirections
+                            .actionChangeEmailFragmentToVerificationCodeFragment(response.data?.data?.email,
                                     null, Verfication.CHANGE_EMAIL)
                     findNavController().navigate(action)
                 }

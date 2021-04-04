@@ -175,6 +175,11 @@
             app:exitAnim="@anim/anim_slide_out_left"
             app:popUpTo="@+id/settingsFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_settingsFragment_to_setNewPasswordFragment"
+            app:destination="@id/setNewPasswordFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/changeEmailFragment"
@@ -191,15 +196,7 @@
         android:id="@+id/setNewPasswordFragment"
         android:name="com.itzme.ui.fragment.setNewPassword.SetNewPasswordFragment"
         android:label="fragment_set_new_password"
-        tools:layout="@layout/fragment_set_new_password">
-        <action
-            android:id="@+id/action_setNewPasswordFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
-            app:enterAnim="@anim/anim_slide_in_left"
-            app:exitAnim="@anim/anim_slide_out_left"
-            app:popUpTo="@id/setNewPasswordFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_set_new_password" />
     <fragment
         android:id="@+id/contactFragment"
         android:name="com.itzme.ui.fragment.contacts.ContactFragment"
