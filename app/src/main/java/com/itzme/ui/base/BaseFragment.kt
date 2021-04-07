@@ -8,6 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.itzme.ui.SharedViewModel
 import com.itzme.utilits.Constant
 import com.itzme.utilits.LanguageUtils
 import com.itzme.utilits.PreferencesUtils
@@ -17,6 +19,7 @@ import java.util.*
 
 abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     protected var binding: B? = null
+    val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

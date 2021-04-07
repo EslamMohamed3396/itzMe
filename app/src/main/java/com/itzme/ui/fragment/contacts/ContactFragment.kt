@@ -9,7 +9,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.itzme.R
-import com.itzme.data.models.contact.response.Data
+import com.itzme.data.models.contact.myContact.response.Data
 import com.itzme.databinding.FragmentContactBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.ui.base.IClickOnItems
@@ -17,13 +17,14 @@ import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.Resource
 import timber.log.Timber
 
-class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Data>, MyContactAdapter.ClickOnDeleteContact {
+class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Data>,
+    MyContactAdapter.ClickOnDeleteContact {
 
 
     private val myContactAdapter: MyContactAdapter by lazy { MyContactAdapter(this, this) }
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_contact)
     }
@@ -105,7 +106,11 @@ class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Da
 
                         }
                         else -> {
-                            Toast.makeText(requireContext(), requireContext().resources.getString(R.string.error), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                requireContext().resources.getString(R.string.error),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }
@@ -115,7 +120,9 @@ class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Da
     }
 
     override fun clickOnItems(item: Data, postion: Int) {
-
+        val action =
+            ContactFragmentDirections.actionContactFragmentToContactProfileFragment(item.id!!)
+        findNavController().navigate(action)
     }
 
     override fun clickOnDelete(item: Data) {

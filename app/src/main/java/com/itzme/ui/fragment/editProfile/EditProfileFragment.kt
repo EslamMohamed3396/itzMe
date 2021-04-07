@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,7 +16,6 @@ import com.itzme.data.models.profile.myProfile.response.Link
 import com.itzme.data.models.profile.myProfile.response.PetData
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.databinding.FragmentEditProfileBinding
-import com.itzme.ui.SharedViewModel
 import com.itzme.ui.base.BaseFragment
 import com.itzme.ui.base.IClickOnItems
 import com.itzme.ui.fragment.editProfile.adapter.LinkHeaderAdapter
@@ -41,7 +40,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     private var isProfilePrivate: Boolean = true
     private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter() }
     private val allLinkAdapter: LinkHeaderAdapter by lazy { LinkHeaderAdapter(this) }
-    private val sharedViewModel: SharedViewModel by activityViewModels()
     private var petData: PetData? = null
     private var findMeData: ResponseMyProfile? = null
     override fun onCreateView(
@@ -57,6 +55,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         binding?.titleTv?.text = requireContext().resources.getString(R.string.edit_profile)
         initClick()
         initSharedViewModel()
+        textValidation()
     }
 
     //region init shared view model
@@ -87,6 +86,16 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 && EditTextValidiation.validUserName(binding?.bioInputLayout!!)
     }
 
+
+    private fun textValidation() {
+        binding?.edName?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validUserName(binding?.edName!!)
+        }
+        binding?.bioInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
+            EditTextValidiation.validUserName(binding?.bioInputLayout!!)
+        }
+
+    }
     //endregion
 
     //region init click
@@ -278,14 +287,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         viewModelEditLink.updateLink(bodyEditLink).observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Loading -> {
-                    DialogUtil.showDialog(requireContext())
+                    //  DialogUtil.showDialog(requireContext())
                 }
                 is Resource.Success -> {
-                    DialogUtil.dismissDialog()
+                    //  DialogUtil.dismissDialog()
                     sharedViewModel.saveDismissed(true)
                 }
                 is Resource.Error -> {
-                    DialogUtil.dismissDialog()
+                    // DialogUtil.dismissDialog()
                     when (response.code) {
                         13, 14 -> {
 
@@ -339,10 +348,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         viewModelTurnOnOff.turnOnOffProfile().observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Loading -> {
-                    DialogUtil.showDialog(requireContext())
+                    //   DialogUtil.showDialog(requireContext())
                 }
                 is Resource.Success -> {
-                    DialogUtil.dismissDialog()
+                    //    DialogUtil.dismissDialog()
                     binding?.isPrivate = response.data?.data?.isProfilePrivate
                 }
                 is Resource.Error -> {

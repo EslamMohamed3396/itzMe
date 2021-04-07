@@ -101,7 +101,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
-                app:boxBackgroundColor="@color/gray"
+                app:boxBackgroundColor="@color/dark_blue"
                 app:boxCornerRadiusBottomEnd="@dimen/radius_8"
                 app:boxCornerRadiusBottomStart="@dimen/radius_8"
                 app:boxCornerRadiusTopEnd="@dimen/radius_8"
@@ -122,7 +122,9 @@
                     android:inputType="numberDecimal"
                     android:lines="1"
                     android:maxLength="1"
-                    android:textColor="@color/black"
+                    android:background="@null"
+                    android:textCursorDrawable="@color/white"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     tools:text="1" />
@@ -159,6 +161,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:textCursorDrawable="@color/white"
                     tools:text="2" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -188,6 +191,8 @@
                     android:inputType="numberDecimal"
                     android:lines="1"
                     android:maxLength="1"
+                    android:background="@null"
+                    android:textCursorDrawable="@color/white"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -220,6 +225,8 @@
                     android:inputType="numberDecimal"
                     android:lines="1"
                     android:maxLength="1"
+                    android:background="@null"
+                    android:textCursorDrawable="@color/white"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"

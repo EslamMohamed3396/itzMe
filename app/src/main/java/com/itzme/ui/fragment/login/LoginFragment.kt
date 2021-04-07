@@ -30,6 +30,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.onActivityCreated(savedInstanceState)
         initClick()
         textValidation()
+
     }
 
 

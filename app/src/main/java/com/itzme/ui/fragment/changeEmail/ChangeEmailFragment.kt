@@ -28,6 +28,8 @@ class ChangeEmailFragment : BaseFragment<FragmentChangeEmailBinding>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        binding?.toolbar?.titleTv?.text =
+            requireContext().resources.getString(R.string.change_email)
         textValidation()
         initClick()
     }
@@ -66,30 +68,34 @@ class ChangeEmailFragment : BaseFragment<FragmentChangeEmailBinding>() {
 
     private fun initChangeEmailViewModel() {
         val viewModel = ViewModelProvider(this).get(ChangeEmailViewModel::class.java)
-        viewModel.changeEmail(binding?.emailInputLayout?.editText?.text.toString()).observe(viewLifecycleOwner, { response ->
-            when (response) {
-                is Resource.Loading -> {
-                    DialogUtil.showDialog(requireContext())
-                }
-                is Resource.Success -> {
-                    DialogUtil.dismissDialog()
-                    val action = ChangeEmailFragmentDirections
-                            .actionChangeEmailFragmentToVerificationCodeFragment(response.data?.data?.email,
-                                    null, Verfication.CHANGE_EMAIL)
-                    findNavController().navigate(action)
-                }
-                is Resource.Error -> {
-                    DialogUtil.dismissDialog()
-                    when (response.code) {
-                        5 -> {
-                            binding?.emailInputLayout?.error =
+        viewModel.changeEmail(binding?.emailInputLayout?.editText?.text.toString()).observe(
+            viewLifecycleOwner,
+            { response ->
+                when (response) {
+                    is Resource.Loading -> {
+                        DialogUtil.showDialog(requireContext())
+                    }
+                    is Resource.Success -> {
+                        DialogUtil.dismissDialog()
+                        val action = ChangeEmailFragmentDirections
+                            .actionChangeEmailFragmentToVerificationCodeFragment(
+                                response.data?.data?.email,
+                                null, Verfication.CHANGE_EMAIL
+                            )
+                        findNavController().navigate(action)
+                    }
+                    is Resource.Error -> {
+                        DialogUtil.dismissDialog()
+                        when (response.code) {
+                            5, 26 -> {
+                                binding?.emailInputLayout?.error =
                                     requireContext().resources.getString(R.string.email_exist)
+                            }
                         }
                     }
-                }
 
-            }
-        })
+                }
+            })
     }
 
     //endregion

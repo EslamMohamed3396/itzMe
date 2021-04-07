@@ -88,5 +88,14 @@
     <string name="set_new_password">Set New Password</string>
     <string name="itzme_on">Itzme On</string>
     <string name="itzme_off">Itzme Off</string>
+    <string name="change_email">Change E-mail</string>
+    <string name="resend_code_success">Resend Code Successfully</string>
+    <string name="no_nfc">This device doesn\'t support NFC.</string>
+    <string name="nfc_disabled">NFC Disabled</string>
+    <string name="enable_nfc">Please Enable Nfc</string>
+    <string name="ready_to_scan">READY TO SCAN</string>
+    <string name="hold_an_itzme_to_the_middle_back_of_your_phone_to_scan_it">hold an itzme to the middle back of your phone to Scan It!</string>
+    <string name="reading_success">Reading NFC Successfully</string>
+    <string name="profile">Profile</string>
 
 </resources>

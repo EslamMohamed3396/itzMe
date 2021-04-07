@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.itzme.R
-import com.itzme.data.models.contact.response.Data
+import com.itzme.data.models.contact.myContact.response.Data
 import com.itzme.databinding.ItemContactBinding
 import com.itzme.ui.base.BaseViewHolder
 import com.itzme.ui.base.DiffCallback

@@ -35,6 +35,7 @@ object Constant {
     const val DIRECT_ON_OFF = ROUTE_PROFILE + "ToggleDirect"
     const val UPDATE_PROFILE = ROUTE_PROFILE + "Update"
     const val UPDATE_LINK = ROUTE_PROFILE + "UpdateLink"
+    const val CONTACT_PROFILE = ROUTE_PROFILE + "Contact"
     const val TURN_ON_OFF_PROFILE = ROUTE_PROFILE + "togglevisibility"
 
     private const val ROUTE_NOTIFICATIONS = "PushTokens/"
@@ -45,6 +46,8 @@ object Constant {
     private const val TAGS = "tags/"
 
     const val TAG_TYPE = TAGS + "gettypes"
+    const val VALIDATE_TAGE = TAGS + "ValidateSerial"
+    const val READ_TAGE = TAGS + "Read"
 
 
     //endregion
@@ -53,6 +56,13 @@ object Constant {
     //region link type
     const val LINK_PET = 42
     const val LINK_FIND_ME = 43
+
+
+    //endregion
+
+    //region facebook link
+
+    const val FACEBOOK_LINK = "https://www.facebook.com/joinitzME"
 
 
     //endregion

@@ -11,8 +11,9 @@ import com.itzme.data.models.account.registerationAndLogin.request.BodyRegister
 import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegisterAndLogin
 import com.itzme.data.models.account.resetPassword.request.BodyResetPassword
 import com.itzme.data.models.account.verficationCode.response.ResponseConfirmCode
+import com.itzme.data.models.contact.contactProfile.response.ResponseContactProfile
+import com.itzme.data.models.contact.myContact.response.ResponseMyContact
 import com.itzme.data.models.contact.removeContact.response.ResponseRemoveContact
-import com.itzme.data.models.contact.response.ResponseMyContact
 import com.itzme.data.models.notification.request.BodyAddToken
 import com.itzme.data.models.notification.response.ResponsePutToken
 import com.itzme.data.models.profile.directOnOff.response.ResponseDirectOnOff
@@ -22,6 +23,7 @@ import com.itzme.data.models.profile.editProfile.response.ResponseEditProfile
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.data.models.profile.turnOnOffProfile.response.ResponseProfileOnOff
 import com.itzme.data.models.tags.tagType.response.ResponseTagType
+import com.itzme.data.models.tags.validateTage.response.ResponseValidateTag
 import com.itzme.utilits.Constant
 import io.reactivex.Observable
 import retrofit2.http.*
@@ -74,22 +76,32 @@ interface Api {
     @GET(Constant.MY_CONTACT)
     fun MY_CONTACT(@Query("lang") lang: String = Constant.LANG_NAME): Observable<ResponseMyContact>
 
+
     @DELETE(Constant.DELETE_CONTACT)
     fun DELETE_CONTACT(@Query("ContactId") contactId: Int): Observable<ResponseRemoveContact>
 
 
     //endregion
 
-    //region contact
+    //region Token
     @POST(Constant.ADD_TOKEN)
     fun ADD_TOKEN(@Body bodyAddToken: BodyAddToken): Observable<ResponsePutToken>
 
 
     //endregion
 
-    //region contact
+    //region Tags
     @GET(Constant.TAG_TYPE)
     fun TAG_TYPE(@Query("lang") lang: String = Constant.LANG_NAME): Observable<ResponseTagType>
+
+    @GET(Constant.VALIDATE_TAGE)
+    fun VALIDATE_TAGE(@Query("Serial") seria: String): Observable<ResponseValidateTag>
+
+    @GET(Constant.READ_TAGE)
+    fun READ_TAGE(
+        @Query("Username") username: String,
+        @Query("Serial") serial: String
+    ): Observable<ResponseValidateTag>
 
 
     //endregion
@@ -101,8 +113,8 @@ interface Api {
 
     @GET(Constant.DIRECT_ON_OFF)
     fun DIRECT_ON_OFF(
-            @Query("IsToggleStatus") isToggleStatus: Boolean,
-            @Query("type") type: Int
+        @Query("IsToggleStatus") isToggleStatus: Boolean,
+        @Query("type") type: Int
     ): Observable<ResponseDirectOnOff>
 
     @PUT(Constant.UPDATE_PROFILE)
@@ -114,6 +126,12 @@ interface Api {
 
     @GET(Constant.TURN_ON_OFF_PROFILE)
     fun TURN_ON_OFF_PROFILE(): Observable<ResponseProfileOnOff>
+
+    @GET(Constant.CONTACT_PROFILE)
+    fun CONTACT_PROFILE(
+        @Query("ContactId") contactId: Int,
+        @Query("lang") lang: String = Constant.LANG_NAME
+    ): Observable<ResponseContactProfile>
 
 
     //endregion

@@ -13,8 +13,9 @@ import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegi
 import com.itzme.data.models.account.resetPassword.request.BodyResetPassword
 import com.itzme.data.models.account.verficationCode.response.ResponseConfirmCode
 import com.itzme.data.models.baseResponse.ErrorResponse
+import com.itzme.data.models.contact.contactProfile.response.ResponseContactProfile
+import com.itzme.data.models.contact.myContact.response.ResponseMyContact
 import com.itzme.data.models.contact.removeContact.response.ResponseRemoveContact
-import com.itzme.data.models.contact.response.ResponseMyContact
 import com.itzme.data.models.notification.request.BodyAddToken
 import com.itzme.data.models.notification.response.ResponsePutToken
 import com.itzme.data.models.profile.directOnOff.response.ResponseDirectOnOff
@@ -24,6 +25,7 @@ import com.itzme.data.models.profile.editProfile.response.ResponseEditProfile
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.data.models.profile.turnOnOffProfile.response.ResponseProfileOnOff
 import com.itzme.data.models.tags.tagType.response.ResponseTagType
+import com.itzme.data.models.tags.validateTage.response.ResponseValidateTag
 import com.itzme.utilits.App
 import com.itzme.utilits.Constant
 import com.itzme.utilits.PreferencesUtils
@@ -54,20 +56,20 @@ object Client {
                 val httpLoggingInterceptor = HttpLoggingInterceptor()
                 httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
                 sBuilder = OkHttpClient.Builder()
-                        .connectTimeout(60, TimeUnit.SECONDS)
-                        .readTimeout(60, TimeUnit.SECONDS)
-                        .addInterceptor(httpLoggingInterceptor)
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .addInterceptor(httpLoggingInterceptor)
                 sBuilder!!.addInterceptor(Interceptor { chain: Interceptor.Chain ->
                     val original: Request = chain.request()
                     val request: Request = original.newBuilder()
-                            .header(
-                                    Constant.AUTHORIZATION,
-                                    Constant.BEARER + PreferencesUtils(App.getContext()).getInstance()
-                                            ?.getUserData(
-                                                    Constant.USER_DATA_KEY
-                                            )?.token
-                            )
-                            .build()
+                        .header(
+                            Constant.AUTHORIZATION,
+                            Constant.BEARER + PreferencesUtils(App.getContext()).getInstance()
+                                ?.getUserData(
+                                    Constant.USER_DATA_KEY
+                                )?.token
+                        )
+                        .build()
                     chain.proceed(request)
                 })
 
@@ -80,11 +82,11 @@ object Client {
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(Constant.BASE_URL)
-                .client(getUnsafeOkHttpClient()?.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
+            .baseUrl(Constant.BASE_URL)
+            .client(getUnsafeOkHttpClient()?.build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
         apiService = retrofit.create(Api::class.java)
     }
 
@@ -98,32 +100,32 @@ object Client {
 
     fun <T> request(api: Observable<T>, callBackNetwork: ICallBackNetwork<T>) {
         api.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<T> {
-                    override fun onSubscribe(d: Disposable) {
-                        callBackNetwork.onDisposable(d)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<T> {
+                override fun onSubscribe(d: Disposable) {
+                    callBackNetwork.onDisposable(d)
+                }
+
+                override fun onNext(u: T) {
+                    callBackNetwork.onSuccess(u)
+                }
+
+                override fun onError(e: Throwable) {
+
+                    if (e is HttpException) {
+                        val errorBody: String = e.response()?.errorBody()?.string()!!
+                        val errorResponse: ErrorResponse =
+                            Gson().fromJson(errorBody, ErrorResponse::class.java)
+                        callBackNetwork.onFailed(
+                            e.message(),
+                            errorResponse.errorCode ?: e.code(),
+                            errorResponse.errorMessage
+                        )
                     }
+                }
 
-                    override fun onNext(u: T) {
-                        callBackNetwork.onSuccess(u)
-                    }
-
-                    override fun onError(e: Throwable) {
-
-                        if (e is HttpException) {
-                            val errorBody: String = e.response()?.errorBody()?.string()!!
-                            val errorResponse: ErrorResponse =
-                                    Gson().fromJson(errorBody, ErrorResponse::class.java)
-                            callBackNetwork.onFailed(
-                                    e.message(),
-                                    errorResponse.errorCode ?: e.code(),
-                                    errorResponse.errorMessage
-                            )
-                        }
-                    }
-
-                    override fun onComplete() {}
-                })
+                override fun onComplete() {}
+            })
     }
 
 
@@ -175,6 +177,10 @@ object Client {
         return apiService?.MY_CONTACT()!!
     }
 
+    fun contactProfile(contactId: Int): Observable<ResponseContactProfile> {
+        return apiService?.CONTACT_PROFILE(contactId)!!
+    }
+
     fun deleteContact(contactId: Int): Observable<ResponseRemoveContact> {
         return apiService?.DELETE_CONTACT(contactId)!!
     }
@@ -187,13 +193,21 @@ object Client {
         return apiService?.TAG_TYPE()!!
     }
 
+    fun validateTag(serial: String): Observable<ResponseValidateTag> {
+        return apiService?.VALIDATE_TAGE(serial)!!
+    }
+
+    fun readTag(username: String, serial: String): Observable<ResponseValidateTag> {
+        return apiService?.READ_TAGE(username, serial)!!
+    }
+
     fun myProfile(): Observable<ResponseMyProfile> {
         return apiService?.MY_PROFILE()!!
     }
 
     fun directOnOff(
-            isToggleStatus: Boolean,
-            type: Int
+        isToggleStatus: Boolean,
+        type: Int
     ): Observable<ResponseDirectOnOff> {
         return apiService?.DIRECT_ON_OFF(isToggleStatus, type)!!
     }

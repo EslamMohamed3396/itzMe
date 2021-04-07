@@ -115,7 +115,6 @@
                     android:layout_marginTop="16dp"
                     android:elevation="@dimen/radius_8"
                     android:src="@drawable/user_img"
-
                     app:imageLoadUrl="@{myProfile.imageUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -202,8 +201,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
-                android:thumb="@drawable/profile_thumb_selector"
                 android:checked="@{!isPrivate}"
+                android:thumb="@drawable/profile_thumb_selector"
                 app:layout_constraintBottom_toBottomOf="@+id/textView5"
                 app:layout_constraintEnd_toEndOf="@+id/bio_inputLayout"
                 app:layout_constraintHorizontal_bias="1.0"

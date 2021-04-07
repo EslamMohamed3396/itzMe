@@ -84,6 +84,7 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                     binding?.confirmPasswordInputLayout!!
             )
         }
+
     }
 
     //endregion

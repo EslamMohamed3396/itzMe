@@ -39,6 +39,13 @@
             app:exitAnim="@anim/anim_slide_out_left"
             app:popUpTo="@id/joinNowFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_joinNowFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/joinNowFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -158,6 +165,11 @@
             app:destination="@id/howToUseFragment"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_readItzMeFragment"
+            app:destination="@id/readItzMeFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -200,7 +212,13 @@
     <fragment
         android:id="@+id/contactFragment"
         android:name="com.itzme.ui.fragment.contacts.ContactFragment"
-        android:label="ContactFragment" />
+        android:label="ContactFragment">
+        <action
+            android:id="@+id/action_contactFragment_to_contactProfileFragment"
+            app:destination="@id/contactProfileFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+    </fragment>
     <fragment
         android:id="@+id/myQrCodeFragment"
         android:name="com.itzme.ui.fragment.myQrCode.MyQrCodeFragment"
@@ -268,6 +286,43 @@
     <fragment
         android:id="@+id/howToUseFragment"
         android:name="com.itzme.ui.fragment.howToUse.HowToUseFragment"
-        android:label="HowToUseFragment" />
+        android:label="HowToUseFragment">
+        <action
+            android:id="@+id/action_howToUseFragment_to_readyToScanSheet"
+            app:destination="@id/readyToScanSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+    </fragment>
+    <dialog
+        android:id="@+id/readyToScanSheet"
+        android:name="com.itzme.ui.fragment.readItzMe.ReadyToScanSheet"
+        android:label="ReadyToScanSheet">
+        <action
+            android:id="@+id/action_readyToScanSheet_to_contactFragment"
+            app:destination="@id/contactFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <argument
+            android:name="state_nfc_args"
+            app:argType="com.itzme.data.models.stateNfc.StateNFC" />
+    </dialog>
+    <fragment
+        android:id="@+id/readItzMeFragment"
+        android:name="com.itzme.ui.fragment.readItzMe.ReadItzMeFragment"
+        android:label="ReadItzMeFragment">
+        <action
+            android:id="@+id/action_readItzMeFragment_to_readyToScanSheet"
+            app:destination="@id/readyToScanSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactProfileFragment"
+        android:name="com.itzme.ui.fragment.contactProfile.ContactProfileFragment"
+        android:label="ContactProfileFragment">
+        <argument
+            android:name="contact_id_args"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

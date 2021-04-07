@@ -11,7 +11,6 @@ import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.itzme.R
@@ -56,7 +55,7 @@ class NotificationService : FirebaseMessagingService() {
             messageBody: String?,
             title: String?
     ) {
-        val GROUP_KEY = "com.dayarah"
+        val GROUP_KEY = "com.itzme"
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -67,7 +66,6 @@ class NotificationService : FirebaseMessagingService() {
                 this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         )
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
 
         startActivity(intent)
         val channelId = getString(R.string.default_notification_channel_id)

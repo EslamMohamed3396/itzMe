@@ -1,7 +1,5 @@
 package com.itzme.utilits
 
-import android.util.Patterns
-import android.webkit.URLUtil
 import com.google.android.material.textfield.TextInputLayout
 import com.itzme.R
 import java.util.*
@@ -18,27 +16,31 @@ object EditTextValidiation {
         val matcherEmail: Matcher =
             Pattern.compile(validEmail)
                 .matcher(textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT))
+
         return if (matcherEmail.matches()) {
             textInputLayout.error = null
             true
         } else {
             textInputLayout.error =
-                    textInputLayout.context.resources.getString(R.string.invalidemail)
+                textInputLayout.context.resources.getString(R.string.invalidemail)
             textInputLayout.editText?.requestFocus()
             false
         }
     }
 
     fun isValidUrl(textInputLayout: TextInputLayout): Boolean {
+        val validUrl =
+            "(https?:0//(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"
+        val matcherUrl: Matcher =
+            Pattern.compile(validUrl)
+                .matcher(textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT))
 
-        val validUrl = textInputLayout.editText?.text.toString()
-
-        return if (URLUtil.isValidUrl(validUrl) && Patterns.WEB_URL.matcher(validUrl).matches()) {
+        return if (matcherUrl.matches()) {
             textInputLayout.error = null
             true
         } else {
             textInputLayout.error =
-                    textInputLayout.context.resources.getString(R.string.invalid_link)
+                textInputLayout.context.resources.getString(R.string.invalid_link)
             textInputLayout.editText?.requestFocus()
             false
         }
@@ -86,7 +88,8 @@ object EditTextValidiation {
     fun validUserName(
         textInputLayout: TextInputLayout
     ): Boolean {
-        val validName = "^(?![ .]*$)[\\p{L} .]*$"
+        //   val validName = "^(?![ .]*$)[\d\\p{L} .]*$ \\w"
+        val validName = "^(?![ .]*$)[\\w\\d\\p{L} .]*$"
 
         val mName = textInputLayout.editText?.text.toString().trim().toLowerCase(Locale.ROOT)
         val matcherName: Matcher = Pattern.compile(validName).matcher(mName)
@@ -106,7 +109,7 @@ object EditTextValidiation {
     fun validName(
             textInputLayout: TextInputLayout
     ): Boolean {
-        val validName = "^(?![ .]*$)[\\p{L} .]*$"
+        val validName = "^(?![ .]*$)[\\w\\d\\p{L} .]*$"
 
         val mName = textInputLayout.editText?.text.toString().trim().toLowerCase(Locale.ROOT)
         val matcherName: Matcher = Pattern.compile(validName).matcher(mName)

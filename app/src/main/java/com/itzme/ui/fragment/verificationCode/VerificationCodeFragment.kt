@@ -1,5 +1,6 @@
 package com.itzme.ui.fragment.verificationCode
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.textfield.TextInputLayout
 import com.itzme.R
 import com.itzme.data.models.enumVerfications.Verfication
 import com.itzme.databinding.FragmentVerificationCodeBinding
@@ -68,6 +70,45 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
     //endregion
 
 
+    //region change color
+
+    private fun changeColor(
+        previosTextInputLayout: TextInputLayout?,
+        nextTextInputLayout: TextInputLayout?
+    ) {
+        previosTextInputLayout?.setBoxBackgroundColorStateList(
+            ColorStateList.valueOf(
+                requireContext().getColor(
+                    R.color.gray
+                )
+            )
+        )
+        previosTextInputLayout?.editText?.setTextColor(
+            ColorStateList.valueOf(
+                requireContext().getColor(
+                    R.color.black
+                )
+            )
+        )
+        nextTextInputLayout?.setBoxBackgroundColorStateList(
+            ColorStateList.valueOf(
+                requireContext().getColor(
+                    R.color.dark_blue
+                )
+            )
+        )
+        nextTextInputLayout?.editText?.setTextColor(
+            ColorStateList.valueOf(
+                requireContext().getColor(
+                    R.color.white
+                )
+            )
+        )
+    }
+
+
+    //endregion
+
     //region check
 
     private fun checkData(code: String): Boolean {
@@ -84,14 +125,21 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
                 val edtChar: String =
-                        binding?.ConfirmCodeOneInputLayout?.editText?.text.toString()
-
+                    binding?.ConfirmCodeOneInputLayout?.editText?.text.toString()
                 if (edtChar.length == 1) {
                     currentCode.append(edtChar)
+                    changeColor(
+                        binding?.ConfirmCodeOneInputLayout,
+                        binding?.ConfirmCodeTwoInputLayout
+                    )
 
                     binding?.ConfirmCodeTwoInputLayout?.editText?.requestFocus()
                 } else if (edtChar.length == 0) {
                     currentCode.deleteCharAt(0)
+                    changeColor(
+                        binding?.ConfirmCodeTwoInputLayout,
+                        binding?.ConfirmCodeOneInputLayout
+                    )
                     binding?.ConfirmCodeOneInputLayout?.editText?.requestFocus()
                 }
             }
@@ -103,28 +151,44 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
                 val edtChar: String =
-                        binding?.ConfirmCodeTwoInputLayout?.editText?.text.toString()
+                    binding?.ConfirmCodeTwoInputLayout?.editText?.text.toString()
                 if (edtChar.length == 1) {
                     currentCode.append(edtChar)
+                    changeColor(
+                        binding?.ConfirmCodeTwoInputLayout,
+                        binding?.ConfirmCodeThreeInputLayout
+                    )
                     binding?.ConfirmCodeThreeInputLayout?.editText?.requestFocus()
                 } else if (edtChar.length == 0) {
                     currentCode.deleteCharAt(1)
+                    changeColor(
+                        binding?.ConfirmCodeTwoInputLayout,
+                        binding?.ConfirmCodeOneInputLayout
+                    )
                     binding?.ConfirmCodeOneInputLayout?.editText?.requestFocus()
                 }
             }
         })
         binding?.ConfirmCodeThreeInputLayout?.editText?.addTextChangedListener(object :
-                TextWatcher {
+            TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
                 val edtChar: String =
-                        binding?.ConfirmCodeThreeInputLayout?.editText?.text.toString()
+                    binding?.ConfirmCodeThreeInputLayout?.editText?.text.toString()
                 if (edtChar.length == 1) {
                     currentCode.append(edtChar)
+                    changeColor(
+                        binding?.ConfirmCodeThreeInputLayout,
+                        binding?.ConfirmCodeFourInputLayout
+                    )
                     binding?.ConfirmCodeFourInputLayout?.editText?.requestFocus()
                 } else if (edtChar.length == 0) {
                     currentCode.deleteCharAt(2)
+                    changeColor(
+                        binding?.ConfirmCodeThreeInputLayout,
+                        binding?.ConfirmCodeTwoInputLayout
+                    )
                     binding?.ConfirmCodeTwoInputLayout?.editText?.requestFocus()
                 }
             }
@@ -134,12 +198,16 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
                 val edtChar: String =
-                        binding?.ConfirmCodeFourInputLayout?.editText?.text.toString()
+                    binding?.ConfirmCodeFourInputLayout?.editText?.text.toString()
                 if (edtChar.length == 1) {
                     currentCode.append(edtChar)
                     binding?.ConfirmCodeFourInputLayout?.editText?.requestFocus()
                 } else if (edtChar.length == 0) {
                     currentCode.deleteCharAt(2)
+                    changeColor(
+                        binding?.ConfirmCodeFourInputLayout,
+                        binding?.ConfirmCodeThreeInputLayout
+                    )
                     binding?.ConfirmCodeThreeInputLayout?.editText?.requestFocus()
                 }
             }
@@ -260,7 +328,12 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    clearText()
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().resources.getString(R.string.resend_code_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    // clearText()
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()
@@ -281,11 +354,11 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
 
     //region Reset Data
     private fun clearText() {
-        currentCode.clear()
-        binding?.ConfirmCodeOneInputLayout?.editText?.setText("")
-        binding?.ConfirmCodeTwoInputLayout?.editText?.setText("")
-        binding?.ConfirmCodeThreeInputLayout?.editText?.setText("")
-        binding?.ConfirmCodeFourInputLayout?.editText?.setText("")
+        //   currentCode.clear()
+//        binding?.ConfirmCodeOneInputLayout?.editText?.text?.clear()
+//        binding?.ConfirmCodeTwoInputLayout?.editText?.text?.clear()
+//        binding?.ConfirmCodeThreeInputLayout?.editText?.text?.clear()
+//        binding?.ConfirmCodeFourInputLayout?.editText?.text?.clear()
         binding?.ConfirmCodeOneInputLayout?.editText?.requestFocus()
     }
     //endregion
