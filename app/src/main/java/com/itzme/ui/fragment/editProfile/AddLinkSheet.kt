@@ -58,6 +58,9 @@ class AddLinkSheet : BottomSheetDialogFragment() {
             38, 39, 40, 41 -> {
                 binding.changeNameInputLayout.visibility = View.VISIBLE
             }
+            11, 12, 21 -> {
+                binding.btnOpen.visibility = View.GONE
+            }
         }
     }
 
@@ -73,9 +76,22 @@ class AddLinkSheet : BottomSheetDialogFragment() {
             dismiss()
         }
         binding.saveBtn.setOnClickListener {
-            if (checkData()) {
-                initEditLinkViewModel()
+            when (args.addLinkArgs.linkType) {
+                21 -> {
+                    initEditLinkViewModel()
+                }
+                11, 12 -> {
+                    if (checkEmail()) {
+                        initEditLinkViewModel()
+                    }
+                }
+                else -> {
+                    if (checkData()) {
+                        initEditLinkViewModel()
+                    }
+                }
             }
+
         }
         binding.btnOpen.setOnClickListener {
             if (checkData()) {
@@ -89,6 +105,10 @@ class AddLinkSheet : BottomSheetDialogFragment() {
     //region check Data
     private fun checkData(): Boolean {
         return CheckValidData.checkUrl(binding.linkInputLayout)
+    }
+
+    private fun checkEmail(): Boolean {
+        return CheckValidData.checkEmail(binding.linkInputLayout)
     }
 
     //endregion

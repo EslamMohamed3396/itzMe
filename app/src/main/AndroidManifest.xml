@@ -23,6 +23,8 @@
 
     <!--nfc -->
     <uses-permission android:name="android.permission.NFC" />
+    <!--phone -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-feature
         android:name="android.hardware.nfc"
@@ -58,6 +60,8 @@
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/tech_list" />
+
+            <nav-graph android:value="@navigation/nav_graph" />
 
         </activity>
 

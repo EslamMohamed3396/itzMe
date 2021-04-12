@@ -197,7 +197,7 @@ object Client {
         return apiService?.VALIDATE_TAGE(serial)!!
     }
 
-    fun readTag(username: String, serial: String): Observable<ResponseValidateTag> {
+    fun readTag(username: String?, serial: String?): Observable<ResponseValidateTag> {
         return apiService?.READ_TAGE(username, serial)!!
     }
 

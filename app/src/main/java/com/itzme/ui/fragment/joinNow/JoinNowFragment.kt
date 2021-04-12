@@ -113,6 +113,13 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                                     Constant.USER_DATA_KEY,
                                     response.data?.data!!
                             )
+                    PreferencesUtils(App.getContext()).getInstance()
+                            ?.putBoolean(
+                                    Constant.IS_USER_LOGIN,
+                                    true
+                            )
+                    val action = JoinNowFragmentDirections.actionJoinNowFragmentToMyProfileFragment()
+                    findNavController().navigate(action)
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()
@@ -122,8 +129,12 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                                     requireContext().resources.getString(R.string.name_exist)
                         }
                         20 -> {
-                            binding?.emailInputLayout?.error =
+                            binding?.userNameInputLayout?.error =
                                     requireContext().resources.getString(R.string.invalid_name)
+                        }
+                        3, 4, 5 -> {
+                            binding?.emailInputLayout?.error =
+                                    requireContext().resources.getString(R.string.email_exist)
                         }
                     }
                 }
@@ -140,10 +151,13 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
         viewModelCheckName.checkName(name).observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Loading -> {
+                    binding?.progressBar?.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
+                    binding?.progressBar?.visibility = View.GONE
                 }
                 is Resource.Error -> {
+                    binding?.progressBar?.visibility = View.GONE
                     when (response.code) {
                         19 -> {
                             binding?.userNameInputLayout?.error =

@@ -24,6 +24,7 @@ class ActiveProductFragment : BaseFragment<ActiveProductFragmentBinding>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        binding?.toolbar?.titleTv?.text = requireContext().resources.getString(R.string.active_product)
         initClick()
         bindData()
     }
@@ -32,6 +33,11 @@ class ActiveProductFragment : BaseFragment<ActiveProductFragmentBinding>() {
     private fun initClick() {
         binding?.toolbar?.toolbarImg?.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        binding?.joinNowBtn?.setOnClickListener {
+            val action = ActiveProductFragmentDirections.actionActiveProductFragmentToHowToUseFragment()
+            findNavController().navigate(action)
         }
     }
     //endregion

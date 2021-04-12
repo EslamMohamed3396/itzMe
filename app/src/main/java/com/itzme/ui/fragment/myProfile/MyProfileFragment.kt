@@ -43,8 +43,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     private var myLink: MyLink? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_my_profile)
 
@@ -96,10 +96,10 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     //region navigation drawer
     private fun initNavDrawer() {
         toggle = ActionBarDrawerToggle(
-            requireActivity(),
-            binding?.drawerLayout,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
+                requireActivity(),
+                binding?.drawerLayout,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
         )
         binding?.drawerLayout?.addDrawerListener(toggle)
         toggle.syncState()
@@ -121,11 +121,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         binding?.includeLayout?.menuAdapter = adapter
         val itemMenuList = ArrayList<ItemMenu>()
         itemMenuList.add(
-            ItemMenu(
-                1,
-                requireContext().resources.getString(R.string.home),
-                R.drawable.home
-            )
+                ItemMenu(
+                        1,
+                        requireContext().resources.getString(R.string.home),
+                        R.drawable.home
+                )
         )
         itemMenuList.add(ItemMenu(2, getString(R.string.my_account), R.drawable.my_contact))
         itemMenuList.add(ItemMenu(3, getString(R.string.edit_profile), R.drawable.profile_user))
@@ -162,17 +162,17 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             }
             3 -> {
                 val action =
-                    MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
+                        MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
                 findContrller(action)
             }
             4 -> {
                 val action =
-                    MyProfileFragmentDirections.actionMyProfileFragmentToActiveListFragment()
+                        MyProfileFragmentDirections.actionMyProfileFragmentToActiveListFragment()
                 findContrller(action)
             }
             5 -> {
                 val action =
-                    MyProfileFragmentDirections.actionMyProfileFragmentToReadItzMeFragment()
+                        MyProfileFragmentDirections.actionMyProfileFragmentToReadItzMeFragment()
                 findContrller(action)
             }
             6 -> {
@@ -254,23 +254,23 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     private fun initDirectOnOffViewModel() {
         viewModelDirect.directOnOff(true, myLink?.linkType!!)
-            .observe(viewLifecycleOwner, { response ->
-                when (response) {
-                    is Resource.Loading -> {
-                    }
-                    is Resource.Success -> {
-                        initMyProfileViewModel()
-                    }
-                    is Resource.Error -> {
-                        when (response.code) {
-                            13, 14 -> {
+                .observe(viewLifecycleOwner, { response ->
+                    when (response) {
+                        is Resource.Loading -> {
+                        }
+                        is Resource.Success -> {
+                            initMyProfileViewModel()
+                        }
+                        is Resource.Error -> {
+                            when (response.code) {
+                                13, 14 -> {
 
+                                }
                             }
                         }
-                    }
 
-                }
-            })
+                    }
+                })
 
     }
 
@@ -329,7 +329,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     DialogUtil.dismissDialog()
                     clearSession()
                     val action =
-                        MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
+                            MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
                     findContrller(action)
                 }
                 is Resource.Error -> {

@@ -1,5 +1,7 @@
 package com.itzme.ui.fragment.editProfile
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.itzme.R
 import com.itzme.data.models.profile.editLink.request.BodyEditLink
@@ -53,7 +58,17 @@ class AddFindMeSheet : BottomSheetDialogFragment() {
 
     //region convert image from url to bitmap encoding
     private fun convertImage(urlImage: String?) {
-        imageBitmap = ImageUtil.encodeImage(ImageUtil.getBitmapFromURL(urlImage))
+        Glide.with(this)
+                .asBitmap()
+                .load(Constant.BASE_URL_IMAGE + urlImage)
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        imageBitmap = ImageUtil.encodeImage(resource)
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                    }
+                })
     }
 
     //endregion

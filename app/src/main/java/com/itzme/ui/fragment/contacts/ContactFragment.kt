@@ -18,13 +18,11 @@ import com.itzme.utilits.Resource
 import timber.log.Timber
 
 class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Data>,
-    MyContactAdapter.ClickOnDeleteContact {
-
-
+        MyContactAdapter.ClickOnDeleteContact {
     private val myContactAdapter: MyContactAdapter by lazy { MyContactAdapter(this, this) }
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_contact)
     }
@@ -107,9 +105,9 @@ class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Da
                         }
                         else -> {
                             Toast.makeText(
-                                requireContext(),
-                                requireContext().resources.getString(R.string.error),
-                                Toast.LENGTH_SHORT
+                                    requireContext(),
+                                    requireContext().resources.getString(R.string.error),
+                                    Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
@@ -121,7 +119,7 @@ class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Da
 
     override fun clickOnItems(item: Data, postion: Int) {
         val action =
-            ContactFragmentDirections.actionContactFragmentToContactProfileFragment(item.id!!)
+                ContactFragmentDirections.actionContactFragmentToContactProfileFragment(item.id!!, null)
         findNavController().navigate(action)
     }
 

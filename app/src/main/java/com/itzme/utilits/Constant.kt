@@ -5,8 +5,8 @@ import android.Manifest
 object Constant {
 
     //region base url
-    const val BASE_URL = "http://itzme.co/api/"
-    const val BASE_URL_IMAGE = "http://itzme.co/"
+    const val BASE_URL = "https://itzmeapp.com/api/"
+    const val BASE_URL_IMAGE = "https://itzmeapp.com/"
     const val AUTHORIZATION = "Authorization"
     const val BEARER = "Bearer "
 

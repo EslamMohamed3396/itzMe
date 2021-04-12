@@ -10,14 +10,15 @@ import com.itzme.data.models.stateNfc.StateNFC
 import com.itzme.data.models.stateNfc.enmReadWriteItzME.ReadWriteNFC
 import com.itzme.databinding.FragmentReadItzMeBinding
 import com.itzme.ui.base.BaseFragment
+import timber.log.Timber
 
 
 class ReadItzMeFragment : BaseFragment<FragmentReadItzMeBinding>() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_read_itz_me)
     }
@@ -27,6 +28,7 @@ class ReadItzMeFragment : BaseFragment<FragmentReadItzMeBinding>() {
         binding?.toolbar?.titleTv?.text = requireContext().resources.getString(R.string.read_itzme)
         initClick()
         openSheet()
+        initSharedViewModel()
     }
 
     //region init click
@@ -36,8 +38,23 @@ class ReadItzMeFragment : BaseFragment<FragmentReadItzMeBinding>() {
         }
 
     }
-    //endregion
 
+    //endregion
+    //region init sharedViewModel
+
+    private fun initSharedViewModel() {
+        sharedViewModel.dismissed.observe(viewLifecycleOwner, { dismissed ->
+            if (dismissed) {
+                Timber.d("$dismissed")
+                findNavController().navigateUp()
+                val action = ReadItzMeFragmentDirections.actionReadItzMeFragmentToContactFragment()
+                findNavController().navigate(action)
+                sharedViewModel.saveDismissed(false)
+            }
+        })
+    }
+
+    //endregion
 
     //region show sheet scan me
     private fun openSheet() {

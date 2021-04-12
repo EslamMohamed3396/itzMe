@@ -9,10 +9,10 @@ import kotlinx.parcelize.Parcelize
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class ResponseValidateTag(
-    @SerializedName("ErrorCode")
-    val errorCode: Int?,
-    @SerializedName("ErrorMessage")
-    val errorMessage: String?,
-    @SerializedName("Data")
-    val `data`: String?
+        @SerializedName("ErrorCode")
+        val errorCode: Int?,
+        @SerializedName("ErrorMessage")
+        val errorMessage: String?,
+        @SerializedName("Data")
+        val `data`: Int?
 ) : Parcelable

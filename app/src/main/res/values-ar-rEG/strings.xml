@@ -97,5 +97,10 @@
     <string name="hold_an_itzme_to_the_middle_back_of_your_phone_to_scan_it">hold an itzme to the middle back of your phone to Scan It!</string>
     <string name="reading_success">Reading NFC Successfully</string>
     <string name="profile">Profile</string>
+    <string name="user_name">User name</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="already_have_an_account">Already Have An Account ?</string>
+    <string name="active_product">Active Product</string>
+    <string name="copy">Copy</string>
 
 </resources>

@@ -61,7 +61,7 @@
                 android:id="@+id/imageView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/iphone_image"
+                android:src="@drawable/how_to_user_android"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toTopOf="@+id/guideline3"
                 app:layout_constraintEnd_toEndOf="parent"

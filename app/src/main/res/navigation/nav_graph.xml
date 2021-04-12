@@ -242,6 +242,11 @@
             app:destination="@id/addPetSheet"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_addPhoneSheet"
+            app:destination="@id/addPhoneSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/fragment_close_enter" />
     </fragment>
     <dialog
         android:id="@+id/addLinkSheet"
@@ -282,7 +287,15 @@
     <fragment
         android:id="@+id/activeProductFragment"
         android:name="com.itzme.ui.fragment.activeProduct.ActiveProductFragment"
-        android:label="ActiveProductFragment" />
+        android:label="ActiveProductFragment">
+        <action
+            android:id="@+id/action_activeProductFragment_to_howToUseFragment"
+            app:destination="@id/howToUseFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/activeProductFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/howToUseFragment"
         android:name="com.itzme.ui.fragment.howToUse.HowToUseFragment"
@@ -297,11 +310,7 @@
         android:id="@+id/readyToScanSheet"
         android:name="com.itzme.ui.fragment.readItzMe.ReadyToScanSheet"
         android:label="ReadyToScanSheet">
-        <action
-            android:id="@+id/action_readyToScanSheet_to_contactFragment"
-            app:destination="@id/contactFragment"
-            app:enterAnim="@anim/anim_slide_in_left"
-            app:exitAnim="@anim/anim_slide_out_left" />
+
         <argument
             android:name="state_nfc_args"
             app:argType="com.itzme.data.models.stateNfc.StateNFC" />
@@ -310,6 +319,13 @@
         android:id="@+id/readItzMeFragment"
         android:name="com.itzme.ui.fragment.readItzMe.ReadItzMeFragment"
         android:label="ReadItzMeFragment">
+        <action
+            android:id="@+id/action_readItzMeFragment_to_contactFragment"
+            app:destination="@id/contactFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/readItzMeFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_readItzMeFragment_to_readyToScanSheet"
             app:destination="@id/readyToScanSheet"
@@ -322,7 +338,70 @@
         android:label="ContactProfileFragment">
         <argument
             android:name="contact_id_args"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_contactProfileFragment_to_petSheetContact"
+            app:destination="@id/petSheetContact"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_contactProfileFragment_to_findMeSheetContact"
+            app:destination="@id/findMeSheetContact"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_contactProfileFragment_to_addLinkSheetContact"
+            app:destination="@id/addLinkSheetContact"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="https://itzmeapp.com/u/{user_name_args}" />
+        <argument
+            android:name="user_name_args"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_contactProfileFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/contactProfileFragment"
+            app:popUpToInclusive="true" />
     </fragment>
+    <dialog
+        android:id="@+id/petSheetContact"
+        android:name="com.itzme.ui.fragment.contacts.PetSheetContact"
+        android:label="PetSheetContact">
+        <argument
+            android:name="pet_contact_args"
+            app:argType="com.itzme.data.models.contact.contactProfile.response.MyLink" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/findMeSheetContact"
+        android:name="com.itzme.ui.fragment.contacts.FindMeSheetContact"
+        android:label="FindMeSheetContact">
+        <argument
+            android:name="find_me_contact_args"
+            app:argType="com.itzme.data.models.contact.contactProfile.response.MyLink" />
+    </dialog>
+    <dialog
+        android:id="@+id/addPhoneSheet"
+        android:name="com.itzme.ui.fragment.editProfile.AddPhoneSheet"
+        android:label="AddPhoneSheet">
+        <argument
+            android:name="add_link_args"
+            app:argType="com.itzme.data.models.profile.myProfile.response.Link" />
+    </dialog>
+    <dialog
+        android:id="@+id/addLinkSheetContact"
+        android:name="com.itzme.ui.fragment.contactProfile.AddLinkSheetContact"
+        android:label="AddLinkSheetContact">
+        <argument
+            android:name="link_contact_profile"
+            app:argType="com.itzme.data.models.contact.contactProfile.response.MyLink" />
+    </dialog>
 
 </navigation>

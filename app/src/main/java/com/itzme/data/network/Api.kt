@@ -99,8 +99,8 @@ interface Api {
 
     @GET(Constant.READ_TAGE)
     fun READ_TAGE(
-        @Query("Username") username: String,
-        @Query("Serial") serial: String
+            @Query("Username") username: String?,
+            @Query("Serial") serial: String?
     ): Observable<ResponseValidateTag>
 
 

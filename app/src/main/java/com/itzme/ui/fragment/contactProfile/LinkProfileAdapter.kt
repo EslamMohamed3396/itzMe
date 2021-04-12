@@ -10,9 +10,10 @@ import com.itzme.data.models.contact.contactProfile.response.MyLink
 import com.itzme.databinding.ItemLinkProfileBinding
 import com.itzme.ui.base.BaseViewHolder
 import com.itzme.ui.base.DiffCallback
+import com.itzme.ui.base.IClickOnItems
 
-class LinkProfileAdapter :
-    RecyclerView.Adapter<BaseViewHolder<*>>() {
+class LinkProfileAdapter(val iClickOnItems: IClickOnItems<MyLink>) :
+        RecyclerView.Adapter<BaseViewHolder<*>>() {
     private val differ = AsyncListDiffer(this, DiffCallback<MyLink>())
 
 
@@ -22,8 +23,8 @@ class LinkProfileAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemLinkProfileBinding: ItemLinkProfileBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            R.layout.item_link_profile, parent, false
+                LayoutInflater.from(parent.context),
+                R.layout.item_link_profile, parent, false
         )
         return MyLinkAdapterViewHolder(itemLinkProfileBinding)
     }
@@ -38,12 +39,13 @@ class LinkProfileAdapter :
     }
 
     inner class MyLinkAdapterViewHolder(val binding: ItemLinkProfileBinding) :
-        BaseViewHolder<MyLink>(binding) {
+            BaseViewHolder<MyLink>(binding) {
         override fun bind(item: MyLink) {
             binding.myLink = item
             binding.executePendingBindings()
-
-
+            binding.root.setOnClickListener {
+                iClickOnItems.clickOnItems(item, adapterPosition)
+            }
         }
     }
 }

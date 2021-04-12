@@ -13,7 +13,6 @@ import com.itzme.data.models.stateNfc.enmReadWriteItzME.ReadWriteNFC
 import com.itzme.data.models.tags.howToUse.response.HowToUse
 import com.itzme.databinding.FragmentHowToUseBinding
 import com.itzme.ui.base.BaseFragment
-import timber.log.Timber
 
 class HowToUseFragment : BaseFragment<FragmentHowToUseBinding>() {
 
@@ -37,10 +36,6 @@ class HowToUseFragment : BaseFragment<FragmentHowToUseBinding>() {
         setUpViewpager()
     }
 
-
-    fun doSomthing(tagId: String) {
-        Timber.d(tagId)
-    }
 
     //region init shared view model
 

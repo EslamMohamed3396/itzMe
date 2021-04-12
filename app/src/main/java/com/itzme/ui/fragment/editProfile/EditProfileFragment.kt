@@ -1,5 +1,7 @@
 package com.itzme.ui.fragment.editProfile
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,9 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.itzme.R
 import com.itzme.data.models.profile.editLink.request.BodyEditLink
 import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
@@ -74,8 +79,22 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
     //region convert image from url to bitmap encoding
     private fun convertImage(urlImage: String?) {
-        imageBitmap = ImageUtil.encodeImage(ImageUtil.getBitmapFromURL(urlImage))
-        Timber.d(imageBitmap)
+        Glide.with(this)
+                .asBitmap()
+                .load(Constant.BASE_URL_IMAGE + urlImage)
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        imageBitmap = ImageUtil.encodeImage(resource)
+                        Timber.d(imageBitmap)
+
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                    }
+                })
+
+//        imageBitmap = ImageUtil.encodeImage(ImageUtil.getBitmapFromURL(urlImage))
+//        Timber.d(imageBitmap)
     }
 
     //endregion
@@ -269,9 +288,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     //region click on link
     override fun clickOnItems(item: Link, postion: Int) {
         when (item.linkType) {
-            in 0..41 -> {
+            in 0..12, in 21..41 -> {
                 val action =
                         EditProfileFragmentDirections.actionEditProfileFragmentToAddLinkSheet(item)
+                findNavController().navigate(action)
+            }
+            in 13..20 -> {
+                val action =
+                        EditProfileFragmentDirections.actionEditProfileFragmentToAddPhoneSheet(item)
                 findNavController().navigate(action)
             }
         }
