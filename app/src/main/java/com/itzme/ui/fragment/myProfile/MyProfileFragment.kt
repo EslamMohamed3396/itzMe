@@ -24,6 +24,7 @@ import com.itzme.ui.fragment.myProfile.adapter.ItemMenuAdapter
 import com.itzme.ui.fragment.myProfile.adapter.MyLinkAdapter
 import com.itzme.ui.fragment.myProfile.viewModels.*
 import com.itzme.utilits.*
+import timber.log.Timber
 
 
 class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItems<ItemMenu> {
@@ -348,6 +349,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     }
 
     private fun bodyAddToken(): BodyAddToken {
+        Timber.d(App.getToken())
         return BodyAddToken(pushToken = App.getToken())
     }
 

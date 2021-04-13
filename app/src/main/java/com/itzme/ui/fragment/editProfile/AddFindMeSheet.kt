@@ -80,8 +80,9 @@ class AddFindMeSheet : BottomSheetDialogFragment() {
                 .setOnPickResult {
                     if (it.error == null) {
                         imageBitmap = ImageUtil.encodeImage(it.bitmap)!!
-                        binding.imProfile.setImageBitmap(it.bitmap)
+                        binding.profileImage.setImageBitmap(it.bitmap)
                         binding.btnImage.visibility = View.GONE
+                        binding.btnClose.visibility = View.VISIBLE
                     } else {
                         Toast.makeText(requireContext(), it.error.message, Toast.LENGTH_LONG).show()
                     }
@@ -107,12 +108,20 @@ class AddFindMeSheet : BottomSheetDialogFragment() {
         binding.handle.setOnClickListener {
             dismiss()
         }
-        binding.imProfile.setOnClickListener {
+
+        binding.imLayout.setOnClickListener {
             pickImage()
         }
         binding.btnImage.setOnClickListener {
             pickImage()
         }
+        binding.btnClose.setOnClickListener {
+            imageBitmap = null
+            binding.btnImage.visibility = View.VISIBLE
+            binding.btnClose.visibility = View.GONE
+            binding.profileImage.setImageResource(R.drawable.user_img)
+        }
+
         binding.saveBtn.setOnClickListener {
             if (checkData()) {
                 initEditLinkViewModel(1)

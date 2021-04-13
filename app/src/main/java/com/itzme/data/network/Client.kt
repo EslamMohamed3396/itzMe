@@ -113,13 +113,13 @@ object Client {
                 override fun onError(e: Throwable) {
 
                     if (e is HttpException) {
-                        val errorBody: String = e.response()?.errorBody()?.string()!!
-                        val errorResponse: ErrorResponse =
-                            Gson().fromJson(errorBody, ErrorResponse::class.java)
+                        val errorBody: String? = e.response()?.errorBody()?.string()
+                        val errorResponse: ErrorResponse? =
+                                Gson().fromJson(errorBody, ErrorResponse::class.java)
                         callBackNetwork.onFailed(
-                            e.message(),
-                            errorResponse.errorCode ?: e.code(),
-                            errorResponse.errorMessage
+                                e.message(),
+                                errorResponse?.errorCode ?: e.code(),
+                                errorResponse?.errorMessage
                         )
                     }
                 }

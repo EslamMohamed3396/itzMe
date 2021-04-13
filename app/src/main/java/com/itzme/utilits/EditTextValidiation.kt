@@ -9,41 +9,46 @@ import java.util.regex.Pattern
 
 object EditTextValidiation {
     fun validEmail(
-        textInputLayout: TextInputLayout
+            textInputLayout: TextInputLayout
     ): Boolean {
         val validEmail =
-            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+                "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
         val matcherEmail: Matcher =
-            Pattern.compile(validEmail)
-                .matcher(textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT))
+                Pattern.compile(validEmail)
+                        .matcher(textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT))
 
         return if (matcherEmail.matches()) {
             textInputLayout.error = null
             true
         } else {
             textInputLayout.error =
-                textInputLayout.context.resources.getString(R.string.invalidemail)
+                    textInputLayout.context.resources.getString(R.string.invalidemail)
             textInputLayout.editText?.requestFocus()
             false
         }
     }
 
     fun isValidUrl(textInputLayout: TextInputLayout): Boolean {
-        val validUrl =
-            "(https?:0//(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"
-        val matcherUrl: Matcher =
-            Pattern.compile(validUrl)
-                .matcher(textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT))
-
-        return if (matcherUrl.matches()) {
-            textInputLayout.error = null
-            true
+        if (textInputLayout.editText?.text.toString().isEmpty()) {
+            return true
         } else {
-            textInputLayout.error =
-                textInputLayout.context.resources.getString(R.string.invalid_link)
-            textInputLayout.editText?.requestFocus()
-            false
+            val validUrl =
+                    "(https?:0//(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})"
+            val matcherUrl: Matcher =
+                    Pattern.compile(validUrl)
+                            .matcher(textInputLayout.editText?.text.toString().toLowerCase(Locale.ROOT))
+
+            return if (matcherUrl.matches()) {
+                textInputLayout.error = null
+                true
+            } else {
+                textInputLayout.error =
+                        textInputLayout.context.resources.getString(R.string.invalid_link)
+                textInputLayout.editText?.requestFocus()
+                false
+            }
         }
+
 
     }
 
@@ -63,19 +68,19 @@ object EditTextValidiation {
             true
         } else {
             textInputLayout.error =
-                textInputLayout.context.resources.getString(R.string.invalidPassword)
+                    textInputLayout.context.resources.getString(R.string.invalidPassword)
             textInputLayout.editText?.requestFocus()
             false
         }
     }
 
     fun validConfirmPassword(
-        Password: TextInputLayout,
-        confirmInputLayout: TextInputLayout
+            Password: TextInputLayout,
+            confirmInputLayout: TextInputLayout
     ): Boolean {
         return if (confirmInputLayout.editText?.text.toString() != Password.editText?.text.toString()) {
             confirmInputLayout.error =
-                confirmInputLayout.context.getString(R.string.password_match)
+                    confirmInputLayout.context.getString(R.string.password_match)
             confirmInputLayout.editText?.requestFocus()
             false
         } else {
@@ -86,15 +91,15 @@ object EditTextValidiation {
 
 
     fun validUserName(
-        textInputLayout: TextInputLayout
+            textInputLayout: TextInputLayout
     ): Boolean {
-        //   val validName = "^(?![ .]*$)[\d\\p{L} .]*$ \\w"
-        val validName = "^(?![ .]*$)[\\w\\d\\p{L} .]*$"
+//        val validName = "^(?![ .]*$)[\\w\\d\\p{L} .]*$"
+        val validName = "^[_A-Za-z0-9]{4,20}$"
 
         val mName = textInputLayout.editText?.text.toString().trim().toLowerCase(Locale.ROOT)
         val matcherName: Matcher = Pattern.compile(validName).matcher(mName)
         return if (matcherName.matches() && textInputLayout.editText?.text.toString()
-                .trim().isNotEmpty()
+                        .trim().isNotEmpty()
         ) {
             textInputLayout.error = null
             true

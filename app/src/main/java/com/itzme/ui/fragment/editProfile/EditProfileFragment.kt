@@ -102,7 +102,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     //region check data
     private fun checkData(): Boolean {
         return EditTextValidiation.validUserName(binding?.edName!!)
-                && EditTextValidiation.validUserName(binding?.bioInputLayout!!)
     }
 
 
@@ -110,9 +109,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         binding?.edName?.editText?.doOnTextChanged { _, _, _, _ ->
             EditTextValidiation.validUserName(binding?.edName!!)
         }
-        binding?.bioInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
-            EditTextValidiation.validUserName(binding?.bioInputLayout!!)
-        }
+
 
     }
     //endregion
@@ -125,6 +122,12 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         }
         binding?.btnImage?.setOnClickListener {
             pickImage()
+        }
+        binding?.btnClose?.setOnClickListener {
+            imageBitmap = null
+            binding?.btnImage?.visibility = View.VISIBLE
+            binding?.btnClose?.visibility = View.GONE
+            binding?.profileImage?.setImageResource(R.drawable.user_img)
         }
 
         binding?.switchMaterial?.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -170,6 +173,13 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     EditProfileFragmentDirections.actionEditProfileFragmentToAddFindMeSheet(findMeData)
             findNavController().navigate(action)
         }
+
+        binding?.edName?.editText?.setOnClickListener {
+            binding?.edName?.editText?.isCursorVisible = true
+        }
+        binding?.bioInputLayout?.editText?.setOnClickListener {
+            binding?.bioInputLayout?.editText?.isCursorVisible = true
+        }
     }
 
     //endregion
@@ -182,6 +192,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                         imageBitmap = ImageUtil.encodeImage(it.bitmap)!!
                         binding?.profileImage?.setImageBitmap(it.bitmap)
                         binding?.btnImage?.visibility = View.GONE
+                        binding?.btnClose?.visibility = View.VISIBLE
                     } else {
 
                         Toast.makeText(requireContext(), it.error.message, Toast.LENGTH_LONG).show()
@@ -217,6 +228,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
+                    myLinkAdapter.submitList(null)
                     bindMyProfile(response.data!!)
                     if (!response.data.imageUrl.isNullOrEmpty()) {
                         convertImage(response.data.imageUrl)
@@ -226,8 +238,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     petData = response.data.petData
                     findMeData = response.data
                     if (response.data.myLinks?.isNotEmpty()!!) {
+                        binding?.recyclerView3?.visibility = View.VISIBLE
+                        binding?.tvEmpty?.visibility = View.GONE
                         myLinkAdapter.submitList(response.data.myLinks)
                     } else {
+                        binding?.recyclerView3?.visibility = View.INVISIBLE
                         binding?.tvEmpty?.visibility = View.VISIBLE
                     }
                 }
@@ -254,8 +269,9 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    binding?.edName?.isFocusable = false
-                    binding?.bioInputLayout?.isFocusable = false
+                    Toast.makeText(requireContext(), requireContext().resources.getString(R.string.profile_updated), Toast.LENGTH_SHORT).show()
+                    binding?.edName?.editText?.isCursorVisible = false
+                    binding?.bioInputLayout?.editText?.isCursorVisible = false
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()

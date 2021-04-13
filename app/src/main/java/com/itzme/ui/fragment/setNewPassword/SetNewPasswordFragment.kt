@@ -102,10 +102,10 @@ class SetNewPasswordFragment : BaseFragment<FragmentSetNewPasswordBinding>() {
                     when (response.code) {
                         14 -> {
                             binding?.oldPasswordInputLayout?.error =
-                                    requireContext().resources.getString(R.string.invalidPassword)
+                                    requireContext().resources.getString(R.string.invalid_old_password)
                         }
                         else -> {
-
+                            Toast.makeText(requireContext(), response.data?.errorMessage!!, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

@@ -31,29 +31,49 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_image"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/im_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:backgroundTint="#1C93C1"
-                app:fabSize="mini"
-                app:layout_constraintBottom_toBottomOf="@+id/im_profile"
-                app:layout_constraintEnd_toEndOf="@+id/im_profile"
-                app:layout_constraintTop_toBottomOf="@+id/im_profile"
-                app:maxImageSize="16dp"
-                app:srcCompat="@drawable/ic_camera"
-                app:tint="@color/white" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/im_profile"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/ic_user"
-                app:imageLoadUrl="@{findMeData.imageUrl}"
+                android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/handle" />
+                app:layout_constraintTop_toBottomOf="@+id/handle">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="95dp"
+                    android:layout_height="95dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/user_img"
+                    app:imageLoadUrl="@{findMeData.imageUrl}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                    app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_image"
+                    app:srcCompat="@drawable/ic_camera_edit" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/btn_close"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_baseline_close_24"
+                    app:civ_circle_background_color="#1c93c1"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                    app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <TextView
                 android:id="@+id/textView21"
@@ -63,7 +83,7 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_image" />
+                app:layout_constraintTop_toBottomOf="@+id/im_layout" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name_inputLayout"
@@ -85,11 +105,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:textCursorDrawable="@color/black"
                     android:cursorVisible="true"
+                    android:imeOptions="actionNext"
                     android:inputType="textWebEmailAddress"
                     android:text="@{findMeData.findMeData.name}"
+                    android:textCursorDrawable="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
@@ -103,8 +123,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="@string/address"
-                app:hintTextColor="@color/black"
                 app:errorEnabled="true"
+                app:hintTextColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,11 +134,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:textCursorDrawable="@color/black"
                     android:cursorVisible="true"
+                    android:imeOptions="actionNext"
                     android:inputType="textPostalAddress"
                     android:text="@{findMeData.findMeData.address}"
+                    android:textCursorDrawable="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
@@ -144,11 +164,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:textCursorDrawable="@color/black"
                     android:cursorVisible="true"
+                    android:imeOptions="actionNext"
                     android:inputType="textWebEmailAddress"
                     android:text="@{findMeData.findMeData.bloodType}"
+                    android:textCursorDrawable="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
@@ -174,11 +194,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:cursorVisible="true"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:textCursorDrawable="@color/black"
-                    android:cursorVisible="true"
                     android:text="@{findMeData.findMeData.bloodType}"
+                    android:textCursorDrawable="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
@@ -218,11 +238,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:cursorVisible="true"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName"
-                    android:textCursorDrawable="@color/black"
-                    android:cursorVisible="true"
                     android:text="@{findMeData.findMeData.emergencyContactName}"
+                    android:textCursorDrawable="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
@@ -247,11 +267,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:cursorVisible="true"
                     android:imeOptions="actionNext"
                     android:inputType="phone"
-                    android:textCursorDrawable="@color/black"
-                    android:cursorVisible="true"
                     android:text="@{findMeData.findMeData.emergencyContactPhone}"
+                    android:textCursorDrawable="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
@@ -279,7 +299,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
-                app:isActiveForButton="@{findMeData.findMeData.isActive}"
                 android:fontFamily="@font/cairo_bold"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
@@ -287,6 +306,7 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                 android:textColor="@color/green"
                 app:cornerRadius="@dimen/radius_8"
+                app:isActiveForButton="@{findMeData.findMeData.isActive}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/save_btn"
                 app:layout_constraintTop_toTopOf="@+id/save_btn"

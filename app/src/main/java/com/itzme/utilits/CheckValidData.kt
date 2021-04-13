@@ -28,7 +28,7 @@ object CheckValidData {
     }
 
     fun checkName(inputLayout: TextInputLayout): Boolean {
-        return EditTextValidiation.validName(inputLayout)
+        return EditTextValidiation.validUserName(inputLayout)
     }
 
     fun checkPhone(inputLayout: TextInputLayout): Boolean {
