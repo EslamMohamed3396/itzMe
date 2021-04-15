@@ -22,8 +22,8 @@ class HowToUseFragment : BaseFragment<FragmentHowToUseBinding>() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_how_to_use)
 
@@ -80,55 +80,58 @@ class HowToUseFragment : BaseFragment<FragmentHowToUseBinding>() {
     private fun setUpViewpager() {
         val howToUserList = ArrayList<HowToUse>()
         howToUserList.add(
-            HowToUse(
-                1, R.drawable.how_to_use_iphone, "How to itz to iphone",
-                "Tap your itzme to the very top to itz to an iPhone XR and newer   ",
-                "Older iPhones can use the NFC widget in control center to read your itzme"
-            )
+                HowToUse(
+                        1, R.drawable.how_to_use_iphone,
+                        requireContext().resources.getString(R.string.how_iphone),
+                        requireContext().resources.getString(R.string.content1_iphone),
+                        requireContext().resources.getString(R.string.content2_iphone),
+
+                        )
         )
         howToUserList.add(
-            HowToUse(
-                2, R.drawable.how_to_user_android,
-                "How to itz to android",
-                "Tap your itzme to the middle to itz to Android  ",
-                "Make sure they have NFC turned on in settings! Some Androids have this off"
-            )
+                HowToUse(
+                        2, R.drawable.how_to_user_android,
+                        requireContext().resources.getString(R.string.how_android),
+                        requireContext().resources.getString(R.string.content1_android),
+                        requireContext().resources.getString(R.string.content2_android),
+                )
         )
         howToUserList.add(
-            HowToUse(
-                3,
-                R.drawable.how_to_use_direct,
-                "itzme Direct",
-                "Tap your itzme to the middle to itz to Android  ",
-                "When itzme Direct is on, your itzme will open directly to the first link on your profile"
-            )
+                HowToUse(
+                        3,
+                        R.drawable.how_to_use_direct,
+                        requireContext().resources.getString(R.string.how_direct),
+                        requireContext().resources.getString(R.string.content1_direct),
+                        requireContext().resources.getString(R.string.content2_direct)
+                )
         )
         howToUserList.add(
-            HowToUse(
-                4,
-                R.drawable.how_to_use_profile,
-                "Your itzme profile",
-                "Turn itzme Direct off to share your full itzme Profile ",
-                "Your itzme Profile is fully customizable, and links can be sorted using drag and drop"
-            )
+                HowToUse(
+                        4,
+                        R.drawable.how_to_use_profile,
+                        requireContext().resources.getString(R.string.how_profile),
+                        requireContext().resources.getString(R.string.content1_profile),
+                        requireContext().resources.getString(R.string.content2_profile)
+
+                )
         )
         howToUserList.add(
-            HowToUse(
-                5,
-                R.drawable.how_to_use_qr,
-                "your qr code",
-                "Use your itzme QR Code to share with older Phone models ",
-                "Your QR Code can be accessed on the top right of your profile and in the main menu"
-            )
+                HowToUse(
+                        5,
+                        R.drawable.how_to_use_qr,
+                        requireContext().resources.getString(R.string.how_qr),
+                        requireContext().resources.getString(R.string.content1_qr),
+                        requireContext().resources.getString(R.string.content2_qr)
+                )
         )
         howToUserList.add(
-            HowToUse(
-                6,
-                R.drawable.how_to_use_get_itzme,
-                "let’s get itzme",
-                "Your view count is the number of times you share with itzme",
-                "Your QR Code can be accessed on the top right of your profile and in the main menu"
-            )
+                HowToUse(
+                        6,
+                        R.drawable.how_to_use_get_itzme,
+                        requireContext().resources.getString(R.string.how_use_get_itzme),
+                        requireContext().resources.getString(R.string.content1_use_get_itzme),
+                        requireContext().resources.getString(R.string.content2_use_get_itzme)
+                )
         )
         howToUseAdapter.submitList(howToUserList)
         binding?.imageSlider?.apply {
@@ -136,31 +139,31 @@ class HowToUseFragment : BaseFragment<FragmentHowToUseBinding>() {
             binding?.wormDotsIndicator?.setViewPager2(this)
         }
         binding?.imageSlider?.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
+                ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (position == howToUseAdapter.itemCount - 1) {
                     binding?.nextBtn?.text = getText(R.string.activate)
                     binding?.nextBtn?.setTextColor(
-                        ColorStateList.valueOf(
-                            requireContext().getColor(
-                                R.color.white
+                            ColorStateList.valueOf(
+                                    requireContext().getColor(
+                                            R.color.white
+                                    )
                             )
-                        )
                     )
                     binding?.nextBtn?.backgroundTintList =
-                        ColorStateList.valueOf(requireContext().getColor(R.color.dark_blue))
+                            ColorStateList.valueOf(requireContext().getColor(R.color.dark_blue))
                     binding?.skipBtn?.visibility = View.INVISIBLE
                 } else {
                     binding?.nextBtn?.setTextColor(
-                        ColorStateList.valueOf(
-                            requireContext().getColor(
-                                R.color.dark_blue
+                            ColorStateList.valueOf(
+                                    requireContext().getColor(
+                                            R.color.dark_blue
+                                    )
                             )
-                        )
                     )
                     binding?.nextBtn?.backgroundTintList =
-                        ColorStateList.valueOf(requireContext().getColor(R.color.white))
+                            ColorStateList.valueOf(requireContext().getColor(R.color.white))
                     binding?.nextBtn?.text = getText(R.string.next)
                     binding?.skipBtn?.visibility = View.VISIBLE
                 }

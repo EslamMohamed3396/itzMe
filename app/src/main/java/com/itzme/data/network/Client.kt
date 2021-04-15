@@ -79,7 +79,7 @@ object Client {
             throw RuntimeException(e)
         }
     }
-///
+
     init {
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(Constant.BASE_URL)

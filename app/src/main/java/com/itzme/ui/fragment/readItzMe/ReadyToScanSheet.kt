@@ -58,7 +58,7 @@ class ReadyToScanSheet : BottomSheetDialogFragment() {
 //        sharedViewModel.dismissed.observe(viewLifecycleOwner, { dismissed ->
 //            if (dismissed) {
 //                findNavController().navigateUp()
-//
+//                sharedViewModel.saveDismissed(false)
 //            }
 //        })
     }

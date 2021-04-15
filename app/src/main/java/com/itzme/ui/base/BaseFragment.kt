@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.snackbar.Snackbar
 import com.itzme.ui.SharedViewModel
 import com.itzme.utilits.Constant
 import com.itzme.utilits.LanguageUtils
@@ -63,6 +64,14 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     override fun onPause() {
         super.onPause()
         binding?.unbind()
+    }
+
+    fun showToast(message: String?) {
+        Snackbar.make(
+                binding?.root!!,
+                message!!,
+                Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     protected fun showNavigation() {

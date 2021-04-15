@@ -76,6 +76,10 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
         }
         binding?.passwordInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->
             EditTextValidiation.validPassword(binding?.passwordInputLayout!!)
+            EditTextValidiation.validConfirmPassword(
+                    binding?.passwordInputLayout!!,
+                    binding?.confirmPasswordInputLayout!!
+            )
         }
 
         binding?.confirmPasswordInputLayout?.editText?.doOnTextChanged { _, _, _, _ ->

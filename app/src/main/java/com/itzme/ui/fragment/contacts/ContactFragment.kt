@@ -93,6 +93,7 @@ class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Da
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
+
                     initMyContactViewModel()
                 }
                 is Resource.Error -> {

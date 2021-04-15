@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: SharedViewModel
 
     private lateinit var navHostFragment: NavHostFragment
-
+    private val MIME_TEXT_PLAIN = "text/plain"
     private val viewModelValidateTag: ValidateSerialViewModel by viewModels()
     private val viewModelReadTag: ReadTagViewModel by viewModels()
 
@@ -43,15 +43,18 @@ class MainActivity : AppCompatActivity() {
     private var readWriteNFC: ReadWriteNFC? = null
     private var tag: Tag? = null
     private var intentReadTag: Intent? = null
-    private val filters = arrayOf(IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED))
+    private val filters = arrayOf(IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED),
+            IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
+            IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED))
+    private var toast: Toast? = null
 
     private val techTypes = arrayOf(
+            arrayOf(Ndef::class.java.name),
             arrayOf(IsoDep::class.java.name),
             arrayOf(NfcA::class.java.name),
             arrayOf(NfcB::class.java.name),
             arrayOf(NfcF::class.java.name),
             arrayOf(NfcV::class.java.name),
-            arrayOf(Ndef::class.java.name),
             arrayOf(NdefFormatable::class.java.name),
             arrayOf(MifareClassic::class.java.name),
             arrayOf(MifareUltralight::class.java.name)
@@ -64,18 +67,59 @@ class MainActivity : AppCompatActivity() {
         initDataBinding()
         initViews()
         initSharedViewModel()
-
     }
 
 
     override fun onResume() {
         super.onResume()
-        filters[0].addDataType("text/plain")
-        nfcAdapter?.enableForegroundDispatch(
-                this, nfcPendingIntent, filters, techTypes
-        )
+        setupForegroundDispatch(nfcAdapter)
     }
 
+    private fun handleIntent(intent: Intent) {
+        val action = intent.action
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED == action) {
+            val type = intent.type
+            if (MIME_TEXT_PLAIN.equals(type)) {
+                val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+                getTag(intent)
+                Timber.d("tag $tag")
+            } else {
+                Timber.d("Wrong mime type: $type")
+            }
+        } else if (NfcAdapter.ACTION_TECH_DISCOVERED == action) {
+
+            // In case we would still use the Tech Discovered Intent
+            val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+            val techList = tag!!.techList
+            val searchedTech = Ndef::class.java.name
+            for (tech in techList) {
+                if (searchedTech == tech) {
+                    getTag(intent)
+                    Timber.d("searchedTech $searchedTech")
+                    Timber.d("searchedTech tag $tag")
+                    break
+                }
+            }
+        }
+    }
+
+    private fun getTag(intent: Intent) {
+        tagId = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID)
+        tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG) ?: return
+
+        readAndWriteNfc(intent)
+        Timber.d("${byteArrayToHex(tagId!!)}")
+    }
+
+    fun setupForegroundDispatch(adapter: NfcAdapter?) {
+
+        filters[0].addDataType("text/plain")
+        filters[1].addDataType("text/plain")
+        filters[2].addDataType("text/plain")
+
+
+        adapter?.enableForegroundDispatch(this, nfcPendingIntent, filters, techTypes)
+    }
 
     override fun onPause() {
         super.onPause()
@@ -92,10 +136,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initNfc() {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-        nfcPendingIntent = PendingIntent.getActivity(
-                this, 0,
-                Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
-        )
+
+        val intent = Intent(this, this.javaClass)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        nfcPendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        Timber.d("${nfcAdapter?.isEnabled}")
+
         if (nfcAdapter == null) {
             val builder = AlertDialog.Builder(this@MainActivity)
             builder.setMessage(resources.getString(R.string.no_nfc))
@@ -117,6 +163,7 @@ class MainActivity : AppCompatActivity() {
             myDialog.setCanceledOnTouchOutside(false)
             myDialog.show()
         }
+
     }
 
 
@@ -145,22 +192,32 @@ class MainActivity : AppCompatActivity() {
     //endregion
 
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        intentReadTag = intent
-        tagId = intent?.getByteArrayExtra(NfcAdapter.EXTRA_ID)
-        tag = intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG) ?: return
-
-        Timber.d("${byteArrayToHex(tagId!!)}")
-
-
+    private fun readAndWriteNfc(intent: Intent) {
         if (readWriteNFC == ReadWriteNFC.WRITE_NFC) {
             initReadViewModel("", byteArrayToHex(tagId!!))
         } else {
-            readFromTag(intentReadTag!!)
+            Timber.d("${tag}")
+            readFromTag(intent)
         }
-        //  initValidateViewModel(byteArrayToHex(tagId!!))
+    }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intentReadTag = intent
+
+        handleIntent(intent)
+//        tagId = intent?.getByteArrayExtra(NfcAdapter.EXTRA_ID)
+//        tag = intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG) ?: return
+//
+//        Timber.d("${byteArrayToHex(tagId!!)}")
+//
+//        if (readWriteNFC == ReadWriteNFC.WRITE_NFC) {
+//            initReadViewModel("", byteArrayToHex(tagId!!))
+//        } else {
+//            Timber.d("${tag}")
+//            readFromTag(intent)
+//        }
+        //  initValidateViewModel(byteArrayToHex(tagId!!))
 
     }
 
@@ -204,7 +261,7 @@ class MainActivity : AppCompatActivity() {
 
                         }
                         else -> {
-                            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                            showToast(message)
                         }
                     }
                 }
@@ -224,17 +281,13 @@ class MainActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
                     if (readWriteNFC == ReadWriteNFC.WRITE_NFC) {
-                        if (response.data?.data == 0) {
-                            writeInNFC(tag!!)
-                        }
+                        Timber.d("${response.data?.data}")
+                        writeInNFC(tag!!)
                     } else {
-                        if (response.data?.data == 0) {
+                        if (response.data?.errorCode == 0) {
                             sharedViewModel.saveDismissed(true)
-                            Toast.makeText(
-                                    this,
-                                    resources.getString(R.string.reading_success),
-                                    Toast.LENGTH_LONG
-                            ).show()
+                            showToast(resources.getString(R.string.reading_success))
+
                         } else {
                             findNavController(R.id.nav_host_fragment).navigateUp()
                             findNavController(R.id.nav_host_fragment).navigate(R.id.myProfileFragment)
@@ -249,8 +302,8 @@ class MainActivity : AppCompatActivity() {
                         401 -> {
 
                         }
-                        else -> {
-                            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                        29 -> {
+                            Toast.makeText(this@MainActivity, "This NFC not valid", Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -265,6 +318,8 @@ class MainActivity : AppCompatActivity() {
 
     //region write in nfc
     private fun writeInNFC(tag: Tag) {
+
+        Timber.d("${tag}")
 
 
         val ndef = Ndef.get(tag) ?: return
@@ -283,8 +338,7 @@ class MainActivity : AppCompatActivity() {
                 ndef.connect()
                 try {
                     ndef.writeNdefMessage(message)
-                    Toast.makeText(applicationContext, "Successfully!", Toast.LENGTH_SHORT)
-                            .show()
+                    showToast("Successfully!")
                 } catch (e: Exception) {
                     // let the user know the tag refused to format
                     Timber.d("writeInNFC 1 ${e.message}")
@@ -296,12 +350,7 @@ class MainActivity : AppCompatActivity() {
                 ndef.close()
             }
         } else {
-            Toast.makeText(
-                    applicationContext,
-                    "There is an error please try again",
-                    Toast.LENGTH_SHORT
-            )
-                    .show()
+            showToast("There is an error please try again")
         }
 
     }
@@ -317,20 +366,29 @@ class MainActivity : AppCompatActivity() {
             ndef.connect()
 
             val messages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+            Timber.d("messages ${messages}")
+
             if (messages != null) {
                 val ndefMessages = arrayOfNulls<NdefMessage>(messages.size)
+                Timber.d("ndefMessages ${ndefMessages}")
+
                 for (i in messages.indices) {
                     ndefMessages[i] = messages[i] as NdefMessage
                 }
                 val record = ndefMessages[0]!!.records[0]
                 val payload = record.payload
                 val text = String(payload)
+                Timber.d("text ${text}")
+
                 initReadViewModel(splitLink(text), byteArrayToHex(tagId!!))
                 ndef.close()
+            } else {
+                showToast("Empty NFC")
+
             }
         } catch (e: java.lang.Exception) {
             ndef.close()
-            Toast.makeText(applicationContext, "Cannot Read From Tag.", Toast.LENGTH_LONG).show()
+            showToast("Cannot Read From Tag.")
         }
 
     }
@@ -345,4 +403,13 @@ class MainActivity : AppCompatActivity() {
 
     //endregion
 
+
+    //region show toast
+    private fun showToast(message: String?) {
+        toast?.cancel()
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast!!.show()
+    }
+
+    //endregion
 }

@@ -105,5 +105,23 @@
     <string name="active_product">منتج نشط </string>
     <string name="copy">نسخ </string>
     <string name="profile_updated">تم تحديث الملف الشخصي بنجاح </string>
+    <string name="how_iphone">How to itz to iphone</string>
+    <string name="content1_iphone">"Tap your itzme to the very top to itz to an iPhone XR and newer   "</string>
+    <string name="content2_iphone">Older iPhones can use the NFC widget in control center to read your itzme</string>
+    <string name="how_android">How to itz to android</string>
+    <string name="content1_android">"Tap your itzme to the middle to itz to Android  "</string>
+    <string name="content2_android">Make sure they have NFC turned on in settings! Some Androids have this off</string>
+    <string name="how_direct">itzme Direct</string>
+    <string name="content1_direct">"Tap your itzme to the middle to itz to Android  "</string>
+    <string name="content2_direct">When itzme Direct is on, your itzme will open directly to the first link on your profile</string>
+    <string name="how_profile">Your itzme profile</string>
+    <string name="content1_profile">"Turn itzme Direct off to share your full itzme Profile "</string>
+    <string name="content2_profile">Your itzme Profile is fully customizable, and links can be sorted using drag and drop</string>
+    <string name="how_qr">your qr code</string>
+    <string name="content1_qr">"Use your itzme QR Code to share with older Phone models "</string>
+    <string name="content2_qr">Your QR Code can be accessed on the top right of your profile and in the main menu</string>
+    <string name="how_use_get_itzme">let’s get itzme</string>
+    <string name="content1_use_get_itzme">Your view count is the number of times you share with itzme</string>
+    <string name="content2_use_get_itzme">Your QR Code can be accessed on the top right of your profile and in the main menu</string>
 
 </resources>

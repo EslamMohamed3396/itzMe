@@ -78,14 +78,18 @@ object EditTextValidiation {
             Password: TextInputLayout,
             confirmInputLayout: TextInputLayout
     ): Boolean {
-        return if (confirmInputLayout.editText?.text.toString() != Password.editText?.text.toString()) {
-            confirmInputLayout.error =
-                    confirmInputLayout.context.getString(R.string.password_match)
-            confirmInputLayout.editText?.requestFocus()
-            false
+        if (confirmInputLayout.editText?.text.toString().isEmpty()) {
+            return true
         } else {
-            confirmInputLayout.error = null
-            true
+            return if (confirmInputLayout.editText?.text.toString() != Password.editText?.text.toString()) {
+                confirmInputLayout.error =
+                        confirmInputLayout.context.getString(R.string.password_match)
+                confirmInputLayout.editText?.requestFocus()
+                false
+            } else {
+                confirmInputLayout.error = null
+                true
+            }
         }
     }
 
@@ -94,7 +98,7 @@ object EditTextValidiation {
             textInputLayout: TextInputLayout
     ): Boolean {
 //        val validName = "^(?![ .]*$)[\\w\\d\\p{L} .]*$"
-        val validName = "^[_A-Za-z0-9]{4,20}$"
+        val validName = "^[_A-Za-z0-9]{3,20}$"
 
         val mName = textInputLayout.editText?.text.toString().trim().toLowerCase(Locale.ROOT)
         val matcherName: Matcher = Pattern.compile(validName).matcher(mName)

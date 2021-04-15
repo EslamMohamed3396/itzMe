@@ -20,7 +20,7 @@ class MyContactAdapter(val iClickOnItems: IClickOnItems<Data>, val clickOnDelete
         RecyclerView.Adapter<BaseViewHolder<*>>(), Filterable {
     private val differ = AsyncListDiffer(this, DiffCallback<Data>())
     private var contactListSearch = mutableListOf<Data>()
-    var contactList: ArrayList<Data> = ArrayList()
+    var contactList: ArrayList<Data>? = ArrayList()
 
 
     private val companiesFilter: Filter = object : Filter() {
@@ -50,8 +50,8 @@ class MyContactAdapter(val iClickOnItems: IClickOnItems<Data>, val clickOnDelete
                 constraint: CharSequence,
                 results: FilterResults
         ) {
-            contactList.clear()
-            contactList.addAll(results.values as MutableList<Data>)
+            contactList?.clear()
+            contactList?.addAll(results.values as MutableList<Data>)
             notifyDataSetChanged()
         }
     }
@@ -67,8 +67,11 @@ class MyContactAdapter(val iClickOnItems: IClickOnItems<Data>, val clickOnDelete
 
     fun submitList(list: List<Data?>?) {
         differ.submitList(list)
-        this.contactList = list as ArrayList<Data>
-        contactListSearch = ArrayList(list)
+        if (list != null) {
+            this.contactList = list as ArrayList<Data>
+            contactListSearch = ArrayList(list)
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {

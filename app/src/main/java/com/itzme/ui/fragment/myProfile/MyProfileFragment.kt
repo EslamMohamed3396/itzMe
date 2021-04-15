@@ -12,6 +12,8 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.itzme.R
 import com.itzme.data.models.itemMenu.ItemMenu
 import com.itzme.data.models.notification.request.BodyAddToken
@@ -29,6 +31,7 @@ import timber.log.Timber
 
 class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItems<ItemMenu> {
 
+    private var myLinkList: ArrayList<MyLink>? = null
     private lateinit var toggle: ActionBarDrawerToggle
 
     private val viewModel: MyProfileViewModel by viewModels()
@@ -72,7 +75,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
         binding?.directOffBtn?.setOnClickListener {
             if (myLink != null) {
-                initDirectOnOffViewModel()
+                initDirectOnOffViewModel(true, myLink?.linkType!!)
             }
         }
 
@@ -207,12 +210,50 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     //region bind data
 
+
+    private fun dragDropItemRecyclerView() {
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+            override fun isLongPressDragEnabled() = true
+            override fun isItemViewSwipeEnabled() = false
+
+            override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+                val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                val swipeFlags = if (isItemViewSwipeEnabled) ItemTouchHelper.START or ItemTouchHelper.END else 0
+                return makeMovementFlags(dragFlags, swipeFlags)
+            }
+
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                if (viewHolder.itemViewType != target.itemViewType)
+                    return false
+                val fromPosition = viewHolder.adapterPosition
+                val toPosition = target.adapterPosition
+                val item = myLinkList?.removeAt(fromPosition)
+                myLinkList?.add(toPosition, item!!)
+                recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
+                Timber.d("${myLinkList!![toPosition].linkType}")
+                Timber.d("${myLinkList!![toPosition].linkTypeName}")
+                Timber.d("${myLinkList!![toPosition].linkIconUrl}")
+                initDirectOnOffViewModel(false, myLinkList!![toPosition].linkType!!)
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                myLinkList?.removeAt(position)
+                binding?.recyclerView6?.adapter!!.notifyItemRemoved(position)
+            }
+
+        })
+        itemTouchHelper.attachToRecyclerView(binding?.recyclerView6)
+    }
+
     private fun bindMyProfile(myProfile: ResponseMyProfile) {
         binding?.myProfile = myProfile
     }
 
     private fun bindAdapter() {
         binding?.myLinkAdapter = myLinkAdapter
+        dragDropItemRecyclerView()
     }
     //endregion
 
@@ -234,6 +275,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     if (response.data.myLinks?.isNotEmpty()!!) {
                         myLinkAdapter.submitList(response.data.myLinks)
                         myLink = response.data.myLinks[0]
+                        myLinkList = response.data.myLinks as ArrayList<MyLink>?
                     } else {
                         binding?.tvEmpty?.visibility = View.VISIBLE
                     }
@@ -253,8 +295,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     }
 
-    private fun initDirectOnOffViewModel() {
-        viewModelDirect.directOnOff(true, myLink?.linkType!!)
+    private fun initDirectOnOffViewModel(isToogleStatus: Boolean, linkType: Int) {
+        viewModelDirect.directOnOff(isToogleStatus, linkType)
                 .observe(viewLifecycleOwner, { response ->
                     when (response) {
                         is Resource.Loading -> {

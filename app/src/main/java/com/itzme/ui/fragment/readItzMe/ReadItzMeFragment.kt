@@ -45,10 +45,16 @@ class ReadItzMeFragment : BaseFragment<FragmentReadItzMeBinding>() {
     private fun initSharedViewModel() {
         sharedViewModel.dismissed.observe(viewLifecycleOwner, { dismissed ->
             if (dismissed) {
-                Timber.d("$dismissed")
-                findNavController().navigateUp()
-                val action = ReadItzMeFragmentDirections.actionReadItzMeFragmentToContactFragment()
-                findNavController().navigate(action)
+                if (findNavController().currentDestination?.id == R.id.readyToScanSheet) {
+                    Timber.d("$dismissed")
+                    findNavController().navigateUp()
+                    val action = ReadItzMeFragmentDirections.actionReadItzMeFragmentToContactFragment()
+                    findNavController().navigate(action)
+                } else if (findNavController().currentDestination?.id == R.id.readItzMeFragment) {
+                    val action = ReadItzMeFragmentDirections.actionReadItzMeFragmentToContactFragment()
+                    findNavController().navigate(action)
+                }
+
                 sharedViewModel.saveDismissed(false)
             }
         })

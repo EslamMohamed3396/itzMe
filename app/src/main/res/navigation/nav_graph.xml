@@ -338,8 +338,8 @@
         android:label="ContactProfileFragment">
         <argument
             android:name="contact_id_args"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/action_contactProfileFragment_to_petSheetContact"
             app:destination="@id/petSheetContact"
