@@ -13,6 +13,7 @@ import com.itzme.data.models.account.registerationAndLogin.response.ResponseRegi
 import com.itzme.databinding.FragmentLoginBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.utilits.*
+import timber.log.Timber
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
@@ -120,7 +121,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun goToMyProfile() {
-        val action = LoginFragmentDirections.actionLoginFragmentToMyProfileFragment()
-        findNavController().navigate(action)
+        if (findNavController().currentDestination?.id == R.id.loginFragment) {
+            Timber.d("true ")
+            val action = LoginFragmentDirections.actionLoginFragmentToMyProfileFragment()
+            findNavController().navigate(action)
+        }
+
     }
 }

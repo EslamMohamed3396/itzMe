@@ -122,8 +122,11 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                                     Constant.IS_USER_LOGIN,
                                     true
                             )
-                    val action = JoinNowFragmentDirections.actionJoinNowFragmentToMyProfileFragment()
-                    findNavController().navigate(action)
+                    if (findNavController().currentDestination?.id == R.id.joinNowFragment) {
+                        val action = JoinNowFragmentDirections.actionJoinNowFragmentToMyProfileFragment()
+                        findNavController().navigate(action)
+                    }
+
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()
