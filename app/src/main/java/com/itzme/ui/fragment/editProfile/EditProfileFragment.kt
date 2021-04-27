@@ -18,6 +18,7 @@ import com.itzme.R
 import com.itzme.data.models.profile.editLink.request.BodyEditLink
 import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
 import com.itzme.data.models.profile.myProfile.response.Link
+import com.itzme.data.models.profile.myProfile.response.MyLink
 import com.itzme.data.models.profile.myProfile.response.PetData
 import com.itzme.data.models.profile.myProfile.response.ResponseMyProfile
 import com.itzme.databinding.FragmentEditProfileBinding
@@ -35,7 +36,7 @@ import com.vansuita.pickimage.dialog.PickImageDialog
 import timber.log.Timber
 
 
-class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOnItems<Link> {
+class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOnItems<Link>, MyLinkAdapter.IClickOnLink {
 
     private val viewModel: EditProfileViewModel by viewModels()
     private val viewModelEditLink: EditLinkViewModel by viewModels()
@@ -43,7 +44,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
     private var imageBitmap: String? = null
     private var isProfilePrivate: Boolean = true
-    private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter() }
+    private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter(this) }
     private val allLinkAdapter: LinkHeaderAdapter by lazy { LinkHeaderAdapter(this) }
     private var petData: PetData? = null
     private var findMeData: ResponseMyProfile? = null
@@ -101,7 +102,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
     //region check data
     private fun checkData(): Boolean {
-        return EditTextValidiation.validUserName(binding?.edName!!)
+        return EditTextValidiation.validName(binding?.edName!!)
     }
 
 
@@ -228,7 +229,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    myLinkAdapter.submitList(null)
+                    myLinkAdapter.submitList(null, null)
                     bindMyProfile(response.data!!)
                     if (!response.data.imageUrl.isNullOrEmpty()) {
                         convertImage(response.data.imageUrl)
@@ -240,7 +241,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     if (response.data.myLinks?.isNotEmpty()!!) {
                         binding?.recyclerView3?.visibility = View.VISIBLE
                         binding?.tvEmpty?.visibility = View.GONE
-                        myLinkAdapter.submitList(response.data.myLinks)
+                        myLinkAdapter.submitList(response.data.isDirectOn, response.data.myLinks)
                     } else {
                         binding?.recyclerView3?.visibility = View.INVISIBLE
                         binding?.tvEmpty?.visibility = View.VISIBLE
@@ -251,6 +252,15 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     when (response.code) {
                         13, 14 -> {
 
+                        }
+
+                        401 -> {
+                            SessionEnded.dialogSessionEnded(
+                                    requireActivity(),
+                                    findNavController(),
+                                    R.id.editProfileFragment,
+                                    EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
+                            )
                         }
                     }
                 }
@@ -278,6 +288,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     when (response.code) {
                         13, 14 -> {
 
+                        }
+                        401 -> {
+                            SessionEnded.dialogSessionEnded(
+                                    requireActivity(),
+                                    findNavController(),
+                                    R.id.editProfileFragment,
+                                    EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
+                            )
                         }
                     }
                 }
@@ -318,6 +336,21 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
     }
 
+
+    override fun clickOnItems(item: MyLink, postion: Int) {
+        when (item.linkType) {
+            in 0..12, in 21..41 -> {
+                val action =
+                        EditProfileFragmentDirections.actionEditProfileFragmentToAddLinkSheet(item)
+                findNavController().navigate(action)
+            }
+            in 13..20 -> {
+                val action =
+                        EditProfileFragmentDirections.actionEditProfileFragmentToAddPhoneSheet(item)
+                findNavController().navigate(action)
+            }
+        }
+    }
     //endregion
 
     //region init edit link view model
@@ -338,6 +371,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     when (response.code) {
                         13, 14 -> {
 
+                        }
+                        401 -> {
+                            SessionEnded.dialogSessionEnded(
+                                    requireActivity(),
+                                    findNavController(),
+                                    R.id.editProfileFragment,
+                                    EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
+                            )
                         }
                     }
                 }
@@ -399,6 +440,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                         13, 14 -> {
 
                         }
+                        401 -> {
+                            SessionEnded.dialogSessionEnded(
+                                    requireActivity(),
+                                    findNavController(),
+                                    R.id.editProfileFragment,
+                                    EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
+                            )
+                        }
                     }
                 }
 
@@ -407,6 +456,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
     }
 
+
     //endregion
+
 
 }

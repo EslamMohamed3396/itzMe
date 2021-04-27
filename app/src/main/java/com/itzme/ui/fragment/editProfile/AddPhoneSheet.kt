@@ -15,6 +15,7 @@ import com.itzme.databinding.SheetSocialPhoneBinding
 import com.itzme.ui.SharedViewModel
 import com.itzme.ui.fragment.editProfile.viewModel.EditLinkViewModel
 import com.itzme.utilits.CheckValidData
+import com.itzme.utilits.ClickOnLink
 import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.Resource
 
@@ -51,6 +52,8 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
 
 
     private fun bindData() {
+        val clickOnLink = ClickOnLink()
+        binding.clickLink = clickOnLink
         binding.itemLink = args.addLinkArgs
     }
 
@@ -63,8 +66,11 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
         }
         binding.saveBtn.setOnClickListener {
             if (checkData()) {
-                initEditLinkViewModel()
+                initEditLinkViewModel(binding.countryCode.fullNumber)
             }
+        }
+        binding.removeBtn.setOnClickListener {
+            initEditLinkViewModel(binding.countryCode.fullNumber)
         }
 
     }
@@ -73,15 +79,15 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
 
     //region check Data
     private fun checkData(): Boolean {
-        return CheckValidData.checkPhone(binding.linkInputLayout)
+        return CheckValidData.checkPhone(binding.countryCode, binding.linkInputLayout)
     }
 
     //endregion
 
     //region init view model
 
-    private fun initEditLinkViewModel() {
-        viewModel.updateLink(bodyEditLink()).observe(viewLifecycleOwner, { response ->
+    private fun initEditLinkViewModel(link: String) {
+        viewModel.updateLink(bodyEditLink(link)).observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Loading -> {
                     DialogUtil.showDialog(requireContext())
@@ -105,11 +111,11 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
 
     }
 
-    private fun bodyEditLink(): BodyEditLink {
+    private fun bodyEditLink(link: String): BodyEditLink {
         return BodyEditLink(
                 args.addLinkArgs.linkType,
                 null,
-                binding.linkInputLayout.editText?.text.toString(),
+                link,
                 0,
                 0,
                 null,

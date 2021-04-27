@@ -119,9 +119,8 @@ object Constant {
     const val MEDIA_REQUEST_CODE = 24
 
 
-    // my circle tab number
-    const val ACTIVE_NUMBER = 0
-    const val PAST_NUMBER = 1
-    const val PENDING_NUMBER = 2
+    // my links view
+    const val VIEW_MY_LINK_ON = 1
+    const val VIEW_MY_LINK_OFF = 2
 
 }

@@ -10,124 +10,127 @@
             type="com.itzme.data.models.tags.howToUse.response.HowToUse" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <ImageView
-            android:id="@+id/imageSlideIcon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="24dp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:loadImageDrawable="@{howToUse.image}"
-            tools:src="@drawable/phone_img" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/cairo_bold"
-            android:gravity="center"
-            android:text="@{howToUse.title}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:textColor="@color/dark_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline5"
-            tools:text="How to itz to iphone" />
+            <ImageView
+                android:id="@+id/imageSlideIcon"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/app_name"
+                app:layout_constraintBottom_toTopOf="@+id/guideline5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:loadImageDrawable="@{howToUse.image}"
+                tools:src="@drawable/phone_img" />
 
-        <View
-            android:id="@+id/view2"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/circle_gradient"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textTitle" />
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/cairo_bold"
+                android:gravity="center"
+                android:text="@{howToUse.title}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textColor="@color/dark_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline5"
+                tools:text="How to itz to iphone" />
 
-        <TextView
-            android:id="@+id/textDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@{howToUse.content1}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="@color/gray"
-            app:layout_constraintBottom_toTopOf="@+id/textDescription1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/view2"
-            app:layout_constraintTop_toTopOf="@+id/view2"
-            app:layout_constraintVertical_bias="0.0" />
+            <View
+                android:id="@+id/view2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/circle_gradient"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textTitle" />
 
-        <TextView
-            android:id="@+id/textView29"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/cairo_bold"
-            android:text="1"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/view2"
-            app:layout_constraintEnd_toEndOf="@+id/view2"
-            app:layout_constraintStart_toStartOf="@+id/view2"
-            app:layout_constraintTop_toTopOf="@+id/view2" />
+            <TextView
+                android:id="@+id/textDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@{howToUse.content1}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="@color/gray"
+                app:layout_constraintBottom_toTopOf="@+id/textDescription1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:layout_constraintVertical_bias="0.0" />
 
-        <View
-            android:id="@+id/view3"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/circle_gradient"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textDescription" />
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cairo_bold"
+                android:text="1"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/view2"
+                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintStart_toStartOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="@+id/view2" />
 
-        <TextView
-            android:id="@+id/textDescription1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@{howToUse.content1}"
+            <View
+                android:id="@+id/view3"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/circle_gradient"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textDescription" />
 
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="@color/gray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/view3"
-            app:layout_constraintTop_toTopOf="@+id/view3"
-            app:layout_constraintVertical_bias="0.0" />
+            <TextView
+                android:id="@+id/textDescription1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@{howToUse.content1}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="@color/gray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view3"
+                app:layout_constraintTop_toTopOf="@+id/view3"
+                app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/textView31"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/cairo_bold"
-            android:text="2"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/view3"
-            app:layout_constraintEnd_toEndOf="@+id/view3"
-            app:layout_constraintStart_toStartOf="@+id/view3"
-            app:layout_constraintTop_toTopOf="@+id/view3" />
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cairo_bold"
+                android:text="2"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/view3"
+                app:layout_constraintEnd_toEndOf="@+id/view3"
+                app:layout_constraintStart_toStartOf="@+id/view3"
+                app:layout_constraintTop_toTopOf="@+id/view3" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.75" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </layout>

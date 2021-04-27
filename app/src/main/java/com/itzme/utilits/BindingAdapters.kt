@@ -67,26 +67,123 @@ fun isHiddenTrick(imageView: ImageView, hidden: Boolean?) {
         imageView.visibility = View.VISIBLE
     }
 }
-//
-//@BindingAdapter("app:isHiddenStrock")
-//fun isHiddenStrock(cardView: CardView, hidden: Boolean?) {
-//    if (hidden!!) {
-//        cardView. = View.GONE
-//    } else {
-//        cardView.visibility = View.VISIBLE
-//    }
-//}
 
 @BindingAdapter("isDirectOn")
 fun isDirectOn(button: Button, isOn: Boolean) {
     if (isOn) {
         button.text = button.context.getString(R.string.direct_on)
-        button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.purple_200))
+        button.backgroundTintList =
+                ColorStateList.valueOf(button.context.getColor(R.color.purple_200))
     } else {
         button.text = button.context.resources.getString(R.string.direct_off)
-        button.backgroundTintList = ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
+        button.backgroundTintList =
+                ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
     }
 }
+
+//
+//@BindingAdapter("instructionHint")
+//fun instructionHint(textView: TextView, link: BaseLink) {
+//    when (link.linkType) {
+//        0 -> {
+//            textView.text =
+//                    "Go to facebook.com and open your Facebook profile. Then copy and paste the url link here."
+//        }
+//        1 -> {
+//            textView.text =
+//                    "Go to facebook.com and open your Facebook page. Then copy and paste the url \n" +
+//                            "link here"
+//        }
+//        2 -> {
+//            textView.text =
+//                    "Open the Instagram app and go to your profile. Your Instagram username will be \n" +
+//                            "at the top of your screen."
+//        }
+//        3 -> {
+//            textView.text =
+//                    "Open Snapchat and tap your profile picture in the top left corner. Your username \n" +
+//                            "is below your Snapchat name."
+//        }
+//        4 -> {
+//            textView.text =
+//                    "Open TikTok and go to the “me” tab. Your TikTok username is under your profile \n" +
+//                            "picture."
+//        }
+//        5 -> {
+//            textView.text =
+//                    "Go to your Linkedin profile and scroll down to the “contact” section. Find your \n" +
+//                            "LinkedIn profile link and copy/paste here!"
+//        }
+//        6 -> {
+//            textView.text =
+//                    "Open the Twitter app and tap your profile picture in the top left corner. Your \n" +
+//                            "twitter username will be in grey with an @ sign"
+//        }
+//        7 -> {
+//            textView.text =
+//                    " Go to your channel or video. Tap the three dots in the top right corner and tap \n" +
+//                            "share. Copy/paste the link here."
+//        }
+//        8 -> {
+//            textView.text =
+//                    "Open the Twitch app and go to your account. Copy and paste your username \n" +
+//                            "here!"
+//        }
+//        9 -> {
+//            textView.text =
+//                    "Copy and Paste your Tumblr link."
+//        }
+//        10 -> {
+//            textView.text =
+//                    "Open the Vimeo app and tap the three lines in the top left corner. Your username \n" +
+//                            "will be in grey with an @ sign."
+//        }
+//        11 -> {
+//            textView.text =
+//                    "Open Google Maps and find your business location. Tap the share button in the \n" +
+//                            "top right and copy here!"
+//        }
+//        12 -> {
+//            textView.text =
+//                    "Input your personal email address."
+//        }
+//        13 -> {
+//            textView.text =
+//                    "Input your Business email address."
+//        }
+//        14 -> {
+//            textView.text =
+//                    "Add Your Line Username"
+//        }
+//        15 -> {
+//            textView.text =
+//                    "Enter your phone number. Make sure to include your country code!"
+//        }
+//        16 -> {
+//            textView.text =
+//                    "Input your phone number with your country code (Ex: +20 for Egypt)."
+//        }
+//    }
+//}
+//
+//@BindingAdapter("hintName")
+//fun hintName(textInputLayout: TextInputLayout, link: BaseLink) {
+//    when (link.linkType) {
+//        0, 1, 7, 9, 11, 12, 22, 23, 25, 26, in 30..41 -> {
+//            textInputLayout.hint =
+//                    "${link.linkTypeName} ${textInputLayout.context.resources.getString(R.string.link)}"
+//
+//        }
+//        in 2..6, 8, 10, in 18..20, 24, in 27..29 -> {
+//            textInputLayout.hint =
+//                    "${link.linkTypeName} ${textInputLayout.context.resources.getString(R.string.user_name_hint)}"
+//        }
+//        in 14..17, 21 -> {
+//            textInputLayout.hint =
+//                    "${link.linkTypeName} ${textInputLayout.context.resources.getString(R.string.hyper_link)}"
+//        }
+//    }
+//}
 
 @BindingAdapter("isProfilePrivate")
 fun isProfilePrivate(button: SwitchMaterial, isPrivate: Boolean) {
@@ -108,33 +205,6 @@ fun isActiveForButton(button: Button, isActive: Boolean) {
     }
 }
 
-//
-//@BindingAdapter("app:fromToHourText")
-//fun workHourText(textView: TextView, fromTo: String) {
-//    val text =
-//        "${textView.context.resources.getString(R.string.choose_the_time_you_would_like_to_receive_the_contract_at_your_address_we_deliver_from)} $fromTo ."
-//    textView.text = text
-//}
-//
-//@BindingAdapter("app:convertGenderTextView")
-//fun gender(textView: TextView, gender: String?) {
-//    when (gender) {
-//        Constant.MALE_GENDER -> {
-//            textView.text = textView.context.resources.getString(R.string.male)
-//        }
-//        Constant.FEMALE_GENDER -> {
-//            textView.text = textView.context.resources.getString(R.string.female)
-//
-//        }
-//        else -> {
-//            return
-//        }
-//    }
-//
-////    val text = "$gender ${textView.context.resources.getString(R.string.egp)}"
-////    textView.text = "$text"
-//}
-//
 @BindingAdapter("app:langEn")
 fun langEn(button: Button, language: String?) {
     when (language) {
@@ -172,115 +242,4 @@ fun langAr(button: Button, language: String?) {
         }
     }
 }
-//
-//@BindingAdapter("app:isFavourite")
-//fun isFavourite(imageView: ImageView, isFavourite: Boolean) {
-//    if (isFavourite) {
-//        imageView.setImageResource(R.drawable.selected_heart)
-//    } else {
-//        imageView.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-//    }
-//}
-//
-//@BindingAdapter("app:dateTextView")
-//fun changeDateFormat(textView: TextView, dateString: String?) {
-//    if (dateString != null) {
-//        var result = ""
-//        val formatterOld = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
-//        val formatterNew = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//        var date: Date? = null
-//        try {
-//            date = formatterOld.parse(dateString)
-//        } catch (e: ParseException) {
-//            e.printStackTrace()
-//        }
-//        if (date != null) {
-//            result = formatterNew.format(date)
-//        }
-//        textView.text = result
-//    }
-//
-//    @BindingAdapter("app:dateStartDate")
-//    fun startDateFormat(textView: TextView, dateString: String?) {
-//        if (dateString != null) {
-//            var result = ""
-//            val formatterOld = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
-//            val formatterNew = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//            var date: Date? = null
-//            try {
-//                date = formatterOld.parse(dateString)
-//            } catch (e: ParseException) {
-//                e.printStackTrace()
-//            }
-//            if (date != null) {
-//                result = formatterNew.format(date)
-//            }
-//            textView.text =
-//                DayrahApp.getContext().resources.getString(R.string.start_date) + " : " + result
-//        }
-//    }
-//
-//    @BindingAdapter("app:dateEndDate")
-//    fun endDateFormat(textView: TextView, dateString: String?) {
-//        if (dateString != null) {
-//            var result = ""
-//            val formatterOld = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
-//            val formatterNew = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//            var date: Date? = null
-//            try {
-//                date = formatterOld.parse(dateString)
-//            } catch (e: ParseException) {
-//                e.printStackTrace()
-//            }
-//            if (date != null) {
-//                result = formatterNew.format(date)
-//            }
-//            textView.text =
-//                DayrahApp.getContext().resources.getString(R.string.end_date) + " : " + result
-//        }
-//    }
-//
-//    @BindingAdapter("app:isSelected")
-//    fun isSelected(imageView: ImageView, isTaken: Boolean) {
-//        if (isTaken) {
-//            imageView.setImageResource(R.drawable.item_select_month_payment_method)
-//        } else {
-//            imageView.setImageResource(R.drawable.point_select)
-//        }
-//    }
-//
-//    @BindingAdapter("app:selectCircle")
-//    fun isSelectCircle(imageView: ImageView, isTaken: Boolean?) {
-//        if (isTaken == true) {
-//            Glide.with(imageView.context)
-////        .load(Constant.BASE_URL + url)
-//                .load(R.drawable.item_select_month_payment_method)
-//                .into(imageView)
-////            imageView.setImageResource(R.drawable.item_select_month_payment_method)
-//        } else {
-//            Glide.with(imageView.context)
-////        .load(Constant.BASE_URL + url)
-//                .load(R.drawable.point_select)
-//                .into(imageView)
-////            imageView.setImageResource(R.drawable.point_select)
-//        }
-//    }
-//
-////    @BindingAdapter("app:selectedCircle")
-////    fun circleSelect(imageView: ImageView, isTaken: Boolean) {
-////        if (isTaken) {
-////            imageView.setImageDrawable(
-////                ResourcesCompat.getDrawable(
-////                    imageView.context.resources, R.drawable.item_select_month_payment_method, null
-////                )
-////            )
-////        } else {
-////            imageView.setImageDrawable(
-////                ResourcesCompat.getDrawable(
-////                    imageView.context.resources, R.drawable.point_select, null
-////                )
-////            )
-////        }
-////    }
-//
-//}
+

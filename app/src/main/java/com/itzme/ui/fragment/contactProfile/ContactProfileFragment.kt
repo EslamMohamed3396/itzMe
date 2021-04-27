@@ -1,5 +1,6 @@
 package com.itzme.ui.fragment.contactProfile
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -77,9 +78,7 @@ class ContactProfileFragment : BaseFragment<FragmentContactProfileBinding>(), IC
                     DialogUtil.showDialog(requireContext())
                 }
                 is Resource.Success -> {
-
                     DialogUtil.dismissDialog()
-
                     bindMyProfile(response.data?.data!!)
                     if (response.data.data.myLinks?.isNotEmpty()!!) {
                         myLinkAdapter.submitList(response.data.data.myLinks)
@@ -139,8 +138,11 @@ class ContactProfileFragment : BaseFragment<FragmentContactProfileBinding>(), IC
 
     override fun clickOnItems(item: MyLink, postion: Int) {
         when (item.linkType) {
-            in 0..10, in 22..41 -> {
+            in 0..1, in 3..10, in 22..41 -> {
                 openLink(item.link!!)
+            }
+            2 -> {
+                openInstagramApp(item.link!!)
             }
             11, 12 -> {
                 openEmail(item.link!!)
@@ -180,6 +182,18 @@ class ContactProfileFragment : BaseFragment<FragmentContactProfileBinding>(), IC
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         startActivity(i)
+    }
+
+    private fun openInstagramApp(name: String) {
+        val uri = Uri.parse("http://instagram.com/_u/$name")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+        likeIng.setPackage("com.instagram.android")
+        try {
+            startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://instagram.com/$name")))
+        }
     }
 
     private fun openPhone(number: String) {

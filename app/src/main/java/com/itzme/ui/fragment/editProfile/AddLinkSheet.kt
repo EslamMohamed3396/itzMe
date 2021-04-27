@@ -18,6 +18,7 @@ import com.itzme.databinding.SheetSocialMediaBinding
 import com.itzme.ui.SharedViewModel
 import com.itzme.ui.fragment.editProfile.viewModel.EditLinkViewModel
 import com.itzme.utilits.CheckValidData
+import com.itzme.utilits.ClickOnLink
 import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.Resource
 
@@ -55,16 +56,15 @@ class AddLinkSheet : BottomSheetDialogFragment() {
 
     private fun checkIfMore() {
         when (args.addLinkArgs.linkType) {
-            38, 39, 40, 41 -> {
+            in 38..41 -> {
                 binding.changeNameInputLayout.visibility = View.VISIBLE
-            }
-            11, 12, 21 -> {
-                binding.btnOpen.visibility = View.GONE
             }
         }
     }
 
     private fun bindData() {
+        val clickOnLink = ClickOnLink()
+        binding.clickLink = clickOnLink
         binding.itemLink = args.addLinkArgs
     }
 
@@ -78,25 +78,37 @@ class AddLinkSheet : BottomSheetDialogFragment() {
         binding.saveBtn.setOnClickListener {
             when (args.addLinkArgs.linkType) {
                 21 -> {
-                    initEditLinkViewModel()
+                    if (checkName()) {
+                        initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString(), binding.changeNameInputLayout.editText?.text.toString())
+                    }
                 }
                 11, 12 -> {
                     if (checkEmail()) {
-                        initEditLinkViewModel()
+                        initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString(), binding.changeNameInputLayout.editText?.text.toString())
+                    }
+                }
+                0, 1, 7, 9, 23, 26, in 30..41 -> {
+                    if (checkData()) {
+                        initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString(), binding.changeNameInputLayout.editText?.text.toString())
                     }
                 }
                 else -> {
-                    if (checkData()) {
-                        initEditLinkViewModel()
+                    if (checkName()) {
+                        initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString(), binding.changeNameInputLayout.editText?.text.toString())
                     }
                 }
             }
-
+        }
+        binding.removeBtn.setOnClickListener {
+            if (checkBeforeRemove()) {
+                initEditLinkViewModel("", "")
+            }
         }
         binding.btnOpen.setOnClickListener {
-            if (checkData()) {
-                openNewTabWindow(binding.linkInputLayout.editText?.text.toString(), requireContext())
-            }
+            composeEmail(binding.linkInputLayout.editText?.text.toString())
+//            if (checkData()) {
+//                openNewTabWindow(binding.linkInputLayout.editText?.text.toString(), requireContext())
+//            }
         }
     }
     //endregion
@@ -107,6 +119,14 @@ class AddLinkSheet : BottomSheetDialogFragment() {
         return CheckValidData.checkUrl(binding.linkInputLayout)
     }
 
+    private fun checkName(): Boolean {
+        return binding.linkInputLayout.editText?.text.toString().isNotEmpty()
+    }
+
+    private fun checkBeforeRemove(): Boolean {
+        return binding.linkInputLayout.editText?.text.toString().isNotEmpty()
+    }
+
     private fun checkEmail(): Boolean {
         return CheckValidData.checkEmail(binding.linkInputLayout)
     }
@@ -115,8 +135,8 @@ class AddLinkSheet : BottomSheetDialogFragment() {
 
     //region init view model
 
-    private fun initEditLinkViewModel() {
-        viewModel.updateLink(bodyEditLink()).observe(viewLifecycleOwner, { response ->
+    private fun initEditLinkViewModel(link: String, changeName: String) {
+        viewModel.updateLink(bodyEditLink(link, changeName)).observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Loading -> {
                     DialogUtil.showDialog(requireContext())
@@ -140,11 +160,11 @@ class AddLinkSheet : BottomSheetDialogFragment() {
 
     }
 
-    private fun bodyEditLink(): BodyEditLink {
+    private fun bodyEditLink(link: String, changeName: String): BodyEditLink {
         return BodyEditLink(
                 args.addLinkArgs.linkType,
-                binding.changeNameInputLayout.editText?.text.toString(),
-                binding.linkInputLayout.editText?.text.toString(),
+                changeName,
+                link,
                 0,
                 0,
                 null,
@@ -169,8 +189,17 @@ class AddLinkSheet : BottomSheetDialogFragment() {
         val b = Bundle()
         b.putBoolean("new_window", true)
         intents.putExtras(b)
-        context.startActivity(intents)
+        if (intents.resolveActivity(requireContext().packageManager) != null) {
+            requireContext().startActivity(intents)
+        }
     }
+
+
+    fun composeEmail(email: String) {
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
+        startActivity(Intent.createChooser(emailIntent, "Chooser Title"))
+    }
+
 
     //endregion
 

@@ -1,6 +1,7 @@
 package com.itzme.utilits
 
 import com.google.android.material.textfield.TextInputLayout
+import com.hbb20.CountryCodePicker
 
 object CheckValidData {
 
@@ -31,7 +32,7 @@ object CheckValidData {
         return EditTextValidiation.validUserName(inputLayout)
     }
 
-    fun checkPhone(inputLayout: TextInputLayout): Boolean {
-        return EditTextValidiation.validPhone(inputLayout)
+    fun checkPhone(mPhone: CountryCodePicker, inputLayout: TextInputLayout): Boolean {
+        return EditTextValidiation.validPhone(mPhone, inputLayout)
     }
 }

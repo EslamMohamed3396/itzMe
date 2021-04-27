@@ -123,6 +123,17 @@ dependencies {
 
 
     //firebase
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
     implementation platform('com.google.firebase:firebase-bom:26.8.0')
+
+
+    // Material Dialog Library
+    implementation 'com.afollestad.material-dialogs:core:3.2.1'
+
+
+    //country code picker
+    implementation 'com.hbb20:ccp:2.5.1'
+
+
+
 }

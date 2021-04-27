@@ -8,6 +8,10 @@
         <variable
             name="itemLink"
             type="com.itzme.data.models.contact.contactProfile.response.MyLink" />
+
+        <variable
+            name="clickLink"
+            type="com.itzme.utilits.ClickOnLink" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,8 +64,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:enabled="false"
-            android:hint="@{itemLink.linkTypeName+` `+@string/phone}"
             app:errorEnabled="true"
+            android:hint="@{itemLink.linkPlaceholder}"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,17 +94,37 @@
             style="@style/MaterialButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/copy"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/link_inputLayout"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toStartOf="@+id/btn_open"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/link_inputLayout"
-            app:layout_constraintTop_toBottomOf="@id/link_inputLayout"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/link_inputLayout" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/cairo_bold"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/open"
+            android:onClick="@{(view) -> clickLink.clickOnLink(view,itemLink)}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:textColor="@color/dark_blue"
+            app:cornerRadius="@dimen/radius_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/copy_btn"
+            app:layout_constraintTop_toTopOf="@+id/copy_btn"
+            app:strokeColor="@color/dark_blue"
+            app:strokeWidth="2dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

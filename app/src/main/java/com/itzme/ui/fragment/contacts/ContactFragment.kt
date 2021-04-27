@@ -15,6 +15,7 @@ import com.itzme.ui.base.BaseFragment
 import com.itzme.ui.base.IClickOnItems
 import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.Resource
+import com.itzme.utilits.SessionEnded
 import timber.log.Timber
 
 class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Data>,
@@ -75,7 +76,12 @@ class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Da
 
                     when (response.code) {
                         401 -> {
-
+                            SessionEnded.dialogSessionEnded(
+                                    requireActivity(),
+                                    findNavController(),
+                                    R.id.contactFragment,
+                                    ContactFragmentDirections.actionContactFragmentToLoginFragment()
+                            )
                         }
                     }
                 }

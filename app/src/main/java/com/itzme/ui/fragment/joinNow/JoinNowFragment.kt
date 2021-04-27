@@ -137,7 +137,7 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                         }
                         20 -> {
                             binding?.userNameInputLayout?.error =
-                                    requireContext().resources.getString(R.string.invalid_name)
+                                    requireContext().resources.getString(R.string.invalid_user_name)
                         }
                         3, 4, 5 -> {
                             binding?.emailInputLayout?.error =
@@ -172,7 +172,7 @@ class JoinNowFragment : BaseFragment<FragmentJoinNowBinding>() {
                         }
                         20 -> {
                             binding?.userNameInputLayout?.error =
-                                    requireContext().resources.getString(R.string.invalid_name)
+                                    requireContext().resources.getString(R.string.invalid_user_name)
                         }
                     }
                 }

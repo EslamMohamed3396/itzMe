@@ -13,14 +13,10 @@
             android:id="@+id/action_splashFragment_to_joinNowFragment"
             app:destination="@id/joinNowFragment"
             app:enterAnim="@anim/anim_slide_in_left"
-            app:exitAnim="@anim/anim_slide_out_left"
-            app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
+            app:exitAnim="@anim/anim_slide_out_left" />
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_splashFragment_to_myProfileFragment"
             app:destination="@id/myProfileFragment"
@@ -36,16 +32,15 @@
             android:id="@+id/action_joinNowFragment_to_loginFragment2"
             app:destination="@id/loginFragment"
             app:enterAnim="@anim/anim_slide_in_left"
-            app:exitAnim="@anim/anim_slide_out_left"
-            app:popUpTo="@id/joinNowFragment"
-            app:popUpToInclusive="true" />
+            app:exitAnim="@anim/anim_slide_out_left" />
         <action
             android:id="@+id/action_joinNowFragment_to_myProfileFragment"
             app:destination="@id/myProfileFragment"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left"
             app:popUpTo="@id/joinNowFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -55,9 +50,7 @@
             android:id="@+id/action_loginFragment_to_joinNowFragment"
             app:destination="@id/joinNowFragment"
             app:enterAnim="@anim/anim_slide_in_left"
-            app:exitAnim="@anim/anim_slide_out_left"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
+            app:exitAnim="@anim/anim_slide_out_left" />
         <action
             android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
             app:destination="@id/forgetPasswordFragment"
@@ -69,7 +62,8 @@
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left"
             app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment"
@@ -107,6 +101,14 @@
             app:exitAnim="@anim/anim_slide_out_left"
             app:popUpTo="@id/verificationCodeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_verificationCodeFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/verificationCodeFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/newPasswordFragment"
@@ -170,6 +172,26 @@
             app:destination="@id/readItzMeFragment"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_addLinkSheet"
+            app:destination="@id/addLinkSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_addPhoneSheet"
+            app:destination="@id/addPhoneSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_addFindMeSheet"
+            app:destination="@id/addFindMeSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_addPetSheet"
+            app:destination="@id/addPetSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -192,6 +214,14 @@
             app:destination="@id/setNewPasswordFragment"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_settingsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/settingsFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/changeEmailFragment"
@@ -203,6 +233,14 @@
             app:destination="@id/verificationCodeFragment"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_changeEmailFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/changeEmailFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/setNewPasswordFragment"
@@ -218,6 +256,14 @@
             app:destination="@id/contactProfileFragment"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_contactFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/contactFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/myQrCodeFragment"
@@ -247,6 +293,14 @@
             app:destination="@id/addPhoneSheet"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/fragment_close_enter" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/editProfileFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <dialog
         android:id="@+id/addLinkSheet"
@@ -254,7 +308,15 @@
         android:label="AddLinkSheet">
         <argument
             android:name="add_link_args"
-            app:argType="com.itzme.data.models.profile.myProfile.response.Link" />
+            app:argType="com.itzme.data.models.baseResponse.BaseLink" />
+        <action
+            android:id="@+id/action_addLinkSheet_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/addLinkSheet"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </dialog>
     <dialog
         android:id="@+id/addFindMeSheet"
@@ -264,6 +326,14 @@
             android:name="find_me_args"
             app:argType="com.itzme.data.models.profile.myProfile.response.ResponseMyProfile"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_addFindMeSheet_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/addFindMeSheet"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </dialog>
     <dialog
         android:id="@+id/addPetSheet"
@@ -273,6 +343,14 @@
             android:name="pet_args"
             app:argType="com.itzme.data.models.profile.myProfile.response.PetData"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_addPetSheet_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/addPetSheet"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </dialog>
     <fragment
         android:id="@+id/activeListFragment"
@@ -283,18 +361,30 @@
             app:destination="@id/activeProductFragment"
             app:enterAnim="@anim/anim_slide_out_left"
             app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_activeListFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/activeListFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/activeProductFragment"
         android:name="com.itzme.ui.fragment.activeProduct.ActiveProductFragment"
         android:label="ActiveProductFragment">
         <action
-            android:id="@+id/action_activeProductFragment_to_howToUseFragment"
-            app:destination="@id/howToUseFragment"
+            android:id="@+id/action_activeProductFragment_to_readyToScanSheet"
+            app:destination="@id/readyToScanSheet"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_activeProductFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left"
             app:popUpTo="@id/activeProductFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/howToUseFragment"
@@ -331,6 +421,14 @@
             app:destination="@id/readyToScanSheet"
             app:enterAnim="@anim/anim_slide_in_left"
             app:exitAnim="@anim/anim_slide_out_left" />
+        <action
+            android:id="@+id/action_readItzMeFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/readItzMeFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/contactProfileFragment"
@@ -369,6 +467,14 @@
             app:exitAnim="@anim/anim_slide_out_left"
             app:popUpTo="@id/contactProfileFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_contactProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/contactProfileFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </fragment>
     <dialog
         android:id="@+id/petSheetContact"
@@ -377,6 +483,14 @@
         <argument
             android:name="pet_contact_args"
             app:argType="com.itzme.data.models.contact.contactProfile.response.MyLink" />
+        <action
+            android:id="@+id/action_petSheetContact_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/petSheetContact"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </dialog>
 
     <dialog
@@ -386,6 +500,14 @@
         <argument
             android:name="find_me_contact_args"
             app:argType="com.itzme.data.models.contact.contactProfile.response.MyLink" />
+        <action
+            android:id="@+id/action_findMeSheetContact_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/findMeSheetContact"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </dialog>
     <dialog
         android:id="@+id/addPhoneSheet"
@@ -393,7 +515,15 @@
         android:label="AddPhoneSheet">
         <argument
             android:name="add_link_args"
-            app:argType="com.itzme.data.models.profile.myProfile.response.Link" />
+            app:argType="com.itzme.data.models.baseResponse.BaseLink" />
+        <action
+            android:id="@+id/action_addPhoneSheet_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/addPhoneSheet"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </dialog>
     <dialog
         android:id="@+id/addLinkSheetContact"
@@ -402,6 +532,14 @@
         <argument
             android:name="link_contact_profile"
             app:argType="com.itzme.data.models.contact.contactProfile.response.MyLink" />
+        <action
+            android:id="@+id/action_addLinkSheetContact_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/addLinkSheetContact"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true" />
     </dialog>
 
 </navigation>

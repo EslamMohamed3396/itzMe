@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.itzme.R
+import com.itzme.data.models.stateNfc.StateNFC
+import com.itzme.data.models.stateNfc.enmReadWriteItzME.ReadWriteNFC
 import com.itzme.databinding.ActiveProductFragmentBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.utilits.Constant
@@ -36,7 +38,9 @@ class ActiveProductFragment : BaseFragment<ActiveProductFragmentBinding>() {
         }
 
         binding?.joinNowBtn?.setOnClickListener {
-            val action = ActiveProductFragmentDirections.actionActiveProductFragmentToHowToUseFragment()
+            val stateNFC = StateNFC(true, ReadWriteNFC.WRITE_NFC)
+
+            val action = ActiveProductFragmentDirections.actionActiveProductFragmentToReadyToScanSheet(stateNFC)
             findNavController().navigate(action)
         }
     }

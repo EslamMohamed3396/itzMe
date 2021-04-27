@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.itzme.R
 import com.itzme.databinding.SheetSocialPhoneContactBinding
+import com.itzme.utilits.ClickOnLink
 
 
 class AddLinkSheetContact : BottomSheetDialogFragment() {
@@ -44,6 +45,8 @@ class AddLinkSheetContact : BottomSheetDialogFragment() {
     //region bind data
 
     private fun bindData() {
+        val clickOnLink = ClickOnLink()
+        binding.clickLink = clickOnLink
         binding.itemLink = args.linkContactProfile
     }
 

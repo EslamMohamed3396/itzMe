@@ -17,6 +17,7 @@
             name="myProfile"
             type="com.itzme.data.models.profile.myProfile.response.ResponseMyProfile" />
 
+
         <variable
             name="isPrivate"
             type="Boolean" />
@@ -119,8 +120,8 @@
                     android:id="@+id/btn_close"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:visibility="gone"
                     android:src="@drawable/ic_baseline_close_24"
+                    android:visibility="gone"
                     app:civ_circle_background_color="#1c93c1"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_image"
                     app:layout_constraintEnd_toEndOf="@+id/profile_image"
@@ -183,7 +184,8 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:imeOptions="actionDone"
-                    android:inputType="textLongMessage"
+                    android:inputType="textMultiLine"
+                    android:maxLines="100"
                     android:text="@{myProfile.bio}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

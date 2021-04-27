@@ -29,7 +29,8 @@ import com.itzme.utilits.*
 import timber.log.Timber
 
 
-class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItems<ItemMenu> {
+class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItems<ItemMenu>,
+        MyLinkAdapter.IClickOnLink {
 
     private var myLinkList: ArrayList<MyLink>? = null
     private lateinit var toggle: ActionBarDrawerToggle
@@ -42,7 +43,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     private val adapter: ItemMenuAdapter by lazy { ItemMenuAdapter(this) }
 
-    private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter() }
+    private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter(this) }
 
     private var myLink: MyLink? = null
 
@@ -51,7 +52,6 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_my_profile)
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -213,16 +213,31 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     private fun dragDropItemRecyclerView() {
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
-            override fun isLongPressDragEnabled() = true
-            override fun isItemViewSwipeEnabled() = false
+            override fun isLongPressDragEnabled(): Boolean {
+                showToast("Swipe Now!!")
+                return true
+            }
 
-            override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-                val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                val swipeFlags = if (isItemViewSwipeEnabled) ItemTouchHelper.START or ItemTouchHelper.END else 0
+            override fun isItemViewSwipeEnabled(): Boolean {
+                return false
+            }
+
+            override fun getMovementFlags(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                val dragFlags =
+                        ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                val swipeFlags =
+                        if (isItemViewSwipeEnabled) ItemTouchHelper.START or ItemTouchHelper.END else 0
                 return makeMovementFlags(dragFlags, swipeFlags)
             }
 
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+            ): Boolean {
                 if (viewHolder.itemViewType != target.itemViewType)
                     return false
                 val fromPosition = viewHolder.adapterPosition
@@ -233,7 +248,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 Timber.d("${myLinkList!![toPosition].linkType}")
                 Timber.d("${myLinkList!![toPosition].linkTypeName}")
                 Timber.d("${myLinkList!![toPosition].linkIconUrl}")
-                initDirectOnOffViewModel(false, myLinkList!![toPosition].linkType!!)
+                // initDirectOnOffViewModel(false, myLinkList!![toPosition].linkType!!)
                 return true
             }
 
@@ -267,13 +282,12 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     DialogUtil.showDialog(requireContext())
                 }
                 is Resource.Success -> {
-
+                    myLinkAdapter.submitList(null, null)
                     DialogUtil.dismissDialog()
-
                     bindMyProfile(response.data!!)
                     binding?.includeLayout?.isPrivate = response.data.isProfilePrivate
                     if (response.data.myLinks?.isNotEmpty()!!) {
-                        myLinkAdapter.submitList(response.data.myLinks)
+                        myLinkAdapter.submitList(response.data.isDirectOn, response.data.myLinks)
                         myLink = response.data.myLinks[0]
                         myLinkList = response.data.myLinks as ArrayList<MyLink>?
                     } else {
@@ -286,6 +300,14 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     when (response.code) {
                         13, 14 -> {
 
+                        }
+                        401 -> {
+                            SessionEnded.dialogSessionEnded(
+                                    requireActivity(),
+                                    findNavController(),
+                                    R.id.myProfileFragment,
+                                    MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
+                            )
                         }
                     }
                 }
@@ -405,6 +427,21 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         val intent = Intent(Intent.ACTION_VIEW, webpage)
         if (intent.resolveActivity(requireContext().packageManager) != null) {
             startActivity(intent)
+        }
+    }
+
+    override fun clickOnItems(item: MyLink, postion: Int) {
+        when (item.linkType) {
+            in 0..12, in 21..41 -> {
+                val action =
+                        MyProfileFragmentDirections.actionMyProfileFragmentToAddLinkSheet(item)
+                findNavController().navigate(action)
+            }
+            in 13..20 -> {
+                val action =
+                        MyProfileFragmentDirections.actionMyProfileFragmentToAddPhoneSheet(item)
+                findNavController().navigate(action)
+            }
         }
     }
 

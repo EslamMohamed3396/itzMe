@@ -145,7 +145,7 @@ class AddFindMeSheet : BottomSheetDialogFragment() {
                 CheckValidData.checkName(binding.bloodTypeInputLayout) &&
                 CheckValidData.checkName(binding.informationInputLayout) &&
                 CheckValidData.checkName(binding.emNameInputLayout) &&
-                CheckValidData.checkPhone(binding.emPhoneInputLayout)
+                CheckValidData.checkPhone(binding.countryCode, binding.emPhoneInputLayout)
     }
 
     //endregion
@@ -188,7 +188,7 @@ class AddFindMeSheet : BottomSheetDialogFragment() {
                 binding.informationInputLayout.editText?.text.toString(),
                 binding.bloodTypeInputLayout.editText?.text.toString(),
                 binding.emNameInputLayout.editText?.text.toString(),
-                binding.emPhoneInputLayout.editText?.text.toString(),
+                binding.countryCode.fullNumber,
                 null,
                 imageBitmap
         )

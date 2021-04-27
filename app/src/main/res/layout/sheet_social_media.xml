@@ -7,7 +7,12 @@
 
         <variable
             name="itemLink"
-            type="com.itzme.data.models.profile.myProfile.response.Link" />
+            type="com.itzme.data.models.baseResponse.BaseLink" />
+
+        <variable
+            name="clickLink"
+            type="com.itzme.utilits.ClickOnLink" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,18 +91,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="@{itemLink.linkTypeName+` `+@string/link}"
+            android:hint="@{itemLink.linkPlaceholder}"
             app:errorEnabled="true"
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/change_name_inputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/tv_instruction"
             app:layout_constraintVertical_chainStyle="packed"
             app:startIconDrawable="@drawable/ic_link"
             app:startIconTint="@null">
             <!--            app:prefixText="https://www."-->
+            <!--            android:hint="@{itemLink.linkTypeName+` `+@string/link}"-->
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -113,20 +119,29 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/save_btn"
-            style="@style/MaterialButtonStyle"
+            android:id="@+id/remove_btn"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/save"
+            android:backgroundTint="@color/light_red"
+            android:fontFamily="@font/cairo_bold"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/remove"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:textColor="@color/white"
+            app:cornerRadius="@dimen/radius_8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_open"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/link_inputLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/save_btn"
+            app:strokeColor="@color/light_red"
+            app:strokeWidth="2dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_open"
@@ -138,16 +153,41 @@
             android:fontFamily="@font/cairo_bold"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:onClick="@{(view) -> clickLink.clickOnLink(view,itemLink)}"
             android:text="@string/open"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
             android:textColor="@color/dark_blue"
             app:cornerRadius="@dimen/radius_8"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/save_btn"
-            app:layout_constraintTop_toTopOf="@+id/save_btn"
+            app:layout_constraintStart_toEndOf="@+id/remove_btn"
+            app:layout_constraintTop_toTopOf="@+id/remove_btn"
             app:strokeColor="@color/dark_blue"
             app:strokeWidth="2dp" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_btn"
+            style="@style/MaterialButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/save"
+            app:layout_constraintEnd_toEndOf="@+id/link_inputLayout"
+            app:layout_constraintStart_toStartOf="@+id/link_inputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/link_inputLayout" />
+
+        <TextView
+            android:id="@+id/tv_instruction"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{itemLink.linkHint}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        <!--        app:instructionHint="@{itemLink}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

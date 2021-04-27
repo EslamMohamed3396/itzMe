@@ -19,6 +19,7 @@
     <color name="dark_blue">#0F2749</color>
     <color name="light_blue">#59CDFB</color>
     <color name="red">#E74C3C</color>
+    <color name="light_red">#DAFB574B</color>
     <color name="transparent">@android:color/transparent</color>
 
 </resources>

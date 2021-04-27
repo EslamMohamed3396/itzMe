@@ -7,7 +7,7 @@
     <string name="password_match">كلمة المرور غير متطابقة </string>
     <string name="invalidemail">بريد إلكتروني خاطئ </string>
     <string name="name_exist">اسم المستخدم موجود بالفعل </string>
-    <string name="invalid_name">اسم المستخدم غير صحيح </string>
+    <string name="invalid_user_name">اسم المستخدم غير صحيح </string>
     <string name="email_or_password_wrong">البريد الإلكتروني أو كلمة المرور خاطئة </string>
     <string name="join_now">انضم الان</string>
     <string name="log_in">تسجيل دخول</string>
@@ -123,5 +123,9 @@
     <string name="how_use_get_itzme">let’s get itzme</string>
     <string name="content1_use_get_itzme">Your view count is the number of times you share with itzme</string>
     <string name="content2_use_get_itzme">Your QR Code can be accessed on the top right of your profile and in the main menu</string>
+    <string name="remove">مسح</string>
+    <string name="invalid_name">اسم غير صحيح</string>
+    <string name="user_name_hint">username</string>
+    <string name="hyper_link">hyperlink</string>
 
 </resources>

@@ -7,7 +7,7 @@
     <string name="password_match">Password doesn\'t match</string>
     <string name="invalidemail">Invalid Email</string>
     <string name="name_exist">User Name is Already Exist</string>
-    <string name="invalid_name">User Name is Not Valid</string>
+    <string name="invalid_user_name">User Name is Not Valid</string>
     <string name="email_or_password_wrong">Email or Password wrong</string>
     <string name="join_now">Join Now</string>
     <string name="log_in">Log In</string>
@@ -125,4 +125,8 @@
     <string name="how_use_get_itzme">let’s get itzme</string>
     <string name="content1_use_get_itzme">Your view count is the number of times you share with itzme</string>
     <string name="content2_use_get_itzme">Your QR Code can be accessed on the top right of your profile and in the main menu</string>
+    <string name="remove">Remove</string>
+    <string name="invalid_name">Invalid Name</string>
+    <string name="user_name_hint">username</string>
+    <string name="hyper_link">hyperlink</string>
 </resources>

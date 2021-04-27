@@ -1,6 +1,7 @@
 package com.itzme.utilits
 
 import com.google.android.material.textfield.TextInputLayout
+import com.hbb20.CountryCodePicker
 import com.itzme.R
 import java.util.*
 import java.util.regex.Matcher
@@ -27,6 +28,18 @@ object EditTextValidiation {
             false
         }
     }
+
+    fun validPhone(mPhone: CountryCodePicker, mPhoneEdit: TextInputLayout): Boolean {
+        mPhone.registerCarrierNumberEditText(mPhoneEdit.editText)
+        return if (mPhone.isValidFullNumber) {
+            true
+        } else {
+            mPhoneEdit.error = mPhoneEdit.context.resources.getString(R.string.invalidPhone)
+            mPhone.requestFocus()
+            false
+        }
+    }
+
 
     fun isValidUrl(textInputLayout: TextInputLayout): Boolean {
         if (textInputLayout.editText?.text.toString().isEmpty()) {
@@ -109,7 +122,7 @@ object EditTextValidiation {
             true
         } else {
             textInputLayout.error =
-                    textInputLayout.context.resources.getString(R.string.invalid_name)
+                    textInputLayout.context.resources.getString(R.string.invalid_user_name)
             textInputLayout.editText?.requestFocus()
             false
         }
@@ -118,7 +131,8 @@ object EditTextValidiation {
     fun validName(
             textInputLayout: TextInputLayout
     ): Boolean {
-        val validName = "^(?![ .]*$)[\\w\\d\\p{L} .]*$"
+//        val validName = "^(?![ .]*$)[\\w\\d\\p{L} .]*$"
+        val validName = "^[_A-Za-z0-9]{3,20}$"
 
         val mName = textInputLayout.editText?.text.toString().trim().toLowerCase(Locale.ROOT)
         val matcherName: Matcher = Pattern.compile(validName).matcher(mName)
@@ -129,7 +143,7 @@ object EditTextValidiation {
             true
         } else {
             textInputLayout.error =
-                    textInputLayout.context.resources.getString(R.string.invalid)
+                    textInputLayout.context.resources.getString(R.string.invalid_name)
             textInputLayout.editText?.requestFocus()
             false
         }
@@ -181,9 +195,9 @@ object EditTextValidiation {
     fun validPhone(
             textInputLayout: TextInputLayout
     ): Boolean {
-        val passwordPattern = "([0-9]{11})"
+        val phonePattern = "([0-9]{11})"
         val mName = textInputLayout.editText?.text.toString()
-        val matcherName: Matcher = Pattern.compile(passwordPattern).matcher(mName)
+        val matcherName: Matcher = Pattern.compile(phonePattern).matcher(mName)
         return if (matcherName.matches()) {
             textInputLayout.error = null
             true

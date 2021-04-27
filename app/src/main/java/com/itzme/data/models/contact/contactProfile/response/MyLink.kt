@@ -3,36 +3,43 @@ package com.itzme.data.models.contact.contactProfile.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.itzme.data.models.baseResponse.BaseLink
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MyLink(
         @SerializedName("LinkType")
-        val linkType: Int?,
+        override val linkType: Int?,
         @SerializedName("LinkTypeName")
-        val linkTypeName: String?,
+        override val linkTypeName: String?,
+        @SerializedName("LinkPlaceholder")
+        override val linkPlaceholder: String?,
+        @SerializedName("LinkHint")
+        override val linkHint: String?,
+        @SerializedName("LinkValidation")
+        override val linkValidation: String?,
         @SerializedName("LinkIconUrl")
-        val linkIconUrl: String?,
+        override val linkIconUrl: String?,
         @SerializedName("Name")
-        val name: String?,
+        override val name: String?,
         @SerializedName("Link")
-        val link: String?,
+        override val link: String?,
         @SerializedName("ImageUrl")
-        val imageUrl: String?,
+        override val imageUrl: String?,
         @SerializedName("IsHidden")
-        val isHidden: Boolean?,
+        override val isHidden: Boolean?,
         @SerializedName("IsActive")
-        val isActive: Boolean?,
+        override val isActive: Boolean?,
         @SerializedName("Address")
-        val address: String?,
+        override val address: String?,
         @SerializedName("Information")
-        val information: String?,
+        override val information: String?,
         @SerializedName("BloodType")
-        val bloodType: String?,
+        override val bloodType: String?,
         @SerializedName("EmergencyContactName")
-        val emergencyContactName: String?,
+        override val emergencyContactName: String?,
         @SerializedName("EmergencyContactPhone")
-        val emergencyContactPhone: String?,
+        override val emergencyContactPhone: String?,
         @SerializedName("PetType")
-        val petType: String?
-) : Parcelable
+        override val petType: String?
+) : Parcelable, BaseLink()
