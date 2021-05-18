@@ -16,8 +16,10 @@ import com.itzme.data.models.baseResponse.ErrorResponse
 import com.itzme.data.models.contact.contactProfile.response.ResponseContactProfile
 import com.itzme.data.models.contact.myContact.response.ResponseMyContact
 import com.itzme.data.models.contact.removeContact.response.ResponseRemoveContact
+import com.itzme.data.models.metaData.response.ResponseMetaData
 import com.itzme.data.models.notification.request.BodyAddToken
 import com.itzme.data.models.notification.response.ResponsePutToken
+import com.itzme.data.models.profile.changeLinkPostions.response.ResponseChangeLinkPostions
 import com.itzme.data.models.profile.directOnOff.response.ResponseDirectOnOff
 import com.itzme.data.models.profile.editLink.request.BodyEditLink
 import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
@@ -56,20 +58,20 @@ object Client {
                 val httpLoggingInterceptor = HttpLoggingInterceptor()
                 httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
                 sBuilder = OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .addInterceptor(httpLoggingInterceptor)
+                        .connectTimeout(60, TimeUnit.SECONDS)
+                        .readTimeout(60, TimeUnit.SECONDS)
+                        .addInterceptor(httpLoggingInterceptor)
                 sBuilder!!.addInterceptor(Interceptor { chain: Interceptor.Chain ->
                     val original: Request = chain.request()
                     val request: Request = original.newBuilder()
-                        .header(
-                            Constant.AUTHORIZATION,
-                            Constant.BEARER + PreferencesUtils(App.getContext()).getInstance()
-                                ?.getUserData(
-                                    Constant.USER_DATA_KEY
-                                )?.token
-                        )
-                        .build()
+                            .header(
+                                    Constant.AUTHORIZATION,
+                                    Constant.BEARER + PreferencesUtils(App.getContext()).getInstance()
+                                            ?.getUserData(
+                                                    Constant.USER_DATA_KEY
+                                            )?.token
+                            )
+                            .build()
                     chain.proceed(request)
                 })
 
@@ -82,11 +84,11 @@ object Client {
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(Constant.BASE_URL)
-            .client(getUnsafeOkHttpClient()?.build())
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
+                .baseUrl(Constant.BASE_URL)
+                .client(getUnsafeOkHttpClient()?.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
         apiService = retrofit.create(Api::class.java)
     }
 
@@ -100,32 +102,32 @@ object Client {
 
     fun <T> request(api: Observable<T>, callBackNetwork: ICallBackNetwork<T>) {
         api.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<T> {
-                override fun onSubscribe(d: Disposable) {
-                    callBackNetwork.onDisposable(d)
-                }
-
-                override fun onNext(u: T) {
-                    callBackNetwork.onSuccess(u)
-                }
-
-                override fun onError(e: Throwable) {
-
-                    if (e is HttpException) {
-                        val errorBody: String? = e.response()?.errorBody()?.string()
-                        val errorResponse: ErrorResponse? =
-                                Gson().fromJson(errorBody, ErrorResponse::class.java)
-                        callBackNetwork.onFailed(
-                                e.message(),
-                                errorResponse?.errorCode ?: e.code(),
-                                errorResponse?.errorMessage
-                        )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<T> {
+                    override fun onSubscribe(d: Disposable) {
+                        callBackNetwork.onDisposable(d)
                     }
-                }
 
-                override fun onComplete() {}
-            })
+                    override fun onNext(u: T) {
+                        callBackNetwork.onSuccess(u)
+                    }
+
+                    override fun onError(e: Throwable) {
+
+                        if (e is HttpException) {
+                            val errorBody: String? = e.response()?.errorBody()?.string()
+                            val errorResponse: ErrorResponse? =
+                                    Gson().fromJson(errorBody, ErrorResponse::class.java)
+                            callBackNetwork.onFailed(
+                                    e.message(),
+                                    errorResponse?.errorCode ?: e.code(),
+                                    errorResponse?.errorMessage
+                            )
+                        }
+                    }
+
+                    override fun onComplete() {}
+                })
     }
 
 
@@ -177,8 +179,19 @@ object Client {
         return apiService?.MY_CONTACT()!!
     }
 
+    fun changePostion(type: Int,
+                      newPosition: Int,
+                      replacedType: Int,
+                      oldPosition: Int): Observable<ResponseChangeLinkPostions> {
+        return apiService?.CHANGE_POSTION(type, newPosition, replacedType, oldPosition)!!
+    }
+
     fun contactProfile(contactId: Int): Observable<ResponseContactProfile> {
         return apiService?.CONTACT_PROFILE(contactId)!!
+    }
+
+    fun about(): Observable<ResponseMetaData> {
+        return apiService?.ABOUT()!!
     }
 
     fun deleteContact(contactId: Int): Observable<ResponseRemoveContact> {
@@ -206,8 +219,8 @@ object Client {
     }
 
     fun directOnOff(
-        isToggleStatus: Boolean,
-        type: Int
+            isToggleStatus: Boolean,
+            type: Int
     ): Observable<ResponseDirectOnOff> {
         return apiService?.DIRECT_ON_OFF(isToggleStatus, type)!!
     }

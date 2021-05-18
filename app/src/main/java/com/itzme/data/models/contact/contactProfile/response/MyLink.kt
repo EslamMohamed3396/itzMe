@@ -20,6 +20,8 @@ data class MyLink(
         override val linkValidation: String?,
         @SerializedName("LinkIconUrl")
         override val linkIconUrl: String?,
+        @SerializedName("LinkPosition")
+        override val linkPosition: Int?,
         @SerializedName("Name")
         override val name: String?,
         @SerializedName("Link")

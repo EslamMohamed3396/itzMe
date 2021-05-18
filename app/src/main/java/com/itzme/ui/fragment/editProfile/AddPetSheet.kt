@@ -79,14 +79,17 @@ class AddPetSheet : BottomSheetDialogFragment() {
 
     //region check Data
     private fun checkData(): Boolean {
-        return CheckValidData.checkName(binding.petTypeInputLayout) &&
-                CheckValidData.checkName(binding.petNameInputLayout) &&
-                CheckValidData.checkName(binding.petInformationInputLayout) &&
-                CheckValidData.checkName(binding.emNameInputLayout) &&
+        return CheckValidData.checkEditText(binding.petTypeInputLayout) &&
+                CheckValidData.checkEditText(binding.petNameInputLayout) &&
+                CheckValidData.checkEditText(binding.petInformationInputLayout) &&
+                CheckValidData.checkEditText(binding.emNameInputLayout) &&
                 CheckValidData.checkPhone(binding.countryCode, binding.emPhoneInputLayout)
     }
 
     //endregion
+
+
+
 
     //region init view model
 
@@ -126,7 +129,7 @@ class AddPetSheet : BottomSheetDialogFragment() {
                 binding.petInformationInputLayout.editText?.text.toString(),
                 null,
                 binding.emNameInputLayout.editText?.text.toString(),
-                binding.countryCode.fullNumber,
+                binding.emPhoneInputLayout.editText?.text.toString(),
                 binding.petTypeInputLayout.editText?.text.toString(),
                 null
         )

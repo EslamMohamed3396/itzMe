@@ -37,10 +37,16 @@ object Constant {
     const val UPDATE_LINK = ROUTE_PROFILE + "UpdateLink"
     const val CONTACT_PROFILE = ROUTE_PROFILE + "Contact"
     const val TURN_ON_OFF_PROFILE = ROUTE_PROFILE + "togglevisibility"
+    const val CHANGE_POSTION = ROUTE_PROFILE + "ChangePosition"
 
     private const val ROUTE_NOTIFICATIONS = "PushTokens/"
 
     const val ADD_TOKEN = ROUTE_NOTIFICATIONS + "Add"
+
+
+    private const val ROUTE_META_DATAS = "metadata/"
+
+    const val ABOUT = ROUTE_META_DATAS + "about"
 
 
     private const val TAGS = "tags/"

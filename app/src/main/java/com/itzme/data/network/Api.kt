@@ -14,8 +14,10 @@ import com.itzme.data.models.account.verficationCode.response.ResponseConfirmCod
 import com.itzme.data.models.contact.contactProfile.response.ResponseContactProfile
 import com.itzme.data.models.contact.myContact.response.ResponseMyContact
 import com.itzme.data.models.contact.removeContact.response.ResponseRemoveContact
+import com.itzme.data.models.metaData.response.ResponseMetaData
 import com.itzme.data.models.notification.request.BodyAddToken
 import com.itzme.data.models.notification.response.ResponsePutToken
+import com.itzme.data.models.profile.changeLinkPostions.response.ResponseChangeLinkPostions
 import com.itzme.data.models.profile.directOnOff.response.ResponseDirectOnOff
 import com.itzme.data.models.profile.editLink.request.BodyEditLink
 import com.itzme.data.models.profile.editProfile.request.BodyEditProfile
@@ -113,8 +115,8 @@ interface Api {
 
     @GET(Constant.DIRECT_ON_OFF)
     fun DIRECT_ON_OFF(
-        @Query("IsToggleStatus") isToggleStatus: Boolean,
-        @Query("type") type: Int
+            @Query("IsToggleStatus") isToggleStatus: Boolean,
+            @Query("type") type: Int
     ): Observable<ResponseDirectOnOff>
 
     @PUT(Constant.UPDATE_PROFILE)
@@ -129,9 +131,27 @@ interface Api {
 
     @GET(Constant.CONTACT_PROFILE)
     fun CONTACT_PROFILE(
-        @Query("ContactId") contactId: Int,
-        @Query("lang") lang: String = Constant.LANG_NAME
+            @Query("ContactId") contactId: Int,
+            @Query("lang") lang: String = Constant.LANG_NAME
     ): Observable<ResponseContactProfile>
+
+
+    @GET(Constant.CHANGE_POSTION)
+    fun CHANGE_POSTION(
+            @Query("type") type: Int,
+            @Query("newPosition") newPosition: Int,
+            @Query("replacedType") replacedType: Int,
+            @Query("oldPosition") oldPosition: Int
+    ): Observable<ResponseChangeLinkPostions>
+
+
+    //endregion
+
+
+    //region about
+
+    @GET(Constant.ABOUT)
+    fun ABOUT(): Observable<ResponseMetaData>
 
 
     //endregion

@@ -10,6 +10,7 @@ abstract class BaseLink : Parcelable {
     abstract val linkHint: String?
     abstract val linkValidation: String?
     abstract val linkIconUrl: String?
+    abstract val linkPosition: Int?
     abstract val name: String?
     abstract val link: String?
     abstract val imageUrl: String?

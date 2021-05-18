@@ -129,4 +129,5 @@
     <string name="invalid_name">Invalid Name</string>
     <string name="user_name_hint">username</string>
     <string name="hyper_link">hyperlink</string>
+    <string name="he_didn_t_add_any_link_yet">Meet username in person to see their itzme profile</string>
 </resources>

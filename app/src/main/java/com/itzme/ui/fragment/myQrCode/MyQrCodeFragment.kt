@@ -11,13 +11,14 @@ import com.itzme.databinding.FragmentMyQrCodeBinding
 import com.itzme.ui.base.BaseFragment
 import com.itzme.utilits.Constant
 import com.itzme.utilits.PreferencesUtils
+import timber.log.Timber
 
 class MyQrCodeFragment : BaseFragment<FragmentMyQrCodeBinding>() {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_my_qr_code)
     }
@@ -37,8 +38,10 @@ class MyQrCodeFragment : BaseFragment<FragmentMyQrCodeBinding>() {
 
 
     private fun bindQrCode() {
+
+        Timber.d("" + PreferencesUtils(requireContext()).getUserData(Constant.USER_DATA_KEY)?.linkName!!)
         binding?.myLinkName =
-                PreferencesUtils(requireContext()).getUserData(Constant.USER_DATA_KEY)?.linkName!!
+            PreferencesUtils(requireContext()).getUserData(Constant.USER_DATA_KEY)?.linkName!!
         //  generateQRCode(PreferencesUtils(requireContext()).getUserData(Constant.USER_DATA_KEY)?.linkName!!)
     }
     //endregion
@@ -63,8 +66,8 @@ class MyQrCodeFragment : BaseFragment<FragmentMyQrCodeBinding>() {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(
-                    Intent.EXTRA_TEXT,
-                    PreferencesUtils(requireContext()).getUserData(Constant.USER_DATA_KEY)?.linkName!!
+                Intent.EXTRA_TEXT,
+                PreferencesUtils(requireContext()).getUserData(Constant.USER_DATA_KEY)?.linkName!!
             )
             type = "text/plain"
         }

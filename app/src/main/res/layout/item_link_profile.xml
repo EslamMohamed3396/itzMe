@@ -43,16 +43,30 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/im_trick"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="50dp"
+            app:cardCornerRadius="@dimen/radius_round"
             app:layout_constraintBottom_toBottomOf="@+id/materialCardView2"
-            app:layout_constraintEnd_toStartOf="@+id/materialCardView2"
+            app:layout_constraintEnd_toEndOf="@+id/materialCardView2"
             app:layout_constraintStart_toStartOf="@+id/materialCardView2"
             app:layout_constraintTop_toTopOf="@+id/materialCardView2"
-            app:srcCompat="@drawable/check_img" />
+            app:strokeColor="@color/green"
+            app:strokeWidth="3dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="\u2713"
+                android:textColor="@color/green" />
+
+        </com.google.android.material.card.MaterialCardView>
+
 
         <TextView
             android:id="@+id/tv_name"
@@ -61,7 +75,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:text="@{myLink.linkTypeName}"
+            app:customLinkName="@{myLink}"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/materialCardView2"

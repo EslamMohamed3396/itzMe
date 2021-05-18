@@ -149,7 +149,7 @@
                 android:id="@+id/tv_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/you_didn_t_add_any_link_yet"
+                android:text="@string/he_didn_t_add_any_link_yet"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:visibility="gone"

@@ -7,8 +7,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.View
+import android.webkit.URLUtil
 import android.widget.Toast
 import com.itzme.data.models.baseResponse.BaseLink
+import retrofit2.http.Url
 
 
 class ClickOnLink {
@@ -66,11 +68,63 @@ class ClickOnLink {
                 19 -> {
                     openWeChat(view.context, baseLink.link!!)
                 }
+                20 -> {
+                    openSignal(view.context, baseLink.link!!)
+                }
+
                 21 -> {
                     openMaps(view.context, baseLink.link!!)
                 }
+                22 -> {
+                    openSpotify(view.context, baseLink.link!!)
+                }
+                23 -> {
+                    openAppleMusic(view.context, baseLink.link!!)
+                }
+                24 -> {
+                    openSoundCloud(view.context, baseLink.link!!)
+                }
+                25 -> {
+                    openAnghami(view.context, baseLink.link!!)
+                }
+                26 -> {
+                    openPaypal(view.context, baseLink.link!!)
+                }
+                27 -> {
+                    openVenmo(view.context, baseLink.link!!)
+                }
+                28 -> {
+                    openCashapp(view.context, baseLink.link!!)
+                }
                 29 -> {
                     openPinterest(view.context, baseLink.link!!)
+                }
+                30 -> {
+                    openAppStore(view.context, baseLink.link!!)
+                }
+                31 -> {
+                    openBehance(view.context, baseLink.link!!)
+                }
+                32 -> {
+                    openBitbucket(view.context, baseLink.link!!)
+                }
+                33 -> {
+                    openDribble(view.context, baseLink.link!!)
+                }
+                34 -> {
+                    openGithub(view.context, baseLink.link!!)
+                }
+                35 -> {
+                    openGitlab(view.context, baseLink.link!!)
+                }
+                36 -> {
+                    openGooglePlay(view.context, baseLink.link!!)
+                }
+                37 -> {
+                    openHuaweiAppGallery(view.context, baseLink.link!!)
+                }
+                in 38..41 -> {
+                    openLink(view.context, baseLink.link!!)
                 }
             }
 
@@ -121,8 +175,12 @@ class ClickOnLink {
             intent.setPackage("com.pinterest")
             context.startActivity(intent)
         } catch (anfe: ActivityNotFoundException) {
-            context.startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse(urlPt)))
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(urlPt)
+                )
+            )
         }
     }
 
@@ -138,6 +196,253 @@ class ClickOnLink {
         }
     }
 
+    private fun openSpotify(context: Context, name: String) {
+        val urlSpotify = name
+        try {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlSpotify)
+            intent.setPackage("com.spotify.music")
+            context.startActivity(intent)
+
+        } catch (anfe: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(name))
+                )
+            )
+        }
+
+    }
+
+    private fun openSoundCloud(context: Context, name: String) {
+        val urlSoundCloud = name
+        try {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlSoundCloud)
+            intent.setPackage("com.soundcloud.android")
+            context.startActivity(intent)
+        } catch (anfe: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(name))
+                )
+            )
+        }
+
+    }
+
+    private fun openAppleMusic(context: Context, name: String) {
+        val urlAppleMusic = name
+        try {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlAppleMusic)
+            intent.setPackage("com.apple.android.music")
+            context.startActivity(intent)
+
+        } catch (anfe: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(name))
+                )
+            )
+        }
+
+    }
+
+    private fun openAnghami(context: Context, name: String) {
+        val urlAnghami = name
+        try {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlAnghami)
+            intent.setPackage("com.anghami")
+            context.startActivity(intent)
+
+        } catch (anfe: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(name))
+                )
+            )
+        }
+
+    }
+
+    private fun openPaypal(context: Context, name: String) {
+        val urlPaypal = name
+        try {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlPaypal)
+            intent.setPackage("com.paypal.android.p2pmobile")
+            context.startActivity(intent)
+
+        } catch (anfe: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(name))
+                )
+            )
+        }
+
+    }
+
+    private fun openVenmo(context: Context, name: String) {
+        val urlVenmo = name
+        try {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlVenmo)
+            intent.setPackage("com.venmo")
+            context.startActivity(intent)
+
+        } catch (anfe: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(name))
+                )
+            )
+        }
+
+    }
+
+    private fun openCashapp(context: Context, name: String) {
+        val urlCashapp = name
+        try {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlCashapp)
+            intent.setPackage("com.squareup.cash")
+            context.startActivity(intent)
+
+        } catch (anfe: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(name))
+                )
+            )
+        }
+
+    }
+
+    private fun openBehance(context: Context, name: String) {
+        val urlBehance = name
+        try {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlBehance)
+            intent.setPackage("com.behance.behance")
+            context.startActivity(intent)
+
+        } catch (anfe: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(name))
+                )
+            )
+        }
+
+    }
+
+    private fun openGithub(context: Context, name: String) {
+        val urlGithub = name
+        try {
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlGithub)
+            intent.setPackage("com.github.android")
+            context.startActivity(intent)
+
+        } catch (anfe: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(name))
+                )
+            )
+        }
+
+    }
+
+    private fun openBitbucket(context: Context, name: String) {
+
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(getValidUrl(name))
+            )
+        )
+
+    }
+
+    private fun openGitlab(context: Context, name: String) {
+
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(getValidUrl(name))
+            )
+        )
+
+    }
+
+    private fun openGooglePlay(context: Context, name: String) {
+
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(getValidUrl(name))
+            )
+        )
+
+    }
+
+    private fun openHuaweiAppGallery(context: Context, name: String) {
+
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(getValidUrl(name))
+            )
+        )
+
+    }
+
+    private fun openDribble(context: Context, name: String) {
+
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(getValidUrl(name))
+            )
+        )
+
+    }
+
+    private fun openAppStore(context: Context, name: String) {
+
+
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(getValidUrl(name))
+            )
+        )
+
+
+    }
+
     private fun openTikTok(context: Context, name: String) {
         val urlTick = "https://www.tiktok.com/@${name}"
         try {
@@ -148,8 +453,12 @@ class ClickOnLink {
             context.startActivity(intent)
 
         } catch (anfe: ActivityNotFoundException) {
-            context.startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse(urlTick)))
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(urlTick)
+                )
+            )
         }
 
 
@@ -178,8 +487,12 @@ class ClickOnLink {
         try {
             context.startActivity(likeIng)
         } catch (e: ActivityNotFoundException) {
-            context.startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://www.twitch.com/$name")))
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.twitch.com/$name")
+                )
+            )
         }
     }
 
@@ -192,8 +505,12 @@ class ClickOnLink {
         try {
             context.startActivity(likeIng)
         } catch (e: ActivityNotFoundException) {
-            context.startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://www.tumblr.com/blog/view/$name")))
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.tumblr.com/blog/view/$name")
+                )
+            )
         }
     }
 
@@ -206,8 +523,12 @@ class ClickOnLink {
         try {
             context.startActivity(likeIng)
         } catch (e: ActivityNotFoundException) {
-            context.startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://vimeo.com/$name")))
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://vimeo.com/$name")
+                )
+            )
         }
     }
 
@@ -215,9 +536,8 @@ class ClickOnLink {
 
         val appName = "jp.naver.line.android"
         val isAppInstalled: Boolean = isAppAvailable(context.applicationContext, appName)
-
         if (isAppInstalled) {
-            val uri = Uri.parse("https://line.me/R/oaMessage/@$name/?Hi")
+            val uri = Uri.parse("https://line.me/R/oaMessage/@$name")
 
             val likeIng = Intent(Intent.ACTION_VIEW, uri)
 
@@ -238,8 +558,12 @@ class ClickOnLink {
             intent.setPackage("com.twitter.android")
             context.startActivity(intent)
         } catch (anfe: ActivityNotFoundException) {
-            context.startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse(urlTw)))
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(urlTw)
+                )
+            )
         }
     }
 
@@ -253,7 +577,7 @@ class ClickOnLink {
             uri = Uri.parse("fb://facewebmodal/f?href=$url")
             intent = Intent(Intent.ACTION_VIEW, uri)
         } else {
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            intent = Intent(Intent.ACTION_VIEW, Uri.parse(getValidUrl(url)))
         }
         context.startActivity(intent)
     }
@@ -265,8 +589,12 @@ class ClickOnLink {
         try {
             context.startActivity(likeIng)
         } catch (e: ActivityNotFoundException) {
-            context.startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://instagram.com/$name")))
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://instagram.com/$name")
+                )
+            )
         }
     }
 
@@ -293,6 +621,7 @@ class ClickOnLink {
 
     private fun openTelegram(context: Context, name: String?) {
         val appName = "org.telegram.messenger"
+
         val isAppInstalled: Boolean = isAppAvailable(context.applicationContext, appName)
         if (isAppInstalled) {
             val telegram = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$name"))
@@ -300,6 +629,18 @@ class ClickOnLink {
             context.startActivity(telegram)
         } else {
             Toast.makeText(context, "Telegram not Installed", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openSignal(context: Context, number: String?) {
+        val appName = "org.thoughtcrime.securesms"
+        val isAppInstalled: Boolean = isAppAvailable(context.applicationContext, appName)
+        if (isAppInstalled) {
+            val telegram = Intent(Intent.ACTION_VIEW, Uri.parse("Sgnl://message/$number"))
+            telegram.setPackage("org.thoughtcrime.securesms")
+            context.startActivity(telegram)
+        } else {
+            Toast.makeText(context, "Signal not Installed", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -329,7 +670,7 @@ class ClickOnLink {
 
     private fun openLink(context: Context, url: String) {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url) // only used based on your example.
+        intent.data = Uri.parse(getValidUrl(url)) // only used based on your example.
 
 
         val title = "Select a browser"
@@ -352,15 +693,13 @@ class ClickOnLink {
         }
     }
 
-
-    private fun openWebPage(context: Context, url: String?) {
-        val webpage: Uri = Uri.parse(url)
-        val intent = Intent(Intent.ACTION_VIEW, webpage)
-        if (intent.resolveActivity(context.packageManager) != null) {
-            context.startActivity(intent)
+    private fun getValidUrl(url: String): String {
+        return if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            URLUtil.guessUrl(url)
+        } else {
+            url
         }
     }
-
 
 //    private fun openLine(context: Context, url: String?) {
 //        val intent = Intent()

@@ -17,8 +17,8 @@ class ActiveProductFragment : BaseFragment<ActiveProductFragmentBinding>() {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.active_product_fragment)
     }
@@ -26,9 +26,11 @@ class ActiveProductFragment : BaseFragment<ActiveProductFragmentBinding>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding?.toolbar?.titleTv?.text = requireContext().resources.getString(R.string.active_product)
+        binding?.toolbar?.titleTv?.text =
+            requireContext().resources.getString(R.string.active_product)
         initClick()
         bindData()
+        initSharedViewModel()
     }
 
     //region init click
@@ -40,7 +42,10 @@ class ActiveProductFragment : BaseFragment<ActiveProductFragmentBinding>() {
         binding?.joinNowBtn?.setOnClickListener {
             val stateNFC = StateNFC(true, ReadWriteNFC.WRITE_NFC)
 
-            val action = ActiveProductFragmentDirections.actionActiveProductFragmentToReadyToScanSheet(stateNFC)
+            val action =
+                ActiveProductFragmentDirections.actionActiveProductFragmentToReadyToScanSheet(
+                    stateNFC
+                )
             findNavController().navigate(action)
         }
     }
@@ -49,9 +54,31 @@ class ActiveProductFragment : BaseFragment<ActiveProductFragmentBinding>() {
 
     //region bind data
     private fun bindData() {
-        binding?.myLink = PreferencesUtils(requireContext()).getInstance()?.getUserData(Constant.USER_DATA_KEY)?.linkName
+        binding?.myLink = PreferencesUtils(requireContext()).getInstance()
+            ?.getUserData(Constant.USER_DATA_KEY)?.linkName
     }
 
+
+    //endregion
+
+    //region init sharedViewModel
+    private fun initSharedViewModel() {
+        sharedViewModel.notifyToMyProfile.observe(viewLifecycleOwner, { notify ->
+            if (notify) {
+                if (findNavController().currentDestination?.id == R.id.activeProductFragment) {
+                    val action =
+                        ActiveProductFragmentDirections.actionActiveProductFragmentToMyProfileFragment()
+                    findNavController().navigate(action)
+                } else if (findNavController().currentDestination?.id == R.id.readyToScanSheet) {
+                    findNavController().navigateUp()
+                    val action =
+                        ActiveProductFragmentDirections.actionActiveProductFragmentToMyProfileFragment()
+                    findNavController().navigate(action)
+                }
+                sharedViewModel.saveNotify(false)
+            }
+        })
+    }
 
     //endregion
 }

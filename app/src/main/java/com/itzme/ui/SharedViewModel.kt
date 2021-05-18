@@ -10,8 +10,8 @@ class SharedViewModel : ViewModel() {
     private var _dismissed = MutableLiveData<Boolean>()
     val dismissed: LiveData<Boolean> get() = _dismissed
 
-    private var _notify = MutableLiveData<Boolean>()
-    val notify: LiveData<Boolean> get() = _notify
+    private var _notifyToMyProfile = MutableLiveData<Boolean>()
+    val notifyToMyProfile: LiveData<Boolean> get() = _notifyToMyProfile
 
     private var _stateNfc = MutableLiveData<StateNFC>()
     val stateNfc: LiveData<StateNFC> get() = _stateNfc
@@ -21,7 +21,7 @@ class SharedViewModel : ViewModel() {
     }
 
     fun saveNotify(notify: Boolean) {
-        _notify.value = notify
+        _notifyToMyProfile.value = notify
     }
 
     fun saveState(stateNfc: StateNFC) {

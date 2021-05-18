@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -33,8 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 app:el_duration="500"
                 app:el_expanded="false"
                 app:el_parallax="0.5"
@@ -47,8 +48,10 @@
                     android:id="@+id/recycler_view_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:clipToPadding="false"
                     android:orientation="vertical"
                     android:overScrollMode="never"
+                    tools:listitem="@layout/item_my_link"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:reverseLayout="false"
                     app:spanCount="4" />

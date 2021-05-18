@@ -6,14 +6,17 @@ import android.graphics.Color
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.textfield.TextInputLayout
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.itzme.R
+import com.itzme.data.models.baseResponse.BaseLink
 import timber.log.Timber
 
 
@@ -27,9 +30,9 @@ fun loadImageDrawable(imageView: ImageView, image: Int) {
 fun imageLoadUrl(imageView: ImageView, url: String?) {
     if (url != null) {
         Glide.with(imageView.context)
-                .load(Constant.BASE_URL_IMAGE + url)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(imageView)
+            .load(Constant.BASE_URL_IMAGE + url)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .into(imageView)
     }
 }
 
@@ -41,7 +44,8 @@ fun imageLoadQrCode(imageView: ImageView, linkeName: String?) {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val codeWriter = MultiFormatWriter()
         try {
-            val bitMatrix = codeWriter.encode(linkeName, BarcodeFormat.QR_CODE, width, height)
+            val bitMatrix =
+                codeWriter.encode("http://$linkeName", BarcodeFormat.QR_CODE, width, height)
             for (x in 0 until width) {
                 for (y in 0 until height) {
                     bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
@@ -52,9 +56,9 @@ fun imageLoadQrCode(imageView: ImageView, linkeName: String?) {
         }
 
         Glide.with(imageView.context)
-                .load(bitmap)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .into(imageView)
+            .load(bitmap)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .into(imageView)
     }
 }
 
@@ -73,11 +77,11 @@ fun isDirectOn(button: Button, isOn: Boolean) {
     if (isOn) {
         button.text = button.context.getString(R.string.direct_on)
         button.backgroundTintList =
-                ColorStateList.valueOf(button.context.getColor(R.color.purple_200))
+            ColorStateList.valueOf(button.context.getColor(R.color.purple_200))
     } else {
         button.text = button.context.resources.getString(R.string.direct_off)
         button.backgroundTintList =
-                ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
+            ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
     }
 }
 
@@ -166,28 +170,62 @@ fun isDirectOn(button: Button, isOn: Boolean) {
 //    }
 //}
 //
-//@BindingAdapter("hintName")
-//fun hintName(textInputLayout: TextInputLayout, link: BaseLink) {
-//    when (link.linkType) {
-//        0, 1, 7, 9, 11, 12, 22, 23, 25, 26, in 30..41 -> {
-//            textInputLayout.hint =
-//                    "${link.linkTypeName} ${textInputLayout.context.resources.getString(R.string.link)}"
-//
-//        }
-//        in 2..6, 8, 10, in 18..20, 24, in 27..29 -> {
-//            textInputLayout.hint =
-//                    "${link.linkTypeName} ${textInputLayout.context.resources.getString(R.string.user_name_hint)}"
-//        }
-//        in 14..17, 21 -> {
-//            textInputLayout.hint =
-//                    "${link.linkTypeName} ${textInputLayout.context.resources.getString(R.string.hyper_link)}"
-//        }
-//    }
-//}
+@BindingAdapter("hintName")
+fun hintName(textInputLayout: TextInputLayout, link: BaseLink) {
+    when (link.linkType) {
+        0, 1, 7, 9, 11, 12, 22, 23, 24, 25, 26, in 30..41 -> {
+            textInputLayout.hint =
+                "${link.linkTypeName} ${textInputLayout.context.resources.getString(R.string.link)}"
+
+        }
+        in 2..6, 8, 10, in 18..20, in 27..29 -> {
+            textInputLayout.hint =
+                "${link.linkTypeName} ${textInputLayout.context.resources.getString(R.string.user_name_hint)}"
+        }
+        in 14..17, 21 -> {
+            textInputLayout.hint =
+                "${link.linkTypeName} ${textInputLayout.context.resources.getString(R.string.hyper_link)}"
+        }
+    }
+}
+
 
 @BindingAdapter("isProfilePrivate")
 fun isProfilePrivate(button: SwitchMaterial, isPrivate: Boolean) {
     button.isChecked = isPrivate
+}
+
+
+@BindingAdapter("setPrefixText")
+fun setPrefixText(textInputLayout: TextInputLayout, link: BaseLink) {
+    when (link.linkType) {
+        0, 1, 7, 9, 11, 12, 22, 23, 24, 25, 26, in 30..41 -> {
+            if (link.link != null && !link?.link?.startsWith("http://")!! && !link.link?.startsWith(
+                    "https://"
+                )!!
+            ) {
+                textInputLayout.prefixText = "http://"
+            }
+        }
+
+    }
+}
+
+@BindingAdapter("customLinkName")
+fun customLinkName(textView: TextView, link: BaseLink) {
+    when (link.linkType) {
+        in 39..41 -> {
+            if (!link.name.isNullOrEmpty()) {
+                textView.text = link.name
+            } else {
+                textView.text = link.linkTypeName
+            }
+        }
+        else -> {
+            textView.text = link.linkTypeName
+        }
+
+    }
 }
 
 @BindingAdapter("isActive")
@@ -201,7 +239,7 @@ fun isActiveForButton(button: Button, isActive: Boolean) {
         button.setTextColor(ColorStateList.valueOf(button.context.getColor(R.color.white)))
         button.text = button.context.getString(R.string.deactive)
         button.backgroundTintList =
-                ColorStateList.valueOf(button.context.getColor(R.color.green))
+            ColorStateList.valueOf(button.context.getColor(R.color.green))
     }
 }
 
@@ -211,12 +249,12 @@ fun langEn(button: Button, language: String?) {
         Constant.ENGLISH_LANGUAGE -> {
             button.text = button.context.getString(R.string.english)
             button.backgroundTintList =
-                    ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
+                ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
         }
         Constant.ARABIC_LANGUAGE -> {
             button.text = button.context.getString(R.string.english)
             button.backgroundTintList =
-                    ColorStateList.valueOf(button.context.getColor(R.color.gray))
+                ColorStateList.valueOf(button.context.getColor(R.color.gray))
         }
         else -> {
             return
@@ -230,16 +268,18 @@ fun langAr(button: Button, language: String?) {
         Constant.ENGLISH_LANGUAGE -> {
             button.text = button.context.getString(R.string.arabic)
             button.backgroundTintList =
-                    ColorStateList.valueOf(button.context.getColor(R.color.gray))
+                ColorStateList.valueOf(button.context.getColor(R.color.gray))
         }
         Constant.ARABIC_LANGUAGE -> {
             button.text = button.context.getString(R.string.arabic)
             button.backgroundTintList =
-                    ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
+                ColorStateList.valueOf(button.context.getColor(R.color.dark_blue))
         }
         else -> {
             return
         }
     }
 }
+
+
 

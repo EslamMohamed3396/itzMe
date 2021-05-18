@@ -20,6 +20,7 @@
         android:background="@drawable/background_splash">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView5"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
@@ -34,23 +35,58 @@
             app:reverseLayout="false"
             tools:listitem="@layout/item_menu_list" />
 
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/stattabus_tabLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/menu_switch_selected"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicator="@drawable/menu_thumb_selector"
+            app:tabIndicatorColor="@color/gray"
+            app:tabIndicatorGravity="stretch"
+            app:tabMode="fixed"
+            app:tabPadding="10dp"
+            app:tabSelectedTextColor="@color/black">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/past_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/itzme_off" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/active_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/itzme_on" />
+        </com.google.android.material.tabs.TabLayout>
+
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/toggleButton"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_marginTop="32dp"
+            android:background="@drawable/menu_switch_selected"
             android:checked="@{!isPrivate}"
-            android:textColor="@drawable/text_thumb_selector"
-            android:textColorHint="@color/white"
+            android:paddingStart="1dp"
+            android:paddingEnd="1dp"
+            android:textColor="@color/control_switch_color_selector"
             android:textOff="@string/itzme_off"
             android:textOn="@string/itzme_on"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:thumb="@drawable/menu_thumb_selector"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stattabus_tabLayout"
             app:showText="true"
-            app:track="@drawable/menu_switch_selector"
             app:trackTint="@color/white"
             app:useMaterialThemeColors="false" />
 

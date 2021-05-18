@@ -17,6 +17,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:behavior_draggable="false"
+            app:behavior_skipCollapsed="false"
+            app:behavior_fitToContents="true"
+            app:behavior_peekHeight="400dp"
             android:background="@drawable/bottom_sheet_round"
             app:behavior_hideable="true"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -230,6 +235,7 @@
                 android:enabled="false"
                 android:hint="@string/phone"
                 app:errorEnabled="false"
+                android:paddingBottom="16dp"
                 app:hintTextColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

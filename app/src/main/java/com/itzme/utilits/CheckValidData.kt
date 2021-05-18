@@ -32,6 +32,10 @@ object CheckValidData {
         return EditTextValidiation.validUserName(inputLayout)
     }
 
+    fun checkEditText(inputLayout: TextInputLayout): Boolean {
+        return EditTextValidiation.validEditText(inputLayout)
+    }
+
     fun checkPhone(mPhone: CountryCodePicker, inputLayout: TextInputLayout): Boolean {
         return EditTextValidiation.validPhone(mPhone, inputLayout)
     }

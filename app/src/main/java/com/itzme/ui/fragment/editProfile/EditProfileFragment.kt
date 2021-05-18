@@ -70,13 +70,21 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         sharedViewModel.dismissed.observe(viewLifecycleOwner, { isDissmis ->
             Timber.d("isDissmis $isDissmis")
             if (isDissmis) {
-                initMyProfileViewModel()
+                goToMyProfileFragment()
+                sharedViewModel.saveDismissed(false)
+//                initMyProfileViewModel()
             }
         })
     }
 
     //endregion
 
+
+    private fun goToMyProfileFragment()
+    {
+        val action = EditProfileFragmentDirections.actionEditProfileFragmentToMyProfileFragment()
+        findNavController().navigate(action)
+    }
 
     //region convert image from url to bitmap encoding
     private fun convertImage(urlImage: String?) {
@@ -102,7 +110,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
     //region check data
     private fun checkData(): Boolean {
-        return EditTextValidiation.validName(binding?.edName!!)
+        return EditTextValidiation.validUserName(binding?.edName!!)
     }
 
 
@@ -110,8 +118,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         binding?.edName?.editText?.doOnTextChanged { _, _, _, _ ->
             EditTextValidiation.validUserName(binding?.edName!!)
         }
-
-
     }
     //endregion
 
@@ -280,6 +286,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
                     Toast.makeText(requireContext(), requireContext().resources.getString(R.string.profile_updated), Toast.LENGTH_SHORT).show()
+                    goToMyProfileFragment()
                     binding?.edName?.editText?.isCursorVisible = false
                     binding?.bioInputLayout?.editText?.isCursorVisible = false
                 }
@@ -347,6 +354,16 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
             in 13..20 -> {
                 val action =
                         EditProfileFragmentDirections.actionEditProfileFragmentToAddPhoneSheet(item)
+                findNavController().navigate(action)
+            }
+            42 -> {
+                val action =
+                        EditProfileFragmentDirections.actionEditProfileFragmentToAddPetSheet(petData)
+                findNavController().navigate(action)
+            }
+            43 -> {
+                val action =
+                        EditProfileFragmentDirections.actionEditProfileFragmentToAddFindMeSheet(findMeData)
                 findNavController().navigate(action)
             }
         }

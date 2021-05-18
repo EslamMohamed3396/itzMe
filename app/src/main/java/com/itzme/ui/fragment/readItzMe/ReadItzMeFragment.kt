@@ -46,7 +46,6 @@ class ReadItzMeFragment : BaseFragment<FragmentReadItzMeBinding>() {
         sharedViewModel.dismissed.observe(viewLifecycleOwner, { dismissed ->
             if (dismissed) {
                 if (findNavController().currentDestination?.id == R.id.readyToScanSheet) {
-                    Timber.d("$dismissed")
                     findNavController().navigateUp()
                     val action = ReadItzMeFragmentDirections.actionReadItzMeFragmentToContactFragment()
                     findNavController().navigate(action)

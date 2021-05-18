@@ -27,9 +27,9 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = SheetSocialPhoneBinding.inflate(inflater, container, false)
         return binding.root
@@ -66,11 +66,13 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
         }
         binding.saveBtn.setOnClickListener {
             if (checkData()) {
-                initEditLinkViewModel(binding.countryCode.fullNumber)
+                initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString())
             }
         }
         binding.removeBtn.setOnClickListener {
-            initEditLinkViewModel(binding.countryCode.fullNumber)
+            if (checkBeforeRemove()) {
+                initEditLinkViewModel("")
+            }
         }
 
     }
@@ -82,6 +84,10 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
         return CheckValidData.checkPhone(binding.countryCode, binding.linkInputLayout)
     }
 
+
+    private fun checkBeforeRemove(): Boolean {
+        return binding.linkInputLayout.editText?.text.toString().isNotEmpty()
+    }
     //endregion
 
     //region init view model
@@ -113,18 +119,18 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
 
     private fun bodyEditLink(link: String): BodyEditLink {
         return BodyEditLink(
-                args.addLinkArgs.linkType,
-                null,
-                link,
-                0,
-                0,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
+            args.addLinkArgs.linkType,
+            null,
+            link,
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         )
     }
 

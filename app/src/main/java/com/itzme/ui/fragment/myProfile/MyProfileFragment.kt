@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.itzme.R
@@ -26,20 +27,24 @@ import com.itzme.ui.fragment.myProfile.adapter.ItemMenuAdapter
 import com.itzme.ui.fragment.myProfile.adapter.MyLinkAdapter
 import com.itzme.ui.fragment.myProfile.viewModels.*
 import com.itzme.utilits.*
+import com.itzme.view.SwitchTrackTextDrawable
 import timber.log.Timber
+import java.util.*
 
 
 class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItems<ItemMenu>,
-        MyLinkAdapter.IClickOnLink {
+    MyLinkAdapter.IClickOnLink {
 
     private var myLinkList: ArrayList<MyLink>? = null
     private lateinit var toggle: ActionBarDrawerToggle
 
     private val viewModel: MyProfileViewModel by viewModels()
+    private val viewModelAbout: AboutViewModel by viewModels()
     private val viewModelToken: AddTokenViewModel by viewModels()
     private val viewModelDirect: DirectOnOffViewModel by viewModels()
     private val viewModelLogOut: LogOutViewModel by viewModels()
     private val viewModelTurnOnOff: TurnOnOffProfileViewModel by viewModels()
+    private val viewModelChangePostionLinks: ChangePostionLinksViewModel by viewModels()
 
     private val adapter: ItemMenuAdapter by lazy { ItemMenuAdapter(this) }
 
@@ -47,9 +52,16 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     private var myLink: MyLink? = null
 
+    private var oldPostion: Int? = null
+    private var newPosition: Int? = null
+    private var oldPostionPlusOne: Int? = null
+
+    private var newPositionPlusOne: Int? = null
+
+
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_my_profile)
     }
@@ -61,6 +73,18 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         fillDataToNavigation()
         initMyProfileViewModel()
         initAddTokenViewModel()
+        initSharedViewModel()
+    }
+
+
+    private fun initSharedViewModel() {
+        sharedViewModel.dismissed.observe(viewLifecycleOwner, { isDissmis ->
+            Timber.d("isDissmis $isDissmis")
+            if (isDissmis) {
+               initMyProfileViewModel()
+                sharedViewModel.saveDismissed(false)
+            }
+        })
     }
 
 
@@ -89,6 +113,12 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             findContrller(action)
         }
 
+        binding?.includeLayout?.toggleButton?.setTrackDrawable(
+            SwitchTrackTextDrawable(
+                requireContext(),
+                R.string.itzme_off, R.string.itzme_on
+            )
+        )
         binding?.includeLayout?.toggleButton?.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isPressed) {
                 initTurnOnOffProfileViewModel()
@@ -100,10 +130,10 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     //region navigation drawer
     private fun initNavDrawer() {
         toggle = ActionBarDrawerToggle(
-                requireActivity(),
-                binding?.drawerLayout,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close
+            requireActivity(),
+            binding?.drawerLayout,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         binding?.drawerLayout?.addDrawerListener(toggle)
         toggle.syncState()
@@ -125,11 +155,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         binding?.includeLayout?.menuAdapter = adapter
         val itemMenuList = ArrayList<ItemMenu>()
         itemMenuList.add(
-                ItemMenu(
-                        1,
-                        requireContext().resources.getString(R.string.home),
-                        R.drawable.home
-                )
+            ItemMenu(
+                1,
+                requireContext().resources.getString(R.string.home),
+                R.drawable.home
+            )
         )
         itemMenuList.add(ItemMenu(2, getString(R.string.my_account), R.drawable.my_contact))
         itemMenuList.add(ItemMenu(3, getString(R.string.edit_profile), R.drawable.profile_user))
@@ -166,17 +196,17 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             }
             3 -> {
                 val action =
-                        MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
+                    MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
                 findContrller(action)
             }
             4 -> {
                 val action =
-                        MyProfileFragmentDirections.actionMyProfileFragmentToActiveListFragment()
+                    MyProfileFragmentDirections.actionMyProfileFragmentToActiveListFragment()
                 findContrller(action)
             }
             5 -> {
                 val action =
-                        MyProfileFragmentDirections.actionMyProfileFragmentToReadItzMeFragment()
+                    MyProfileFragmentDirections.actionMyProfileFragmentToReadItzMeFragment()
                 findContrller(action)
             }
             6 -> {
@@ -184,7 +214,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 findContrller(action)
             }
             7 -> {
-                openWebPage(Constant.FACEBOOK_LINK)
+                initAboutViewModel()
             }
             8 -> {
                 val action = MyProfileFragmentDirections.actionMyProfileFragmentToHowToUseFragment()
@@ -223,32 +253,45 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             }
 
             override fun getMovementFlags(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
             ): Int {
-                val dragFlags =
+                return if (recyclerView.layoutManager is GridLayoutManager) {
+                    val dragFlags =
                         ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                val swipeFlags =
-                        if (isItemViewSwipeEnabled) ItemTouchHelper.START or ItemTouchHelper.END else 0
-                return makeMovementFlags(dragFlags, swipeFlags)
+                    val swipeFlags = 0
+                    makeMovementFlags(dragFlags, swipeFlags)
+                } else {
+                    val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+                    val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+                    makeMovementFlags(dragFlags, swipeFlags)
+                }
             }
 
             override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
             ): Boolean {
-                if (viewHolder.itemViewType != target.itemViewType)
+                if (viewHolder.itemViewType != target.itemViewType) {
                     return false
-                val fromPosition = viewHolder.adapterPosition
-                val toPosition = target.adapterPosition
-                val item = myLinkList?.removeAt(fromPosition)
-                myLinkList?.add(toPosition, item!!)
-                recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
-                Timber.d("${myLinkList!![toPosition].linkType}")
-                Timber.d("${myLinkList!![toPosition].linkTypeName}")
-                Timber.d("${myLinkList!![toPosition].linkIconUrl}")
-                // initDirectOnOffViewModel(false, myLinkList!![toPosition].linkType!!)
+                }
+
+                oldPostion = viewHolder.adapterPosition
+                newPosition = target.adapterPosition
+//                Timber.d("onMove linkTypeName ${myLinkList!![oldPostion!!].linkTypeName}")
+//                Timber.d("onMove linkType ${myLinkList!![oldPostion!!].linkType}")
+//
+//
+//                Timber.d("onMove linkTypeName ${myLinkList!![newPosition!!].linkTypeName}")
+//                Timber.d("onMove linkType ${myLinkList!![newPosition!!].linkType}")
+
+                val item = myLinkList?.removeAt(oldPostion!!)
+                myLinkList?.add(newPosition!!, item!!)
+                recyclerView.adapter!!.notifyItemMoved(oldPostion!!, newPosition!!)
+
+
+                // initDirectOnOffViewModel(false, myLinkList!![newPosition].linkType!!)
                 return true
             }
 
@@ -256,6 +299,39 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 val position = viewHolder.adapterPosition
                 myLinkList?.removeAt(position)
                 binding?.recyclerView6?.adapter!!.notifyItemRemoved(position)
+            }
+
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
+                super.clearView(recyclerView, viewHolder)
+
+                val oldPostionPlusOne = oldPostion!! + 1
+
+                val newPositionPlusOne = newPosition!! + 1
+
+
+                // Timber.d("clearView adapterPosition ${viewHolder.adapterPosition}")
+                Timber.d("clearView oldPostion ${oldPostion}")
+                Timber.d("clearView oldPostionPlusOne ${oldPostionPlusOne}")
+
+                Timber.d("clearView newPosition ${newPosition}")
+                Timber.d("clearView newPositionPlusOne ${newPositionPlusOne}")
+//                Timber.d("clearView linkTypeName ${myLinkList!![viewHolder.adapterPosition].linkTypeName}")
+//                Timber.d("clearView linkType ${myLinkList!![viewHolder.adapterPosition].linkType}")
+//
+//
+//                Timber.d("clearView linkTypeName ${myLinkList!![fromPosition!!].linkTypeName}")
+//                Timber.d("clearView linkType ${myLinkList!![fromPosition!!].linkType}")
+//                initChangePostionLinksViewModel(
+//                        type = myLinkList!![viewHolder.adapterPosition].linkType!!,
+//                        newPosition = fromPositionPlusOne!!,
+//                        replacedType = myLinkList!![fromPosition!!].linkType!!,
+//                        oldPosition = toPositionPlusOne!!)
+
+                // Called by the ItemTouchHelper when the user interaction with an element is over and it also completed its animation
+                // This is a good place to send update to your backend about changes
             }
 
         })
@@ -286,7 +362,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     DialogUtil.dismissDialog()
                     bindMyProfile(response.data!!)
                     binding?.includeLayout?.isPrivate = response.data.isProfilePrivate
+
                     if (response.data.myLinks?.isNotEmpty()!!) {
+//                        if (myLinkList != null) {
+//                            myLinkList?.clear()
+//                        }
                         myLinkAdapter.submitList(response.data.isDirectOn, response.data.myLinks)
                         myLink = response.data.myLinks[0]
                         myLinkList = response.data.myLinks as ArrayList<MyLink>?
@@ -303,10 +383,41 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                         }
                         401 -> {
                             SessionEnded.dialogSessionEnded(
-                                    requireActivity(),
-                                    findNavController(),
-                                    R.id.myProfileFragment,
-                                    MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
+                                requireActivity(),
+                                findNavController(),
+                                R.id.myProfileFragment,
+                                MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
+                            )
+                        }
+                    }
+                }
+
+            }
+        })
+
+    }
+
+    private fun initAboutViewModel() {
+
+        viewModelAbout.about().observe(viewLifecycleOwner, { response ->
+            when (response) {
+                is Resource.Loading -> {
+                    DialogUtil.showDialog(requireContext())
+                }
+                is Resource.Success -> {
+                    DialogUtil.dismissDialog()
+                    openLink(response.data?.data?.facebookLink)
+                }
+                is Resource.Error -> {
+                    DialogUtil.dismissDialog()
+
+                    when (response.code) {
+                        401 -> {
+                            SessionEnded.dialogSessionEnded(
+                                requireActivity(),
+                                findNavController(),
+                                R.id.myProfileFragment,
+                                MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
                             )
                         }
                     }
@@ -319,23 +430,50 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     private fun initDirectOnOffViewModel(isToogleStatus: Boolean, linkType: Int) {
         viewModelDirect.directOnOff(isToogleStatus, linkType)
-                .observe(viewLifecycleOwner, { response ->
-                    when (response) {
-                        is Resource.Loading -> {
-                        }
-                        is Resource.Success -> {
-                            initMyProfileViewModel()
-                        }
-                        is Resource.Error -> {
-                            when (response.code) {
-                                13, 14 -> {
+            .observe(viewLifecycleOwner, { response ->
+                when (response) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        initMyProfileViewModel()
+                    }
+                    is Resource.Error -> {
+                        when (response.code) {
+                            13, 14 -> {
 
-                                }
                             }
                         }
-
                     }
-                })
+
+                }
+            })
+
+    }
+
+    private fun initChangePostionLinksViewModel(
+        type: Int,
+        newPosition: Int,
+        replacedType: Int,
+        oldPosition: Int
+    ) {
+        viewModelChangePostionLinks.changePostion(type, newPosition, replacedType, oldPosition)
+            .observe(viewLifecycleOwner, { response ->
+                when (response) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        initMyProfileViewModel()
+                    }
+                    is Resource.Error -> {
+                        when (response.code) {
+                            13, 14 -> {
+
+                            }
+                        }
+                    }
+
+                }
+            })
 
     }
 
@@ -394,7 +532,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     DialogUtil.dismissDialog()
                     clearSession()
                     val action =
-                            MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
+                        MyProfileFragmentDirections.actionMyProfileFragmentToLoginFragment()
                     findContrller(action)
                 }
                 is Resource.Error -> {
@@ -422,24 +560,28 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
 
     //region open buy itzme online store
-    private fun openWebPage(url: String?) {
-        val webpage: Uri = Uri.parse(url)
-        val intent = Intent(Intent.ACTION_VIEW, webpage)
-        if (intent.resolveActivity(requireContext().packageManager) != null) {
-            startActivity(intent)
-        }
+    private fun openLink(url: String?) {
+        Timber.d(url)
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+
+
+        val title = "Select a browser"
+
+        val chooser = Intent.createChooser(intent, title)
+        startActivity(chooser)
     }
 
     override fun clickOnItems(item: MyLink, postion: Int) {
         when (item.linkType) {
             in 0..12, in 21..41 -> {
                 val action =
-                        MyProfileFragmentDirections.actionMyProfileFragmentToAddLinkSheet(item)
+                    MyProfileFragmentDirections.actionMyProfileFragmentToAddLinkSheet(item)
                 findNavController().navigate(action)
             }
             in 13..20 -> {
                 val action =
-                        MyProfileFragmentDirections.actionMyProfileFragmentToAddPhoneSheet(item)
+                    MyProfileFragmentDirections.actionMyProfileFragmentToAddPhoneSheet(item)
                 findNavController().navigate(action)
             }
         }

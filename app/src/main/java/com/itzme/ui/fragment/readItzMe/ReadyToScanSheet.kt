@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.itzme.R
 import com.itzme.databinding.SheetReadyToScanBinding
 import com.itzme.ui.SharedViewModel
+import com.itzme.ui.fragment.activeProduct.ActiveProductFragmentDirections
 
 class ReadyToScanSheet : BottomSheetDialogFragment() {
 
@@ -55,10 +57,13 @@ class ReadyToScanSheet : BottomSheetDialogFragment() {
     //region init sharedViewModel
     private fun initSharedViewModel() {
         sharedViewModel.saveState(args.stateNfcArgs)
-//        sharedViewModel.dismissed.observe(viewLifecycleOwner, { dismissed ->
-//            if (dismissed) {
-//                findNavController().navigateUp()
-//                sharedViewModel.saveDismissed(false)
+//        sharedViewModel.notifyToMyProfile.observe(viewLifecycleOwner, { notify ->
+//            if (notify) {
+//                dismiss()
+//                sharedViewModel.saveNotify(false)
+//                val action =
+//                    ReadyToScanSheetDirections.actionReadyToScanSheetToMyProfileFragment()
+//                findNavController().navigate(action)
 //            }
 //        })
     }

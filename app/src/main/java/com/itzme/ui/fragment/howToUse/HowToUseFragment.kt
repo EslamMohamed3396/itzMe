@@ -13,6 +13,7 @@ import com.itzme.data.models.stateNfc.enmReadWriteItzME.ReadWriteNFC
 import com.itzme.data.models.tags.howToUse.response.HowToUse
 import com.itzme.databinding.FragmentHowToUseBinding
 import com.itzme.ui.base.BaseFragment
+import com.itzme.ui.fragment.activeProduct.ActiveProductFragmentDirections
 
 class HowToUseFragment : BaseFragment<FragmentHowToUseBinding>() {
 
@@ -34,11 +35,29 @@ class HowToUseFragment : BaseFragment<FragmentHowToUseBinding>() {
         binding?.toolbar?.titleTv?.text = requireContext().resources.getString(R.string.how_to_use)
         initClick()
         setUpViewpager()
+        initSharedViewModel()
     }
 
 
-    //region init shared view model
 
+    //region init sharedViewModel
+    private fun initSharedViewModel() {
+        sharedViewModel.notifyToMyProfile.observe(viewLifecycleOwner, { notify ->
+            if (notify) {
+                if (findNavController().currentDestination?.id == R.id.howToUseFragment) {
+                    val action =
+                        HowToUseFragmentDirections.actionHowToUseFragmentToMyProfileFragment()
+                    findNavController().navigate(action)
+                } else if (findNavController().currentDestination?.id == R.id.readyToScanSheet) {
+                    findNavController().navigateUp()
+                    val action =
+                        HowToUseFragmentDirections.actionHowToUseFragmentToMyProfileFragment()
+                    findNavController().navigate(action)
+                }
+                sharedViewModel.saveNotify(false)
+            }
+        })
+    }
 
     //endregion
 

@@ -15,6 +15,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+    <style name="SwitchTextAppearance" parent="@android:style/TextAppearance.Holo.Small">
+        <item name="android:textColor">@drawable/switch_text</item>
+    </style>
+
+
     <style name="App_Theme" parent="Theme.Itzme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>

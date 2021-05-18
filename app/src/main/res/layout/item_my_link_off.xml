@@ -10,7 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,6 +25,7 @@
                 android:id="@+id/card_icon"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_marginTop="8dp"
                 app:cardCornerRadius="@dimen/radius_round"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,10 +48,11 @@
             android:id="@+id/im_trick"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="50dp"
             app:cardCornerRadius="@dimen/radius_round"
             app:layout_constraintBottom_toBottomOf="@+id/materialCardView2"
-            app:layout_constraintEnd_toStartOf="@+id/materialCardView2"
+            app:layout_constraintEnd_toEndOf="@+id/materialCardView2"
             app:layout_constraintStart_toStartOf="@+id/materialCardView2"
             app:layout_constraintTop_toTopOf="@+id/materialCardView2"
             app:strokeColor="@color/light_gray"
@@ -73,7 +75,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:text="@{myLink.linkTypeName}"
+            app:customLinkName="@{myLink}"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/materialCardView2"

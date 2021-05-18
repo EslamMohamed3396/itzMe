@@ -127,5 +127,6 @@
     <string name="invalid_name">اسم غير صحيح</string>
     <string name="user_name_hint">username</string>
     <string name="hyper_link">hyperlink</string>
+    <string name="he_didn_t_add_any_link_yet">تعرف على اسم المستخدم شخصيًا لرؤية ملف تعريفه على itzme </string>
 
 </resources>

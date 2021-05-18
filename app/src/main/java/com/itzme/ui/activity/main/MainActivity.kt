@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.snackbar.Snackbar
 import com.itzme.R
 import com.itzme.data.models.stateNfc.enmReadWriteItzME.ReadWriteNFC
 import com.itzme.databinding.ActivityMainBinding
@@ -43,21 +44,23 @@ class MainActivity : AppCompatActivity() {
     private var readWriteNFC: ReadWriteNFC? = null
     private var tag: Tag? = null
     private var intentReadTag: Intent? = null
-    private val filters = arrayOf(IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED),
-            IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
-            IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED))
+    private val filters = arrayOf(
+        IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED),
+        IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
+        IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
+    )
     private var toast: Toast? = null
 
     private val techTypes = arrayOf(
-            arrayOf(Ndef::class.java.name),
-            arrayOf(IsoDep::class.java.name),
-            arrayOf(NfcA::class.java.name),
-            arrayOf(NfcB::class.java.name),
-            arrayOf(NfcF::class.java.name),
-            arrayOf(NfcV::class.java.name),
-            arrayOf(NdefFormatable::class.java.name),
-            arrayOf(MifareClassic::class.java.name),
-            arrayOf(MifareUltralight::class.java.name)
+        arrayOf(Ndef::class.java.name),
+        arrayOf(IsoDep::class.java.name),
+        arrayOf(NfcA::class.java.name),
+        arrayOf(NfcB::class.java.name),
+        arrayOf(NfcF::class.java.name),
+        arrayOf(NfcV::class.java.name),
+        arrayOf(NdefFormatable::class.java.name),
+        arrayOf(MifareClassic::class.java.name),
+        arrayOf(MifareUltralight::class.java.name)
     )
 
     private var tagId: ByteArray? = null
@@ -155,7 +158,7 @@ class MainActivity : AppCompatActivity() {
             builder.setMessage(resources.getString(R.string.enable_nfc))
             builder.setPositiveButton(resources.getString(R.string.settings)) { _, _ ->
                 startActivity(
-                        Intent(Settings.ACTION_NFC_SETTINGS)
+                    Intent(Settings.ACTION_NFC_SETTINGS)
                 )
             }
             builder.setNegativeButton(resources.getString(R.string.cancel), null)
@@ -179,8 +182,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         navHostFragment = supportFragmentManager
-                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
-                ?: return
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+            ?: return
     }
 
     private fun initDataBinding() {
@@ -239,37 +242,37 @@ class MainActivity : AppCompatActivity() {
 
     //region init view model
 
-    private fun initValidateViewModel(serial: String) {
-        viewModelValidateTag.validateSerial(serial).observe(this, { response ->
-            val message = response.data?.errorMessage
-            when (response) {
-                is Resource.Loading -> {
-                    DialogUtil.showDialog(this)
-                }
-                is Resource.Success -> {
-                    DialogUtil.dismissDialog()
-                    if (readWriteNFC == ReadWriteNFC.WRITE_NFC) {
-                        writeInNFC(tag!!)
-                    } else {
-                        readFromTag(intentReadTag!!)
-                    }
-                }
-                is Resource.Error -> {
-                    DialogUtil.dismissDialog()
-                    when (response.code) {
-                        401 -> {
-
-                        }
-                        else -> {
-                            showToast(message)
-                        }
-                    }
-                }
-
-            }
-        })
-
-    }
+//    private fun initValidateViewModel(serial: String) {
+//        viewModelValidateTag.validateSerial(serial).observe(this, { response ->
+//            val message = response.data?.errorMessage
+//            when (response) {
+//                is Resource.Loading -> {
+//                    DialogUtil.showDialog(this)
+//                }
+//                is Resource.Success -> {
+//                    DialogUtil.dismissDialog()
+//                    if (readWriteNFC == ReadWriteNFC.WRITE_NFC) {
+//                        writeInNFC(tag!!)
+//                    } else {
+//                        readFromTag(intentReadTag!!)
+//                    }
+//                }
+//                is Resource.Error -> {
+//                    DialogUtil.dismissDialog()
+//                    when (response.code) {
+//                        401 -> {
+//
+//                        }
+//                        else -> {
+//                            showToast(message)
+//                        }
+//                    }
+//                }
+//
+//            }
+//        })
+//
+//    }
 
     private fun initReadViewModel(userName: String?, serial: String?) {
         viewModelReadTag.readTag(userName, serial).observe(this, { response ->
@@ -287,7 +290,6 @@ class MainActivity : AppCompatActivity() {
                         if (response.data?.errorCode == 0) {
                             sharedViewModel.saveDismissed(true)
                             showToast(resources.getString(R.string.reading_success))
-
                         } else {
                             findNavController(R.id.nav_host_fragment).navigateUp()
                             findNavController(R.id.nav_host_fragment).navigate(R.id.myProfileFragment)
@@ -303,7 +305,11 @@ class MainActivity : AppCompatActivity() {
 
                         }
                         29 -> {
-                            Toast.makeText(this@MainActivity, "This NFC not valid", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this@MainActivity,
+                                "This NFC not valid",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }
@@ -326,11 +332,10 @@ class MainActivity : AppCompatActivity() {
         Timber.d("${ndef.isWritable}")
         if (ndef.isWritable) {
             val message = NdefMessage(
-                    NdefRecord.createTextRecord(
-                            "en",
-                            PreferencesUtils(this).getInstance()
-                                    ?.getUserData(Constant.USER_DATA_KEY)?.linkName!!
-                    ),
+                NdefRecord.createUri(
+                    PreferencesUtils(this).getInstance()
+                        ?.getUserData(Constant.USER_DATA_KEY)?.linkName!!
+                ),
             )
 
 
@@ -338,6 +343,7 @@ class MainActivity : AppCompatActivity() {
                 ndef.connect()
                 try {
                     ndef.writeNdefMessage(message)
+                    sharedViewModel.saveNotify(true)
                     showToast("Successfully!")
                 } catch (e: Exception) {
                     // let the user know the tag refused to format
@@ -397,7 +403,7 @@ class MainActivity : AppCompatActivity() {
     //region split linkName to get Name
 
     private fun splitLink(link: String): String {
-        val name = link.split("u/")
+        val name = link.split(".com/")
         return name[1]
     }
 
@@ -406,9 +412,11 @@ class MainActivity : AppCompatActivity() {
 
     //region show toast
     private fun showToast(message: String?) {
-        toast?.cancel()
-        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        toast!!.show()
+        Snackbar.make(
+            binding?.root!!,
+            message!!,
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     //endregion

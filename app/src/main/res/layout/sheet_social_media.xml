@@ -69,7 +69,7 @@
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView21"
+            app:layout_constraintTop_toBottomOf="@+id/tv_instruction"
             app:layout_constraintVertical_chainStyle="packed">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -78,7 +78,7 @@
                 android:cursorVisible="true"
                 android:imeOptions="actionNext"
                 android:inputType="textWebEmailAddress"
-                android:text="@{itemLink.link}"
+                android:text="@{itemLink.name}"
                 android:textCursorDrawable="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -98,12 +98,13 @@
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_instruction"
+            app:layout_constraintTop_toBottomOf="@+id/change_name_inputLayout"
             app:layout_constraintVertical_chainStyle="packed"
             app:startIconDrawable="@drawable/ic_link"
             app:startIconTint="@null">
             <!--            app:prefixText="https://www."-->
             <!--            android:hint="@{itemLink.linkTypeName+` `+@string/link}"-->
+<!--            app:setPrefixText="@{itemLink}"-->
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

@@ -110,8 +110,8 @@ object EditTextValidiation {
     fun validUserName(
             textInputLayout: TextInputLayout
     ): Boolean {
-//        val validName = "^(?![ .]*$)[\\w\\d\\p{L} .]*$"
-        val validName = "^[_A-Za-z0-9]{3,20}$"
+        val validName = "^(?![ .]*$)[\\w\\d\\p{L} .]*$"
+    //    val validName = "^[_A-Za-z0-9]{3,20}$"
 
         val mName = textInputLayout.editText?.text.toString().trim().toLowerCase(Locale.ROOT)
         val matcherName: Matcher = Pattern.compile(validName).matcher(mName)
@@ -137,6 +137,23 @@ object EditTextValidiation {
         val mName = textInputLayout.editText?.text.toString().trim().toLowerCase(Locale.ROOT)
         val matcherName: Matcher = Pattern.compile(validName).matcher(mName)
         return if (matcherName.matches() && textInputLayout.editText?.text.toString()
+                        .trim().isNotEmpty()
+        ) {
+            textInputLayout.error = null
+            true
+        } else {
+            textInputLayout.error =
+                    textInputLayout.context.resources.getString(R.string.invalid_name)
+            textInputLayout.editText?.requestFocus()
+            false
+        }
+    }
+
+    fun validEditText(
+            textInputLayout: TextInputLayout
+    ): Boolean {
+
+        return if (textInputLayout.editText?.text.toString()
                         .trim().isNotEmpty()
         ) {
             textInputLayout.error = null

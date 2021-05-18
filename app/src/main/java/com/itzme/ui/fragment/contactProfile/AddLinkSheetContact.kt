@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.itzme.R
@@ -31,8 +33,10 @@ class AddLinkSheetContact : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initClick()
         bindData()
+        checkIfMore()
     }
 
 
@@ -43,6 +47,15 @@ class AddLinkSheetContact : BottomSheetDialogFragment() {
 
 
     //region bind data
+
+
+    private fun checkIfMore() {
+        when (args.linkContactProfile.linkType) {
+            in 38..41 -> {
+                binding.changeNameInputLayout.visibility = View.VISIBLE
+            }
+        }
+    }
 
     private fun bindData() {
         val clickOnLink = ClickOnLink()

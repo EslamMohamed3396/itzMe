@@ -67,6 +67,7 @@ class ContactFragment : BaseFragment<FragmentContactBinding>(), IClickOnItems<Da
                     if (!response.data?.data?.isEmpty()!!) {
                         myContactAdapter.submitList(response.data.data)
                     } else {
+                        myContactAdapter.submitList(null)
                         binding?.tvEmpty?.visibility = View.VISIBLE
                     }
                 }
