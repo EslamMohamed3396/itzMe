@@ -12,6 +12,10 @@
         <variable
             name="myProfile"
             type="com.itzme.data.models.profile.myProfile.response.ResponseMyProfile" />
+
+        <variable
+            name="isDiriectOn"
+            type="Boolean" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -131,7 +135,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        app:isDirectOn="@{myProfile.isDirectOn}"
+                        app:isDirectOn="@{isDiriectOn}"
                         app:layout_constraintBottom_toBottomOf="@+id/im_my_image"
                         app:layout_constraintEnd_toEndOf="@+id/edit_profile_btn"
                         app:layout_constraintHorizontal_bias="0.5"

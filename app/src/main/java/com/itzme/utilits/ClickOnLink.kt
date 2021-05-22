@@ -10,7 +10,7 @@ import android.view.View
 import android.webkit.URLUtil
 import android.widget.Toast
 import com.itzme.data.models.baseResponse.BaseLink
-import retrofit2.http.Url
+import timber.log.Timber
 
 
 class ClickOnLink {
@@ -134,15 +134,26 @@ class ClickOnLink {
     //region open another apps
 
     private fun openWhatsApp(context: Context, number: String) {
-        val appName = "com.whatsapp"
-        val isAppInstalled: Boolean = isAppAvailable(context.applicationContext, appName)
-
-        if (isAppInstalled) {
-            val url = "https://api.whatsapp.com/send?phone=$number"
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(url)
-            context.startActivity(i)
+        var countrCode = ""
+        countrCode = if (!number.startsWith("2")
+            && number.startsWith("010")
+            || number.startsWith("011")
+            || number.startsWith("012")
+            || number.startsWith("015"))
+            {
+            "2$number"
         } else {
+            number
+        }
+
+        Timber.d(countrCode)
+        val uri = Uri.parse("https://api.whatsapp.com/send?phone=$countrCode")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+        likeIng.setPackage("com.whatsapp")
+
+        try {
+            context.startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
             Toast.makeText(context, "The whatsApp doesn't install", Toast.LENGTH_SHORT).show()
         }
 
@@ -533,18 +544,13 @@ class ClickOnLink {
     }
 
     private fun openLine(context: Context, name: String) {
+        val uri = Uri.parse("https://line.me/R/oaMessage/@$name")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+        likeIng.setPackage("jp.naver.line.android")
 
-        val appName = "jp.naver.line.android"
-        val isAppInstalled: Boolean = isAppAvailable(context.applicationContext, appName)
-        if (isAppInstalled) {
-            val uri = Uri.parse("https://line.me/R/oaMessage/@$name")
-
-            val likeIng = Intent(Intent.ACTION_VIEW, uri)
-
-            likeIng.setPackage("jp.naver.line.android")
+        try {
             context.startActivity(likeIng)
-
-        } else {
+        } catch (e: ActivityNotFoundException) {
             Toast.makeText(context, "The Line App doesn't install", Toast.LENGTH_SHORT).show()
         }
 
@@ -568,18 +574,21 @@ class ClickOnLink {
     }
 
     fun openFaceBook(context: Context, url: String) {
-        val appName = "com.facebook.katana"
-        val isAppInstalled: Boolean = isAppAvailable(context.applicationContext, appName)
-        val uri: Uri
-        val intent: Intent
 
-        if (isAppInstalled) {
-            uri = Uri.parse("fb://facewebmodal/f?href=$url")
-            intent = Intent(Intent.ACTION_VIEW, uri)
-        } else {
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(getValidUrl(url)))
+        val uri = Uri.parse("fb://facewebmodal/f?href=$url")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+        likeIng.setPackage("com.facebook.katana")
+
+        try {
+            context.startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getValidUrl(url))
+                )
+            )
         }
-        context.startActivity(intent)
     }
 
     private fun openInstagramApp(context: Context, name: String) {
@@ -620,38 +629,42 @@ class ClickOnLink {
     }
 
     private fun openTelegram(context: Context, name: String?) {
-        val appName = "org.telegram.messenger"
 
-        val isAppInstalled: Boolean = isAppAvailable(context.applicationContext, appName)
-        if (isAppInstalled) {
-            val telegram = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$name"))
-            telegram.setPackage("org.telegram.messenger")
-            context.startActivity(telegram)
-        } else {
+        val uri = Uri.parse("https://t.me/$name")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+        likeIng.setPackage("org.telegram.messenger")
+
+        try {
+            context.startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
             Toast.makeText(context, "Telegram not Installed", Toast.LENGTH_SHORT).show()
         }
+
+
     }
 
     private fun openSignal(context: Context, number: String?) {
-        val appName = "org.thoughtcrime.securesms"
-        val isAppInstalled: Boolean = isAppAvailable(context.applicationContext, appName)
-        if (isAppInstalled) {
-            val telegram = Intent(Intent.ACTION_VIEW, Uri.parse("Sgnl://message/$number"))
-            telegram.setPackage("org.thoughtcrime.securesms")
-            context.startActivity(telegram)
-        } else {
+
+        val uri = Uri.parse("Sgnl://message/$number")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+        likeIng.setPackage("org.thoughtcrime.securesms")
+
+        try {
+            context.startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
             Toast.makeText(context, "Signal not Installed", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun openWeChat(context: Context, name: String?) {
-        val appName = "com.tencent.mm"
-        val isAppInstalled: Boolean = isAppAvailable(context.applicationContext, appName)
-        if (isAppInstalled) {
-            val telegram = Intent(Intent.ACTION_VIEW, Uri.parse("weixin://dl/chat?$name"))
-            telegram.setPackage("com.tencent.mm")
-            context.startActivity(telegram)
-        } else {
+
+        val uri = Uri.parse("weixin://dl/chat?$name")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+        likeIng.setPackage("com.tencent.mm")
+
+        try {
+            context.startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
             Toast.makeText(context, "WeChat not Installed", Toast.LENGTH_SHORT).show()
         }
     }

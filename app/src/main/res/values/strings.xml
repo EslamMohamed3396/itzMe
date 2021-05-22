@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Itzme</string>
+    <string name="app_name">itzme</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
     <string name="invalidPassword">The password must be greater than 4 characters </string>
@@ -41,10 +41,10 @@
     <string name="home">Home</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="active">Activate</string>
-    <string name="read_itzme">Read Itzme</string>
+    <string name="read_itzme">Read itzme</string>
     <string name="my_qr">"My QR Code "</string>
-    <string name="buy_itzme">Buy Itzme</string>
-    <string name="how_to_use">How To Use Itzme</string>
+    <string name="buy_itzme">Buy itzme</string>
+    <string name="how_to_use">How To Use itzme</string>
     <string name="log_out">Log Out</string>
     <string name="old_password">Old Password</string>
     <string name="email_exist">This email is already exists</string>
@@ -90,8 +90,8 @@
     <string name="your_new_password">Your new password</string>
     <string name="your_identity_has_been_verified_set_your_new_password">Your identity has been verified set your new password</string>
     <string name="set_new_password">Set New Password</string>
-    <string name="itzme_on">Itzme On</string>
-    <string name="itzme_off">Itzme Off</string>
+    <string name="itzme_on">itzme On</string>
+    <string name="itzme_off">itzme Off</string>
     <string name="change_email">Change E-mail</string>
     <string name="resend_code_success">Resend Code Successfully</string>
     <string name="no_nfc">This device doesn\'t support NFC.</string>

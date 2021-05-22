@@ -367,8 +367,10 @@
         <action
             android:id="@+id/action_activeListFragment_to_activeProductFragment"
             app:destination="@id/activeProductFragment"
-            app:enterAnim="@anim/anim_slide_out_left"
-            app:exitAnim="@anim/anim_slide_out_left" />
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popUpTo="@id/activeListFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_activeListFragment_to_loginFragment"
             app:destination="@id/loginFragment"

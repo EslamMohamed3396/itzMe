@@ -18,6 +18,7 @@ import com.itzme.utilits.CheckValidData
 import com.itzme.utilits.ClickOnLink
 import com.itzme.utilits.DialogUtil
 import com.itzme.utilits.Resource
+import timber.log.Timber
 
 class AddPhoneSheet : BottomSheetDialogFragment() {
 
@@ -39,6 +40,9 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         initClick()
         bindData()
+        //removeCountryCode()
+
+        //goneCountryCode()
     }
 
 
@@ -46,6 +50,16 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
     }
+
+
+    //region  view gone to coutry code
+    private fun goneCountryCode() {
+        if (checkIfLinkType()) {
+            binding.countryCode.visibility = View.GONE
+        }
+    }
+
+    //endregion
 
 
     //region bind data
@@ -65,9 +79,16 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
             dismiss()
         }
         binding.saveBtn.setOnClickListener {
-            if (checkData()) {
-                initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString())
+            if (checkIfLinkType()) {
+                if (checkBeforeRemove()) {
+                    initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString())
+                }
+            } else {
+                if (checkData()) {
+                    initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString())
+                }
             }
+
         }
         binding.removeBtn.setOnClickListener {
             if (checkBeforeRemove()) {
@@ -79,9 +100,34 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
     //endregion
 
 
+    //region remove country code
+
+    private fun removeCountryCode() {
+
+        binding.countryCode.registerCarrierNumberEditText(binding.linkInputLayout.editText)
+        val phone = args.addLinkArgs.link?.
+        split(binding.countryCode.selectedCountryCode)
+        Timber.d("${phone}")
+    }
+
+
+    //endregion
+
+
     //region check Data
     private fun checkData(): Boolean {
         return CheckValidData.checkPhone(binding.countryCode, binding.linkInputLayout)
+    }
+
+    private fun checkIfLinkType(): Boolean {
+        return when (args.addLinkArgs.linkType) {
+            13, 18, 19, 20 -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
     }
 
 

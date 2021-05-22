@@ -12,7 +12,6 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.itzme.R
@@ -59,6 +58,149 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     private var newPositionPlusOne: Int? = null
 
 
+    private var fromPos = -1
+    private var toPos = -1
+
+    private var isFirstTime: Boolean? = true
+
+    private val itemTouchHelper by lazy {
+        val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END,
+            0
+        ) {
+            override fun isLongPressDragEnabled(): Boolean {
+                showToast("Swipe Now!!")
+                return true
+            }
+
+            override fun isItemViewSwipeEnabled(): Boolean {
+                return false
+            }
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+
+//                if (viewHolder.itemViewType != target.itemViewType) {
+//                    return false
+//                }
+                val adapter = recyclerView.adapter as MyLinkAdapter
+                val from = viewHolder.adapterPosition
+                val to = target.adapterPosition
+
+                Timber.d("onMove from $from")
+                Timber.d("onMove to $to")
+//                Timber.d("onMove linkTypeName ${myLinkList!![from!!].linkTypeName}")
+//                Timber.d("onMove linkType ${myLinkList!![from!!].linkType}")
+//
+//
+//                Timber.d("onMove linkTypeName ${myLinkList!![to!!].linkTypeName}")
+//                Timber.d("onMove linkType ${myLinkList!![to!!].linkType}")
+//
+//                when {
+//                    from == 0 -> {
+//                        initDirectOnOffViewModel(false, myLinkList!![to].linkType!!)
+//                    }
+//                    to == 0 -> {
+//                        initDirectOnOffViewModel(false, myLinkList!![from].linkType!!)
+//                    }
+//                    else -> {
+//            //                    Timber.d("onMove from after inc ${from.inc()}")
+//            //                    Timber.d("onMove to after inc ${to.inc()}")
+//                        initChangePostionLinksViewModel(
+//                            type = myLinkList!![to].linkType!!,
+//                            newPosition = from,
+//                            replacedType = myLinkList!![to].linkType!!,
+//                            oldPosition = from
+//                        )
+//                    }
+//                }
+                moveItem(from, to)
+                adapter.notifyItemMoved(from, to)
+
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val from = viewHolder.adapterPosition
+
+                Timber.d("onMove linkTypeName ${myLinkList!![from!!].linkTypeName}")
+
+            }
+
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+
+                if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                    viewHolder?.itemView?.alpha = 0.5f
+                }
+            }
+
+            override fun clearView(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
+                super.clearView(recyclerView, viewHolder)
+                val from = viewHolder.adapterPosition
+
+
+//                Timber.d("onMove linkTypeName ${myLinkList!![from!!].linkTypeName}")
+//                Timber.d("onMove linkType ${myLinkList!![from!!].linkType}")
+//
+
+
+                viewHolder?.itemView?.alpha = 1.0f
+            }
+        }
+
+        ItemTouchHelper(simpleItemTouchCallback)
+    }
+
+
+    fun moveItem(from: Int, to: Int) {
+        val item = myLinkList?.removeAt(from!!)
+        myLinkList?.add(to!!, item!!)
+    }
+
+
+    private fun move(oldPos: Int, newPos: Int) {
+        val temp = myLinkList?.get(oldPos)
+        myLinkList?.set(oldPos, myLinkList?.get(newPos)!!)
+        myLinkList?.set(newPos, temp!!)
+        myLinkAdapter.notifyItemChanged(oldPos)
+        myLinkAdapter.notifyItemChanged(newPos)
+
+        Timber.d("oldPos $oldPos")
+        Timber.d("newPos $newPos")
+        when {
+            oldPos == 0 -> {
+                initDirectOnOffViewModel(false, myLinkList!![oldPos].linkType!!)
+            }
+            newPos == 0 -> {
+                initDirectOnOffViewModel(false, myLinkList!![newPos].linkType!!)
+            }
+            else -> {
+                val old = newPos
+                val new = oldPos
+
+                Timber.d("old linkType ${myLinkList!![newPos].linkTypeName}")
+                Timber.d("oldPos ${new.inc()}")
+
+
+                Timber.d("new linkType ${myLinkList!![oldPos].linkTypeName}")
+                Timber.d("newPos ${old.inc()}")
+                initChangePostionLinksViewModel(
+                    type = myLinkList!![newPos].linkType!!,
+                    newPosition = old.inc(),
+                    replacedType = myLinkList!![oldPos].linkType!!,
+                    oldPosition = new.inc()
+                )
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,6 +210,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        isFirstTime=true
         initNavDrawer()
         initClick()
         fillDataToNavigation()
@@ -81,7 +224,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         sharedViewModel.dismissed.observe(viewLifecycleOwner, { isDissmis ->
             Timber.d("isDissmis $isDissmis")
             if (isDissmis) {
-               initMyProfileViewModel()
+                initMyProfileViewModel()
                 sharedViewModel.saveDismissed(false)
             }
         })
@@ -104,7 +247,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         }
 
         binding?.editProfileBtn?.setOnClickListener {
-            val action = MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
+            val action =
+                MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
             findContrller(action)
         }
 
@@ -191,7 +335,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
             }
             2 -> {
-                val action = MyProfileFragmentDirections.actionMyProfileFragmentToContactFragment()
+                val action =
+                    MyProfileFragmentDirections.actionMyProfileFragmentToContactFragment()
                 findContrller(action)
             }
             3 -> {
@@ -210,18 +355,21 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 findContrller(action)
             }
             6 -> {
-                val action = MyProfileFragmentDirections.actionMyProfileFragmentToMyQrCodeFragment()
+                val action =
+                    MyProfileFragmentDirections.actionMyProfileFragmentToMyQrCodeFragment()
                 findContrller(action)
             }
             7 -> {
                 initAboutViewModel()
             }
             8 -> {
-                val action = MyProfileFragmentDirections.actionMyProfileFragmentToHowToUseFragment()
+                val action =
+                    MyProfileFragmentDirections.actionMyProfileFragmentToHowToUseFragment()
                 findContrller(action)
             }
             9 -> {
-                val action = MyProfileFragmentDirections.actionMyProfileFragmentToSettingsFragment()
+                val action =
+                    MyProfileFragmentDirections.actionMyProfileFragmentToSettingsFragment()
                 findContrller(action)
             }
             10 -> {
@@ -242,30 +390,15 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
 
     private fun dragDropItemRecyclerView() {
-        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN or
+                    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, 0
+        ) {
             override fun isLongPressDragEnabled(): Boolean {
                 showToast("Swipe Now!!")
                 return true
-            }
-
-            override fun isItemViewSwipeEnabled(): Boolean {
-                return false
-            }
-
-            override fun getMovementFlags(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder
-            ): Int {
-                return if (recyclerView.layoutManager is GridLayoutManager) {
-                    val dragFlags =
-                        ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                    val swipeFlags = 0
-                    makeMovementFlags(dragFlags, swipeFlags)
-                } else {
-                    val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-                    val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-                    makeMovementFlags(dragFlags, swipeFlags)
-                }
             }
 
             override fun onMove(
@@ -273,73 +406,66 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                if (viewHolder.itemViewType != target.itemViewType) {
-                    return false
-                }
-
-                oldPostion = viewHolder.adapterPosition
-                newPosition = target.adapterPosition
-//                Timber.d("onMove linkTypeName ${myLinkList!![oldPostion!!].linkTypeName}")
-//                Timber.d("onMove linkType ${myLinkList!![oldPostion!!].linkType}")
+                toPos = target.getAdapterPosition();
+                return false;
+//                if (viewHolder.itemViewType != target.itemViewType) {
+//                    return false
+//                }
+//
+//                oldPostion = viewHolder.adapterPosition
+//                newPosition = target.adapterPosition
+////                Timber.d("onMove linkTypeName ${myLinkList!![oldPostion!!].linkTypeName}")
+////                Timber.d("onMove linkType ${myLinkList!![oldPostion!!].linkType}")
+////
+////
+////                Timber.d("onMove linkTypeName ${myLinkList!![newPosition!!].linkTypeName}")
+////                Timber.d("onMove linkType ${myLinkList!![newPosition!!].linkType}")
+//
+//                val item = myLinkList?.removeAt(oldPostion!!)
+//                myLinkList?.add(newPosition!!, item!!)
+//                recyclerView.adapter!!.notifyItemMoved(oldPostion!!, newPosition!!)
 //
 //
-//                Timber.d("onMove linkTypeName ${myLinkList!![newPosition!!].linkTypeName}")
-//                Timber.d("onMove linkType ${myLinkList!![newPosition!!].linkType}")
-
-                val item = myLinkList?.removeAt(oldPostion!!)
-                myLinkList?.add(newPosition!!, item!!)
-                recyclerView.adapter!!.notifyItemMoved(oldPostion!!, newPosition!!)
-
-
-                // initDirectOnOffViewModel(false, myLinkList!![newPosition].linkType!!)
-                return true
+//                // initDirectOnOffViewModel(false, myLinkList!![newPosition].linkType!!)
+//                return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                myLinkList?.removeAt(position)
-                binding?.recyclerView6?.adapter!!.notifyItemRemoved(position)
+//                val position = viewHolder.adapterPosition
+//                myLinkList?.removeAt(position)
+//                binding?.recyclerView6?.adapter!!.notifyItemRemoved(position)
             }
 
-            override fun clearView(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder
+            override fun onSelectedChanged(
+                viewHolder: RecyclerView.ViewHolder?,
+                actionState: Int
             ) {
-                super.clearView(recyclerView, viewHolder)
-
-                val oldPostionPlusOne = oldPostion!! + 1
-
-                val newPositionPlusOne = newPosition!! + 1
-
-
-                // Timber.d("clearView adapterPosition ${viewHolder.adapterPosition}")
-                Timber.d("clearView oldPostion ${oldPostion}")
-                Timber.d("clearView oldPostionPlusOne ${oldPostionPlusOne}")
-
-                Timber.d("clearView newPosition ${newPosition}")
-                Timber.d("clearView newPositionPlusOne ${newPositionPlusOne}")
-//                Timber.d("clearView linkTypeName ${myLinkList!![viewHolder.adapterPosition].linkTypeName}")
-//                Timber.d("clearView linkType ${myLinkList!![viewHolder.adapterPosition].linkType}")
-//
-//
-//                Timber.d("clearView linkTypeName ${myLinkList!![fromPosition!!].linkTypeName}")
-//                Timber.d("clearView linkType ${myLinkList!![fromPosition!!].linkType}")
-//                initChangePostionLinksViewModel(
-//                        type = myLinkList!![viewHolder.adapterPosition].linkType!!,
-//                        newPosition = fromPositionPlusOne!!,
-//                        replacedType = myLinkList!![fromPosition!!].linkType!!,
-//                        oldPosition = toPositionPlusOne!!)
-
-                // Called by the ItemTouchHelper when the user interaction with an element is over and it also completed its animation
-                // This is a good place to send update to your backend about changes
+                when (actionState) {
+                    ItemTouchHelper.ACTION_STATE_DRAG -> {
+                        fromPos = viewHolder?.adapterPosition!!
+                    }
+                    ItemTouchHelper.ACTION_STATE_IDLE -> {
+                        //Execute when the user dropped the item after dragging.
+                        if (fromPos != -1 && toPos != -1
+                            && fromPos != toPos
+                        ) {
+                            move(fromPos, toPos)
+                            fromPos = -1
+                            toPos = -1
+                        }
+                    }
+                }
             }
 
         })
         itemTouchHelper.attachToRecyclerView(binding?.recyclerView6)
+
+
     }
 
     private fun bindMyProfile(myProfile: ResponseMyProfile) {
         binding?.myProfile = myProfile
+        binding?.isDiriectOn = myProfile.isDirectOn
     }
 
     private fun bindAdapter() {
@@ -351,28 +477,34 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     //region init view model
 
     private fun initMyProfileViewModel() {
-        bindAdapter()
+        if (isFirstTime!!) {
+            bindAdapter()
+            isFirstTime = false
+        }
         viewModel.myProfile().observe(viewLifecycleOwner, { response ->
             when (response) {
                 is Resource.Loading -> {
                     DialogUtil.showDialog(requireContext())
                 }
                 is Resource.Success -> {
-                    myLinkAdapter.submitList(null, null)
                     DialogUtil.dismissDialog()
-                    bindMyProfile(response.data!!)
-                    binding?.includeLayout?.isPrivate = response.data.isProfilePrivate
 
+                    bindMyProfile(response.data!!)
+
+                    binding?.includeLayout?.isPrivate = response.data.isProfilePrivate
                     if (response.data.myLinks?.isNotEmpty()!!) {
-//                        if (myLinkList != null) {
-//                            myLinkList?.clear()
-//                        }
-                        myLinkAdapter.submitList(response.data.isDirectOn, response.data.myLinks)
+                        myLinkAdapter.submitList(null, null, null)
+                        myLinkAdapter.submitList(
+                            response.data.isDirectOn,
+                            response.data.myLinks,
+                            null
+                        )
                         myLink = response.data.myLinks[0]
-                        myLinkList = response.data.myLinks as ArrayList<MyLink>?
+                        myLinkList = response.data.myLinks as ArrayList<MyLink>
                     } else {
                         binding?.tvEmpty?.visibility = View.VISIBLE
                     }
+
                 }
                 is Resource.Error -> {
                     DialogUtil.dismissDialog()
@@ -435,7 +567,16 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                        initMyProfileViewModel()
+                        if (isToogleStatus) {
+//                            binding?.isDiriectOn = isDirectOn!!
+//                            myLinkAdapter.submitList(null, null, null)
+//                            myLinkAdapter.submitList(
+//                                !isDirectOn!!,
+//                                myLinkList,
+//                                null
+//                            )
+                            initMyProfileViewModel()
+                        }
                     }
                     is Resource.Error -> {
                         when (response.code) {
@@ -462,7 +603,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                        initMyProfileViewModel()
+                        //initMyProfileViewModel()
                     }
                     is Resource.Error -> {
                         when (response.code) {

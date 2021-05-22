@@ -33,6 +33,7 @@ import com.itzme.utilits.Constant
 import com.itzme.utilits.PreferencesUtils
 import io.reactivex.Observable
 import io.reactivex.Observer
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -58,20 +59,20 @@ object Client {
                 val httpLoggingInterceptor = HttpLoggingInterceptor()
                 httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
                 sBuilder = OkHttpClient.Builder()
-                        .connectTimeout(60, TimeUnit.SECONDS)
-                        .readTimeout(60, TimeUnit.SECONDS)
-                        .addInterceptor(httpLoggingInterceptor)
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .addInterceptor(httpLoggingInterceptor)
                 sBuilder!!.addInterceptor(Interceptor { chain: Interceptor.Chain ->
                     val original: Request = chain.request()
                     val request: Request = original.newBuilder()
-                            .header(
-                                    Constant.AUTHORIZATION,
-                                    Constant.BEARER + PreferencesUtils(App.getContext()).getInstance()
-                                            ?.getUserData(
-                                                    Constant.USER_DATA_KEY
-                                            )?.token
-                            )
-                            .build()
+                        .header(
+                            Constant.AUTHORIZATION,
+                            Constant.BEARER + PreferencesUtils(App.getContext()).getInstance()
+                                ?.getUserData(
+                                    Constant.USER_DATA_KEY
+                                )?.token
+                        )
+                        .build()
                     chain.proceed(request)
                 })
 
@@ -84,11 +85,11 @@ object Client {
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(Constant.BASE_URL)
-                .client(getUnsafeOkHttpClient()?.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
+            .baseUrl(Constant.BASE_URL)
+            .client(getUnsafeOkHttpClient()?.build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
         apiService = retrofit.create(Api::class.java)
     }
 
@@ -102,32 +103,32 @@ object Client {
 
     fun <T> request(api: Observable<T>, callBackNetwork: ICallBackNetwork<T>) {
         api.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<T> {
-                    override fun onSubscribe(d: Disposable) {
-                        callBackNetwork.onDisposable(d)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<T> {
+                override fun onSubscribe(d: Disposable) {
+                    callBackNetwork.onDisposable(d)
+                }
+
+                override fun onNext(u: T) {
+                    callBackNetwork.onSuccess(u)
+                }
+
+                override fun onError(e: Throwable) {
+
+                    if (e is HttpException) {
+                        val errorBody: String? = e.response()?.errorBody()?.string()
+                        val errorResponse: ErrorResponse? =
+                            Gson().fromJson(errorBody, ErrorResponse::class.java)
+                        callBackNetwork.onFailed(
+                            e.message(),
+                            errorResponse?.errorCode ?: e.code(),
+                            errorResponse?.errorMessage
+                        )
                     }
+                }
 
-                    override fun onNext(u: T) {
-                        callBackNetwork.onSuccess(u)
-                    }
-
-                    override fun onError(e: Throwable) {
-
-                        if (e is HttpException) {
-                            val errorBody: String? = e.response()?.errorBody()?.string()
-                            val errorResponse: ErrorResponse? =
-                                    Gson().fromJson(errorBody, ErrorResponse::class.java)
-                            callBackNetwork.onFailed(
-                                    e.message(),
-                                    errorResponse?.errorCode ?: e.code(),
-                                    errorResponse?.errorMessage
-                            )
-                        }
-                    }
-
-                    override fun onComplete() {}
-                })
+                override fun onComplete() {}
+            })
     }
 
 
@@ -179,10 +180,12 @@ object Client {
         return apiService?.MY_CONTACT()!!
     }
 
-    fun changePostion(type: Int,
-                      newPosition: Int,
-                      replacedType: Int,
-                      oldPosition: Int): Observable<ResponseChangeLinkPostions> {
+    fun changePostion(
+        type: Int,
+        newPosition: Int,
+        replacedType: Int,
+        oldPosition: Int
+    ): Observable<ResponseChangeLinkPostions> {
         return apiService?.CHANGE_POSTION(type, newPosition, replacedType, oldPosition)!!
     }
 
@@ -218,9 +221,10 @@ object Client {
         return apiService?.MY_PROFILE()!!
     }
 
+
     fun directOnOff(
-            isToggleStatus: Boolean,
-            type: Int
+        isToggleStatus: Boolean,
+        type: Int
     ): Observable<ResponseDirectOnOff> {
         return apiService?.DIRECT_ON_OFF(isToggleStatus, type)!!
     }

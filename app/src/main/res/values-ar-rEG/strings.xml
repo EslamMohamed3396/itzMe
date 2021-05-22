@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Itzme</string>
+    <string name="app_name">itzme</string>
     <string name="invalid_old_password">كلمة المرور القديمة غير صحيحه</string>
 
     <string name="invalidPassword">يجب أن تكون كلمة المرور أكبر من أربعة أحرف </string>
@@ -39,10 +39,10 @@
     <string name="home">الرئيسية </string>
     <string name="edit_profile">تعديل الملف الشخصي </string>
     <string name="active">تفعيل</string>
-    <string name="read_itzme">قراءة Itzme</string>
+    <string name="read_itzme">قراءة itzme</string>
     <string name="my_qr">الرمز الخاص بي </string>
-    <string name="buy_itzme">شراء Itzme </string>
-    <string name="how_to_use">كيفية استخدام Itzme </string>
+    <string name="buy_itzme">شراء itzme </string>
+    <string name="how_to_use">كيفية استخدام itzme </string>
     <string name="log_out">تسجيل خروج </string>
     <string name="old_password">كلمة المرور القديمة </string>
     <string name="email_exist">هذا البريد الإلكتروني موجود بالفعل </string>
@@ -69,6 +69,8 @@
     <string name="emergency_contacts">جهة اتصال للطوارئ </string>
     <string name="pet_type">نوع الحيوان</string>
     <string name="pet_name">اسم الحيوان</string>
+    <string name="pet">حيوان </string>
+    <string name="if_you_find">إذا وجدت </string>
     <string name="information">معلومات اخري</string>
     <string name="phone">رقم الهاتف</string>
     <string name="invalid">غير صحيح</string>
@@ -88,8 +90,8 @@
     <string name="your_new_password">كلمة المرور الجديدة </string>
     <string name="your_identity_has_been_verified_set_your_new_password">تم التحقق من هويتك قم بتعيين كلمة المرور الجديدة الخاصة بك </string>
     <string name="set_new_password">تعيين كلمة مرور جديدة </string>
-    <string name="itzme_on">Itzme مفتوح</string>
-    <string name="itzme_off">Itzme مغلقة </string>
+    <string name="itzme_on">itzme مفتوح</string>
+    <string name="itzme_off">itzme مغلقة </string>
     <string name="change_email">تغيير البريد الالكتروني </string>
     <string name="resend_code_success">إعادة إرسال الرمز بنجاح </string>
     <string name="no_nfc">هذا الجهاز لا يدعم NFC. </string>

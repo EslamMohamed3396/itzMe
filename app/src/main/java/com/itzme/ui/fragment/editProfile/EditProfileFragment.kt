@@ -11,6 +11,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -28,12 +30,15 @@ import com.itzme.ui.fragment.editProfile.adapter.LinkHeaderAdapter
 import com.itzme.ui.fragment.editProfile.viewModel.EditLinkViewModel
 import com.itzme.ui.fragment.editProfile.viewModel.EditProfileViewModel
 import com.itzme.ui.fragment.myProfile.adapter.MyLinkAdapter
+import com.itzme.ui.fragment.myProfile.viewModels.ChangePostionLinksViewModel
+import com.itzme.ui.fragment.myProfile.viewModels.DirectOnOffViewModel
 import com.itzme.ui.fragment.myProfile.viewModels.MyProfileViewModel
 import com.itzme.ui.fragment.myProfile.viewModels.TurnOnOffProfileViewModel
 import com.itzme.utilits.*
 import com.vansuita.pickimage.bundle.PickSetup
 import com.vansuita.pickimage.dialog.PickImageDialog
 import timber.log.Timber
+import java.util.ArrayList
 
 
 class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOnItems<Link>, MyLinkAdapter.IClickOnLink {
@@ -41,6 +46,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     private val viewModel: EditProfileViewModel by viewModels()
     private val viewModelEditLink: EditLinkViewModel by viewModels()
     private val viewModelTurnOnOff: TurnOnOffProfileViewModel by viewModels()
+    private val viewModelDirect: DirectOnOffViewModel by viewModels()
+    private val viewModelChangePostionLinks: ChangePostionLinksViewModel by viewModels()
 
     private var imageBitmap: String? = null
     private var isProfilePrivate: Boolean = true
@@ -48,6 +55,12 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     private val allLinkAdapter: LinkHeaderAdapter by lazy { LinkHeaderAdapter(this) }
     private var petData: PetData? = null
     private var findMeData: ResponseMyProfile? = null
+    private var isFirstTime: Boolean? = true
+
+    private var fromPos = -1
+    private var toPos = -1
+    private var myLinkList: ArrayList<MyLink>? = null
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -219,14 +232,151 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     private fun bindAdapter() {
         binding?.myLinkAdapter = myLinkAdapter
         binding?.allLinkAdapter = allLinkAdapter
+        dragDropItemRecyclerView()
     }
+
+
+    private fun dragDropItemRecyclerView() {
+
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN or
+                    ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, 0
+        ) {
+            override fun isLongPressDragEnabled(): Boolean {
+                showToast("Swipe Now!!")
+                return true
+            }
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                toPos = target.getAdapterPosition();
+                return false;
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            }
+
+            override fun onSelectedChanged(
+                viewHolder: RecyclerView.ViewHolder?,
+                actionState: Int
+            ) {
+                when (actionState) {
+                    ItemTouchHelper.ACTION_STATE_DRAG -> {
+                        fromPos = viewHolder?.adapterPosition!!
+                    }
+                    ItemTouchHelper.ACTION_STATE_IDLE -> {
+                        //Execute when the user dropped the item after dragging.
+                        if (fromPos != -1 && toPos != -1
+                            && fromPos != toPos
+                        ) {
+                            move(fromPos, toPos)
+                            fromPos = -1
+                            toPos = -1
+                        }
+                    }
+                }
+            }
+
+        })
+        itemTouchHelper.attachToRecyclerView(binding?.recyclerView3)
+
+    }
+
+    private fun move(oldPos: Int, newPos: Int) {
+        val temp = myLinkList?.get(oldPos)
+        myLinkList?.set(oldPos, myLinkList?.get(newPos)!!)
+        myLinkList?.set(newPos, temp!!)
+        myLinkAdapter.notifyItemChanged(oldPos)
+        myLinkAdapter.notifyItemChanged(newPos)
+
+        Timber.d("oldPos $oldPos")
+        Timber.d("newPos $newPos")
+        when {
+            oldPos == 0 -> {
+                initDirectOnOffViewModel(false, myLinkList!![oldPos].linkType!!)
+            }
+            newPos == 0 -> {
+                initDirectOnOffViewModel(false, myLinkList!![newPos].linkType!!)
+            }
+            else -> {
+                val old = newPos
+                val new = oldPos
+                initChangePostionLinksViewModel(
+                    type = myLinkList!![newPos].linkType!!,
+                    newPosition = old.inc(),
+                    replacedType = myLinkList!![oldPos].linkType!!,
+                    oldPosition = new.inc()
+                )
+            }
+        }
+    }
+
 
     //endregion
 
     //region init view model
 
+    private fun initDirectOnOffViewModel(isToogleStatus: Boolean, linkType: Int) {
+        viewModelDirect.directOnOff(isToogleStatus, linkType)
+            .observe(viewLifecycleOwner, { response ->
+                when (response) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        if (isToogleStatus) {
+                            initMyProfileViewModel()
+                        }
+                    }
+                    is Resource.Error -> {
+                        when (response.code) {
+                            13, 14 -> {
+
+                            }
+                        }
+                    }
+
+                }
+            })
+
+    }
+
+    private fun initChangePostionLinksViewModel(
+        type: Int,
+        newPosition: Int,
+        replacedType: Int,
+        oldPosition: Int
+    ) {
+        viewModelChangePostionLinks.changePostion(type, newPosition, replacedType, oldPosition)
+            .observe(viewLifecycleOwner, { response ->
+                when (response) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        //initMyProfileViewModel()
+                    }
+                    is Resource.Error -> {
+                        when (response.code) {
+                            13, 14 -> {
+
+                            }
+                        }
+                    }
+
+                }
+            })
+
+    }
+
+
     private fun initMyProfileViewModel() {
-        bindAdapter()
+        if (isFirstTime!!) {
+            bindAdapter()
+            isFirstTime = false
+        }
         val viewModel = ViewModelProvider(this).get(MyProfileViewModel::class.java)
         viewModel.myProfile().observe(viewLifecycleOwner, { response ->
             when (response) {
@@ -235,7 +385,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    myLinkAdapter.submitList(null, null)
+                    myLinkAdapter.submitList(null, null,null)
                     bindMyProfile(response.data!!)
                     if (!response.data.imageUrl.isNullOrEmpty()) {
                         convertImage(response.data.imageUrl)
@@ -247,7 +397,9 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     if (response.data.myLinks?.isNotEmpty()!!) {
                         binding?.recyclerView3?.visibility = View.VISIBLE
                         binding?.tvEmpty?.visibility = View.GONE
-                        myLinkAdapter.submitList(response.data.isDirectOn, response.data.myLinks)
+                        myLinkList = response.data.myLinks as ArrayList<MyLink>
+
+                        myLinkAdapter.submitList(response.data.isDirectOn, response.data.myLinks,null)
                     } else {
                         binding?.recyclerView3?.visibility = View.INVISIBLE
                         binding?.tvEmpty?.visibility = View.VISIBLE

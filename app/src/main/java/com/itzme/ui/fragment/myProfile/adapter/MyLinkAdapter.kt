@@ -1,9 +1,11 @@
 package com.itzme.ui.fragment.myProfile.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.itzme.R
 import com.itzme.data.models.profile.myProfile.response.MyLink
@@ -14,13 +16,14 @@ import com.itzme.ui.base.DiffCallback
 import com.itzme.utilits.Constant
 
 class MyLinkAdapter(val iClickOnLink: IClickOnLink) :
-        RecyclerView.Adapter<BaseViewHolder<*>>() {
+    RecyclerView.Adapter<BaseViewHolder<*>>() {
     private val differ = AsyncListDiffer(this, DiffCallback<MyLink>())
     private var isDirectOn: Boolean? = true
-
-    fun submitList(isDirectOn: Boolean?, list: List<MyLink?>?) {
+    private var itemTouchHelper: ItemTouchHelper? = null
+    fun submitList(isDirectOn: Boolean?, list: List<MyLink?>?, itemTouchHelper: ItemTouchHelper?) {
         differ.submitList(list)
         this.isDirectOn = isDirectOn
+        this.itemTouchHelper = itemTouchHelper
     }
 
 
@@ -32,15 +35,15 @@ class MyLinkAdapter(val iClickOnLink: IClickOnLink) :
         when (viewType) {
             Constant.VIEW_MY_LINK_ON -> {
                 val itemMyLinkBinding: ItemMyLinkBinding = DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.item_my_link, parent, false
+                    LayoutInflater.from(parent.context),
+                    R.layout.item_my_link, parent, false
                 )
                 return MyLinkAdapterViewHolder(itemMyLinkBinding)
             }
             else -> {
                 val itemMyLinkOffBinding: ItemMyLinkOffBinding = DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.item_my_link_off, parent, false
+                    LayoutInflater.from(parent.context),
+                    R.layout.item_my_link_off, parent, false
                 )
                 return MyLinkOFFAdapterViewHolder(itemMyLinkOffBinding)
             }
@@ -52,8 +55,10 @@ class MyLinkAdapter(val iClickOnLink: IClickOnLink) :
     }
 
 
+
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
-        val item = differ.currentList[position]
+        val item = differ.currentList[holder.adapterPosition]
+
         when (holder.itemViewType) {
             Constant.VIEW_MY_LINK_ON -> {
                 (holder as MyLinkAdapterViewHolder).bind(item)
@@ -78,11 +83,6 @@ class MyLinkAdapter(val iClickOnLink: IClickOnLink) :
                 Constant.VIEW_MY_LINK_ON
             }
         }
-//        return if (position == 0 && isDirectOn!!) {
-//            Constant.VIEW_MY_LINK_ON
-//        } else {
-//            Constant.VIEW_MY_LINK_OFF
-//        }
 
     }
 
@@ -90,11 +90,13 @@ class MyLinkAdapter(val iClickOnLink: IClickOnLink) :
         return differ.currentList.size
     }
 
+
     inner class MyLinkAdapterViewHolder(val binding: ItemMyLinkBinding) :
-            BaseViewHolder<MyLink>(binding) {
+        BaseViewHolder<MyLink>(binding) {
         override fun bind(item: MyLink) {
             binding.myLink = item
             binding.executePendingBindings()
+
             binding.root.setOnClickListener {
                 iClickOnLink.clickOnItems(item, adapterPosition)
             }
@@ -102,7 +104,7 @@ class MyLinkAdapter(val iClickOnLink: IClickOnLink) :
     }
 
     inner class MyLinkOFFAdapterViewHolder(val binding: ItemMyLinkOffBinding) :
-            BaseViewHolder<MyLink>(binding) {
+        BaseViewHolder<MyLink>(binding) {
         override fun bind(item: MyLink) {
             binding.myLink = item
             binding.executePendingBindings()

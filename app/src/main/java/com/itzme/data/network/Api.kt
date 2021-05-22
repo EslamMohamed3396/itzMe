@@ -28,6 +28,7 @@ import com.itzme.data.models.tags.tagType.response.ResponseTagType
 import com.itzme.data.models.tags.validateTage.response.ResponseValidateTag
 import com.itzme.utilits.Constant
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.*
 
 interface Api {
@@ -112,6 +113,7 @@ interface Api {
 
     @GET(Constant.MY_PROFILE)
     fun MY_PROFILE(@Query("lang") lang: String = Constant.LANG_NAME): Observable<ResponseMyProfile>
+
 
     @GET(Constant.DIRECT_ON_OFF)
     fun DIRECT_ON_OFF(

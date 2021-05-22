@@ -15,7 +15,8 @@ open class BaseViewModel<T> : ViewModel() {
     private var responseMutableLiveData = MutableLiveData<Resource<T>>()
 
     open fun callApi(api: Observable<T>): LiveData<Resource<T>> {
-        responseMutableLiveData.value = Resource.Loading()
+
+        responseMutableLiveData?.value = Resource.Loading()
 
         Client.getInstance()?.request(api, object : ICallBackNetwork<T> {
             override fun onSuccess(response: T?) {
@@ -32,17 +33,17 @@ open class BaseViewModel<T> : ViewModel() {
             }
 
         })
-        return responseMutableLiveData
+        return responseMutableLiveData!!
     }
 
 
     private fun onFailure(t: String?, code: Int?) {
-        responseMutableLiveData.value = Resource.Error(t, code)
+        responseMutableLiveData?.value = Resource.Error(t, code)
 
     }
 
     private fun onResponse(response: T) {
-        responseMutableLiveData.value = Resource.Success(response)
+        responseMutableLiveData?.value = Resource.Success(response)
     }
 
     override fun onCleared() {
