@@ -38,7 +38,7 @@ import com.itzme.utilits.*
 import com.vansuita.pickimage.bundle.PickSetup
 import com.vansuita.pickimage.dialog.PickImageDialog
 import timber.log.Timber
-import java.util.ArrayList
+import java.util.*
 
 
 class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOnItems<Link>, MyLinkAdapter.IClickOnLink {
@@ -253,8 +253,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                toPos = target.getAdapterPosition();
-                return false;
+                toPos = target.adapterPosition
+                return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -356,7 +356,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                        //initMyProfileViewModel()
+                        initMyProfileViewModel()
                     }
                     is Resource.Error -> {
                         when (response.code) {

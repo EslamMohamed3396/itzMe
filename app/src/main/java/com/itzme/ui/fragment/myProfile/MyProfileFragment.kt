@@ -126,7 +126,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val from = viewHolder.adapterPosition
 
-                Timber.d("onMove linkTypeName ${myLinkList!![from!!].linkTypeName}")
+                Timber.d("onMove linkTypeName ${myLinkList!![from].linkTypeName}")
 
             }
 
@@ -151,7 +151,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 //
 
 
-                viewHolder?.itemView?.alpha = 1.0f
+                viewHolder.itemView.alpha = 1.0f
             }
         }
 
@@ -160,8 +160,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
 
     fun moveItem(from: Int, to: Int) {
-        val item = myLinkList?.removeAt(from!!)
-        myLinkList?.add(to!!, item!!)
+        val item = myLinkList?.removeAt(from)
+        myLinkList?.add(to, item!!)
     }
 
 
@@ -174,6 +174,10 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
         Timber.d("oldPos $oldPos")
         Timber.d("newPos $newPos")
+
+        Timber.d("old linkType ${myLinkList!![newPos].linkTypeName}")
+        Timber.d("new linkType ${myLinkList!![oldPos].linkTypeName}")
+
         when {
             oldPos == 0 -> {
                 initDirectOnOffViewModel(false, myLinkList!![oldPos].linkType!!)
@@ -188,9 +192,9 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 Timber.d("old linkType ${myLinkList!![newPos].linkTypeName}")
                 Timber.d("oldPos ${new.inc()}")
 
-
                 Timber.d("new linkType ${myLinkList!![oldPos].linkTypeName}")
                 Timber.d("newPos ${old.inc()}")
+
                 initChangePostionLinksViewModel(
                     type = myLinkList!![newPos].linkType!!,
                     newPosition = old.inc(),
@@ -257,13 +261,13 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             findContrller(action)
         }
 
-        binding?.includeLayout?.toggleButton?.setTrackDrawable(
+        binding?.includeLayout?.toggleButton.setTrackDrawable(
             SwitchTrackTextDrawable(
                 requireContext(),
                 R.string.itzme_off, R.string.itzme_on
             )
         )
-        binding?.includeLayout?.toggleButton?.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding?.includeLayout?.toggleButton.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isPressed) {
                 initTurnOnOffProfileViewModel()
             }
@@ -406,8 +410,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                toPos = target.getAdapterPosition();
-                return false;
+                toPos = target.adapterPosition
+                return false
 //                if (viewHolder.itemViewType != target.itemViewType) {
 //                    return false
 //                }
@@ -464,6 +468,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
     }
 
     private fun bindMyProfile(myProfile: ResponseMyProfile) {
+        binding?.recyclerView6?.itemAnimator = null
         binding?.myProfile = myProfile
         binding?.isDiriectOn = myProfile.isDirectOn
     }
@@ -568,13 +573,6 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     }
                     is Resource.Success -> {
                         if (isToogleStatus) {
-//                            binding?.isDiriectOn = isDirectOn!!
-//                            myLinkAdapter.submitList(null, null, null)
-//                            myLinkAdapter.submitList(
-//                                !isDirectOn!!,
-//                                myLinkList,
-//                                null
-//                            )
                             initMyProfileViewModel()
                         }
                     }
@@ -603,7 +601,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                        //initMyProfileViewModel()
+                        initMyProfileViewModel()
                     }
                     is Resource.Error -> {
                         when (response.code) {
