@@ -28,8 +28,8 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
     private val args: VerificationCodeFragmentArgs by navArgs()
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         hideNavigation()
         return bindView(inflater, container, R.layout.fragment_verification_code)
@@ -134,7 +134,7 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                     )
 
                     binding?.ConfirmCodeTwoInputLayout?.editText?.requestFocus()
-                } else if (edtChar.length == 0) {
+                } else if (edtChar.isEmpty()) {
                     currentCode.deleteCharAt(0)
                     changeColor(
                         binding?.ConfirmCodeTwoInputLayout,
@@ -159,7 +159,7 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                         binding?.ConfirmCodeThreeInputLayout
                     )
                     binding?.ConfirmCodeThreeInputLayout?.editText?.requestFocus()
-                } else if (edtChar.length == 0) {
+                } else if (edtChar.isEmpty()) {
                     currentCode.deleteCharAt(1)
                     changeColor(
                         binding?.ConfirmCodeTwoInputLayout,
@@ -183,7 +183,7 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                         binding?.ConfirmCodeFourInputLayout
                     )
                     binding?.ConfirmCodeFourInputLayout?.editText?.requestFocus()
-                } else if (edtChar.length == 0) {
+                } else if (edtChar.isEmpty()) {
                     currentCode.deleteCharAt(2)
                     changeColor(
                         binding?.ConfirmCodeThreeInputLayout,
@@ -202,8 +202,8 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                 if (edtChar.length == 1) {
                     currentCode.append(edtChar)
                     binding?.ConfirmCodeFourInputLayout?.editText?.requestFocus()
-                } else if (edtChar.length == 0) {
-                    currentCode.deleteCharAt(2)
+                } else if (edtChar.isEmpty()) {
+                    currentCode.deleteCharAt(3)
                     changeColor(
                         binding?.ConfirmCodeFourInputLayout,
                         binding?.ConfirmCodeThreeInputLayout
@@ -227,11 +227,14 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    val action =
+                    if (findNavController().currentDestination?.id == R.id.verificationCodeFragment) {
+                        val action =
                             VerificationCodeFragmentDirections.actionVerificationCodeFragmentToNewPasswordFragment(
-                                    response.data?.data?.key
+                                response.data?.data?.key
                             )
-                    findNavController().navigate(action)
+                        findNavController().navigate(action)
+
+                    }
 
                 }
                 is Resource.Error -> {
@@ -239,9 +242,9 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                     when (response.code) {
                         13 -> {
                             Toast.makeText(
-                                    requireContext(),
-                                    requireContext().resources.getString(R.string.wrong_code),
-                                    Toast.LENGTH_SHORT
+                                requireContext(),
+                                requireContext().resources.getString(R.string.wrong_code),
+                                Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
@@ -266,7 +269,8 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    val action = VerificationCodeFragmentDirections.actionVerificationCodeFragmentToSettingsFragment()
+                    val action =
+                        VerificationCodeFragmentDirections.actionVerificationCodeFragmentToSettingsFragment()
                     findNavController().navigate(action)
                 }
                 is Resource.Error -> {
@@ -274,9 +278,9 @@ class VerificationCodeFragment : BaseFragment<FragmentVerificationCodeBinding>()
                     when (response.code) {
                         13 -> {
                             Toast.makeText(
-                                    requireContext(),
-                                    requireContext().resources.getString(R.string.wrong_code),
-                                    Toast.LENGTH_SHORT
+                                requireContext(),
+                                requireContext().resources.getString(R.string.wrong_code),
+                                Toast.LENGTH_SHORT
                             ).show()
                         }
                     }

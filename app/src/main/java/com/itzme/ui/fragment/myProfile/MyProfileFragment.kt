@@ -51,159 +51,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     private var myLink: MyLink? = null
 
-    private var oldPostion: Int? = null
-    private var newPosition: Int? = null
-    private var oldPostionPlusOne: Int? = null
-
-    private var newPositionPlusOne: Int? = null
-
-
     private var fromPos = -1
     private var toPos = -1
 
     private var isFirstTime: Boolean? = true
 
-    private val itemTouchHelper by lazy {
-        val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END,
-            0
-        ) {
-            override fun isLongPressDragEnabled(): Boolean {
-                showToast("Swipe Now!!")
-                return true
-            }
-
-            override fun isItemViewSwipeEnabled(): Boolean {
-                return false
-            }
-
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-
-//                if (viewHolder.itemViewType != target.itemViewType) {
-//                    return false
-//                }
-                val adapter = recyclerView.adapter as MyLinkAdapter
-                val from = viewHolder.adapterPosition
-                val to = target.adapterPosition
-
-                Timber.d("onMove from $from")
-                Timber.d("onMove to $to")
-//                Timber.d("onMove linkTypeName ${myLinkList!![from!!].linkTypeName}")
-//                Timber.d("onMove linkType ${myLinkList!![from!!].linkType}")
-//
-//
-//                Timber.d("onMove linkTypeName ${myLinkList!![to!!].linkTypeName}")
-//                Timber.d("onMove linkType ${myLinkList!![to!!].linkType}")
-//
-//                when {
-//                    from == 0 -> {
-//                        initDirectOnOffViewModel(false, myLinkList!![to].linkType!!)
-//                    }
-//                    to == 0 -> {
-//                        initDirectOnOffViewModel(false, myLinkList!![from].linkType!!)
-//                    }
-//                    else -> {
-//            //                    Timber.d("onMove from after inc ${from.inc()}")
-//            //                    Timber.d("onMove to after inc ${to.inc()}")
-//                        initChangePostionLinksViewModel(
-//                            type = myLinkList!![to].linkType!!,
-//                            newPosition = from,
-//                            replacedType = myLinkList!![to].linkType!!,
-//                            oldPosition = from
-//                        )
-//                    }
-//                }
-                moveItem(from, to)
-                adapter.notifyItemMoved(from, to)
-
-                return true
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val from = viewHolder.adapterPosition
-
-                Timber.d("onMove linkTypeName ${myLinkList!![from].linkTypeName}")
-
-            }
-
-            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-                super.onSelectedChanged(viewHolder, actionState)
-
-                if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
-                    viewHolder?.itemView?.alpha = 0.5f
-                }
-            }
-
-            override fun clearView(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder
-            ) {
-                super.clearView(recyclerView, viewHolder)
-                val from = viewHolder.adapterPosition
-
-
-//                Timber.d("onMove linkTypeName ${myLinkList!![from!!].linkTypeName}")
-//                Timber.d("onMove linkType ${myLinkList!![from!!].linkType}")
-//
-
-
-                viewHolder.itemView.alpha = 1.0f
-            }
-        }
-
-        ItemTouchHelper(simpleItemTouchCallback)
-    }
-
-
-    fun moveItem(from: Int, to: Int) {
-        val item = myLinkList?.removeAt(from)
-        myLinkList?.add(to, item!!)
-    }
-
-
-    private fun move(oldPos: Int, newPos: Int) {
-        val temp = myLinkList?.get(oldPos)
-        myLinkList?.set(oldPos, myLinkList?.get(newPos)!!)
-        myLinkList?.set(newPos, temp!!)
-        myLinkAdapter.notifyItemChanged(oldPos)
-        myLinkAdapter.notifyItemChanged(newPos)
-
-        Timber.d("oldPos $oldPos")
-        Timber.d("newPos $newPos")
-
-        Timber.d("old linkType ${myLinkList!![newPos].linkTypeName}")
-        Timber.d("new linkType ${myLinkList!![oldPos].linkTypeName}")
-
-        when {
-            oldPos == 0 -> {
-                initDirectOnOffViewModel(false, myLinkList!![oldPos].linkType!!)
-            }
-            newPos == 0 -> {
-                initDirectOnOffViewModel(false, myLinkList!![newPos].linkType!!)
-            }
-            else -> {
-                val old = newPos
-                val new = oldPos
-
-                Timber.d("old linkType ${myLinkList!![newPos].linkTypeName}")
-                Timber.d("oldPos ${new.inc()}")
-
-                Timber.d("new linkType ${myLinkList!![oldPos].linkTypeName}")
-                Timber.d("newPos ${old.inc()}")
-
-                initChangePostionLinksViewModel(
-                    type = myLinkList!![newPos].linkType!!,
-                    newPosition = old.inc(),
-                    replacedType = myLinkList!![oldPos].linkType!!,
-                    oldPosition = new.inc()
-                )
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -261,13 +113,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
             findContrller(action)
         }
 
-        binding?.includeLayout?.toggleButton.setTrackDrawable(
-            SwitchTrackTextDrawable(
-                requireContext(),
-                R.string.itzme_off, R.string.itzme_on
-            )
+        binding?.includeLayout?.toggleButton?.trackDrawable = SwitchTrackTextDrawable(
+            requireContext(),
+            R.string.itzme_off, R.string.itzme_on
         )
-        binding?.includeLayout?.toggleButton.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding?.includeLayout?.toggleButton?.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isPressed) {
                 initTurnOnOffProfileViewModel()
             }
@@ -392,6 +242,19 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     //region bind data
 
+    private fun bindMyProfile(myProfile: ResponseMyProfile) {
+        binding?.recyclerView6?.itemAnimator = null
+        binding?.myProfile = myProfile
+        binding?.isDiriectOn = myProfile.isDirectOn
+    }
+
+    private fun bindAdapter() {
+        binding?.myLinkAdapter = myLinkAdapter
+        dragDropItemRecyclerView()
+    }
+    //endregion
+
+    //region move item in recycler
 
     private fun dragDropItemRecyclerView() {
 
@@ -467,17 +330,48 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
 
     }
 
-    private fun bindMyProfile(myProfile: ResponseMyProfile) {
-        binding?.recyclerView6?.itemAnimator = null
-        binding?.myProfile = myProfile
-        binding?.isDiriectOn = myProfile.isDirectOn
+    private fun move(oldPos: Int, newPos: Int) {
+        val temp = myLinkList?.get(oldPos)
+        myLinkList?.set(oldPos, myLinkList?.get(newPos)!!)
+        myLinkList?.set(newPos, temp!!)
+        myLinkAdapter.notifyItemChanged(oldPos)
+        myLinkAdapter.notifyItemChanged(newPos)
+
+        Timber.d("oldPos $oldPos")
+        Timber.d("newPos $newPos")
+
+        Timber.d("old linkType ${myLinkList!![newPos].linkTypeName}")
+        Timber.d("new linkType ${myLinkList!![oldPos].linkTypeName}")
+
+        when {
+            oldPos == 0 -> {
+                initDirectOnOffViewModel(false, myLinkList!![oldPos].linkType!!)
+            }
+            newPos == 0 -> {
+                initDirectOnOffViewModel(false, myLinkList!![newPos].linkType!!)
+            }
+            else -> {
+                val old = newPos
+                val new = oldPos
+
+                Timber.d("old linkType ${myLinkList!![newPos].linkTypeName}")
+                Timber.d("oldPos ${new.inc()}")
+
+                Timber.d("new linkType ${myLinkList!![oldPos].linkTypeName}")
+                Timber.d("newPos ${old.inc()}")
+
+                initChangePostionLinksViewModel(
+                    type = myLinkList!![newPos].linkType!!,
+                    newPosition = old.inc(),
+                    replacedType = myLinkList!![oldPos].linkType!!,
+                    oldPosition = new.inc()
+                )
+            }
+        }
     }
 
-    private fun bindAdapter() {
-        binding?.myLinkAdapter = myLinkAdapter
-        dragDropItemRecyclerView()
-    }
     //endregion
+
 
     //region init view model
 
@@ -726,5 +620,5 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(), IClickOnItem
         }
     }
 
-    //edbregion
+    //endregion
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
@@ -37,12 +38,17 @@ import com.itzme.ui.fragment.myProfile.viewModels.TurnOnOffProfileViewModel
 import com.itzme.utilits.*
 import com.vansuita.pickimage.bundle.PickSetup
 import com.vansuita.pickimage.dialog.PickImageDialog
+import net.cachapa.expandablelayout.ExpandableLayout
 import timber.log.Timber
 import java.util.*
 
 
-class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOnItems<Link>, MyLinkAdapter.IClickOnLink {
+class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOnItems<Link>,
+    MyLinkAdapter.IClickOnLink,
+    LinkHeaderAdapter.IOpenCloseExpandRecycler {
 
+    private var position: Int? = null
+    private var isCollapse: Boolean = false
     private val viewModel: EditProfileViewModel by viewModels()
     private val viewModelEditLink: EditLinkViewModel by viewModels()
     private val viewModelTurnOnOff: TurnOnOffProfileViewModel by viewModels()
@@ -52,7 +58,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     private var imageBitmap: String? = null
     private var isProfilePrivate: Boolean = true
     private val myLinkAdapter: MyLinkAdapter by lazy { MyLinkAdapter(this) }
-    private val allLinkAdapter: LinkHeaderAdapter by lazy { LinkHeaderAdapter(this) }
+    private val allLinkAdapter: LinkHeaderAdapter by lazy { LinkHeaderAdapter(this, this) }
     private var petData: PetData? = null
     private var findMeData: ResponseMyProfile? = null
     private var isFirstTime: Boolean? = true
@@ -62,8 +68,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     private var myLinkList: ArrayList<MyLink>? = null
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return bindView(inflater, container, R.layout.fragment_edit_profile)
     }
@@ -83,9 +89,9 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         sharedViewModel.dismissed.observe(viewLifecycleOwner, { isDissmis ->
             Timber.d("isDissmis $isDissmis")
             if (isDissmis) {
-                goToMyProfileFragment()
+                //  goToMyProfileFragment()
                 sharedViewModel.saveDismissed(false)
-//                initMyProfileViewModel()
+                initMyProfileViewModel()
             }
         })
     }
@@ -93,8 +99,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     //endregion
 
 
-    private fun goToMyProfileFragment()
-    {
+    private fun goToMyProfileFragment() {
         val action = EditProfileFragmentDirections.actionEditProfileFragmentToMyProfileFragment()
         findNavController().navigate(action)
     }
@@ -102,18 +107,18 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     //region convert image from url to bitmap encoding
     private fun convertImage(urlImage: String?) {
         Glide.with(this)
-                .asBitmap()
-                .load(Constant.BASE_URL_IMAGE + urlImage)
-                .into(object : CustomTarget<Bitmap>() {
-                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                        imageBitmap = ImageUtil.encodeImage(resource)
-                        Timber.d(imageBitmap)
+            .asBitmap()
+            .load(Constant.BASE_URL_IMAGE + urlImage)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    imageBitmap = ImageUtil.encodeImage(resource)
+                    Timber.d(imageBitmap)
 
-                    }
+                }
 
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                    }
-                })
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+            })
 
 //        imageBitmap = ImageUtil.encodeImage(ImageUtil.getBitmapFromURL(urlImage))
 //        Timber.d(imageBitmap)
@@ -185,12 +190,12 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
         binding?.cardForPets?.setOnClickListener {
             val action =
-                    EditProfileFragmentDirections.actionEditProfileFragmentToAddPetSheet(petData)
+                EditProfileFragmentDirections.actionEditProfileFragmentToAddPetSheet(petData)
             findNavController().navigate(action)
         }
         binding?.cardForFindMe?.setOnClickListener {
             val action =
-                    EditProfileFragmentDirections.actionEditProfileFragmentToAddFindMeSheet(findMeData)
+                EditProfileFragmentDirections.actionEditProfileFragmentToAddFindMeSheet(findMeData)
             findNavController().navigate(action)
         }
 
@@ -207,18 +212,18 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
     //region pick and capture image
     private fun pickImage() {
         PickImageDialog.build(PickSetup())
-                .setOnPickResult {
-                    if (it.error == null) {
-                        imageBitmap = ImageUtil.encodeImage(it.bitmap)!!
-                        binding?.profileImage?.setImageBitmap(it.bitmap)
-                        binding?.btnImage?.visibility = View.GONE
-                        binding?.btnClose?.visibility = View.VISIBLE
-                    } else {
+            .setOnPickResult {
+                if (it.error == null) {
+                    imageBitmap = ImageUtil.encodeImage(it.bitmap)!!
+                    binding?.profileImage?.setImageBitmap(it.bitmap)
+                    binding?.btnImage?.visibility = View.GONE
+                    binding?.btnClose?.visibility = View.VISIBLE
+                } else {
 
-                        Toast.makeText(requireContext(), it.error.message, Toast.LENGTH_LONG).show()
-                    }
-                }.setOnPickCancel {
-                }.show(childFragmentManager)
+                    Toast.makeText(requireContext(), it.error.message, Toast.LENGTH_LONG).show()
+                }
+            }.setOnPickCancel {
+            }.show(childFragmentManager)
     }
 
     //endregion
@@ -385,13 +390,17 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    myLinkAdapter.submitList(null, null,null)
+
+                    myLinkAdapter.submitList(null, null, null)
                     bindMyProfile(response.data!!)
                     if (!response.data.imageUrl.isNullOrEmpty()) {
                         convertImage(response.data.imageUrl)
                     }
                     binding?.isPrivate = response.data.isProfilePrivate
                     allLinkAdapter.submitList(response.data.allLinks)
+                    if (position != null) {
+                        allLinkAdapter.submitPostion(position)
+                    }
                     petData = response.data.petData
                     findMeData = response.data
                     if (response.data.myLinks?.isNotEmpty()!!) {
@@ -399,7 +408,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                         binding?.tvEmpty?.visibility = View.GONE
                         myLinkList = response.data.myLinks as ArrayList<MyLink>
 
-                        myLinkAdapter.submitList(response.data.isDirectOn, response.data.myLinks,null)
+                        myLinkAdapter.submitList(
+                            response.data.isDirectOn,
+                            response.data.myLinks,
+                            null
+                        )
                     } else {
                         binding?.recyclerView3?.visibility = View.INVISIBLE
                         binding?.tvEmpty?.visibility = View.VISIBLE
@@ -414,10 +427,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
                         401 -> {
                             SessionEnded.dialogSessionEnded(
-                                    requireActivity(),
-                                    findNavController(),
-                                    R.id.editProfileFragment,
-                                    EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
+                                requireActivity(),
+                                findNavController(),
+                                R.id.editProfileFragment,
+                                EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
                             )
                         }
                     }
@@ -437,7 +450,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                 }
                 is Resource.Success -> {
                     DialogUtil.dismissDialog()
-                    Toast.makeText(requireContext(), requireContext().resources.getString(R.string.profile_updated), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().resources.getString(R.string.profile_updated),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     goToMyProfileFragment()
                     binding?.edName?.editText?.isCursorVisible = false
                     binding?.bioInputLayout?.editText?.isCursorVisible = false
@@ -450,10 +467,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                         }
                         401 -> {
                             SessionEnded.dialogSessionEnded(
-                                    requireActivity(),
-                                    findNavController(),
-                                    R.id.editProfileFragment,
-                                    EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
+                                requireActivity(),
+                                findNavController(),
+                                R.id.editProfileFragment,
+                                EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
                             )
                         }
                     }
@@ -467,11 +484,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
     private fun bodyEditProfile(): BodyEditProfile {
         return BodyEditProfile(
-                binding?.edName?.editText?.text.toString(), imageBitmap,
-                PreferencesUtils(requireContext())
-                        .getUserData(Constant.USER_DATA_KEY)?.email,
-                binding?.bioInputLayout?.editText?.text.toString(),
-                isProfilePrivate
+            binding?.edName?.editText?.text.toString(), imageBitmap,
+            PreferencesUtils(requireContext())
+                .getUserData(Constant.USER_DATA_KEY)?.email,
+            binding?.bioInputLayout?.editText?.text.toString(),
+            isProfilePrivate
         )
     }
 
@@ -483,12 +500,12 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         when (item.linkType) {
             in 0..12, in 21..41 -> {
                 val action =
-                        EditProfileFragmentDirections.actionEditProfileFragmentToAddLinkSheet(item)
+                    EditProfileFragmentDirections.actionEditProfileFragmentToAddLinkSheet(item)
                 findNavController().navigate(action)
             }
             in 13..20 -> {
                 val action =
-                        EditProfileFragmentDirections.actionEditProfileFragmentToAddPhoneSheet(item)
+                    EditProfileFragmentDirections.actionEditProfileFragmentToAddPhoneSheet(item)
                 findNavController().navigate(action)
             }
         }
@@ -500,22 +517,24 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
         when (item.linkType) {
             in 0..12, in 21..41 -> {
                 val action =
-                        EditProfileFragmentDirections.actionEditProfileFragmentToAddLinkSheet(item)
+                    EditProfileFragmentDirections.actionEditProfileFragmentToAddLinkSheet(item)
                 findNavController().navigate(action)
             }
             in 13..20 -> {
                 val action =
-                        EditProfileFragmentDirections.actionEditProfileFragmentToAddPhoneSheet(item)
+                    EditProfileFragmentDirections.actionEditProfileFragmentToAddPhoneSheet(item)
                 findNavController().navigate(action)
             }
             42 -> {
                 val action =
-                        EditProfileFragmentDirections.actionEditProfileFragmentToAddPetSheet(petData)
+                    EditProfileFragmentDirections.actionEditProfileFragmentToAddPetSheet(petData)
                 findNavController().navigate(action)
             }
             43 -> {
                 val action =
-                        EditProfileFragmentDirections.actionEditProfileFragmentToAddFindMeSheet(findMeData)
+                    EditProfileFragmentDirections.actionEditProfileFragmentToAddFindMeSheet(
+                        findMeData
+                    )
                 findNavController().navigate(action)
             }
         }
@@ -543,10 +562,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                         }
                         401 -> {
                             SessionEnded.dialogSessionEnded(
-                                    requireActivity(),
-                                    findNavController(),
-                                    R.id.editProfileFragment,
-                                    EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
+                                requireActivity(),
+                                findNavController(),
+                                R.id.editProfileFragment,
+                                EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
                             )
                         }
                     }
@@ -559,35 +578,35 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
 
     private fun bodyEditLinkFindMe(isActive: Int): BodyEditLink {
         return BodyEditLink(
-                Constant.LINK_FIND_ME,
-                findMeData?.findMeData?.name,
-                null,
-                0,
-                isActive,
-                findMeData?.findMeData?.address,
-                findMeData?.findMeData?.information,
-                findMeData?.findMeData?.bloodType,
-                findMeData?.findMeData?.emergencyContactName,
-                findMeData?.findMeData?.emergencyContactPhone,
-                null,
-                imageBitmap
+            Constant.LINK_FIND_ME,
+            findMeData?.findMeData?.name,
+            null,
+            0,
+            isActive,
+            findMeData?.findMeData?.address,
+            findMeData?.findMeData?.information,
+            findMeData?.findMeData?.bloodType,
+            findMeData?.findMeData?.emergencyContactName,
+            findMeData?.findMeData?.emergencyContactPhone,
+            null,
+            imageBitmap
         )
     }
 
     private fun bodyEditLinkPet(isActive: Int): BodyEditLink {
         return BodyEditLink(
-                Constant.LINK_PET,
-                petData?.name,
-                null,
-                0,
-                isActive,
-                null,
-                petData?.information,
-                null,
-                petData?.emergencyContactName,
-                petData?.emergencyContactPhone,
-                petData?.type,
-                null
+            Constant.LINK_PET,
+            petData?.name,
+            null,
+            0,
+            isActive,
+            null,
+            petData?.information,
+            null,
+            petData?.emergencyContactName,
+            petData?.emergencyContactPhone,
+            petData?.type,
+            null
         )
     }
 
@@ -611,10 +630,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
                         }
                         401 -> {
                             SessionEnded.dialogSessionEnded(
-                                    requireActivity(),
-                                    findNavController(),
-                                    R.id.editProfileFragment,
-                                    EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
+                                requireActivity(),
+                                findNavController(),
+                                R.id.editProfileFragment,
+                                EditProfileFragmentDirections.actionEditProfileFragmentToLoginFragment()
                             )
                         }
                     }
@@ -623,6 +642,24 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), IClickOn
             }
         })
 
+    }
+
+    override fun openCloseExpandRecycler(
+        position: Int,
+        imageView: ImageView,
+        expandableLayout: ExpandableLayout
+    ) {
+        this.position = position
+        isCollapse = if (isCollapse) {
+            imageView.setImageResource(R.drawable.left_arrow)
+            expandableLayout.collapse()
+            false
+        } else {
+            imageView.setImageResource(R.drawable.down_arrow)
+            expandableLayout.expand()
+            true
+        }
+//        allLinkAdapter.notifyDataSetChanged()
     }
 
 

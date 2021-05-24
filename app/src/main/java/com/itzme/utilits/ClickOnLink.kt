@@ -71,7 +71,6 @@ class ClickOnLink {
                 20 -> {
                     openSignal(view.context, baseLink.link!!)
                 }
-
                 21 -> {
                     openMaps(view.context, baseLink.link!!)
                 }
