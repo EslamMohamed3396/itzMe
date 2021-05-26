@@ -174,6 +174,7 @@ class MainActivity : AppCompatActivity() {
         sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
         sharedViewModel.stateNfc.observe(this, { stateNfc ->
             if (stateNfc.notify) {
+                Timber.d("${stateNfc.readWrite}")
                 readWriteNFC = stateNfc.readWrite
                 initNfc()
             }
@@ -333,8 +334,9 @@ class MainActivity : AppCompatActivity() {
         if (ndef.isWritable) {
             val message = NdefMessage(
                 NdefRecord.createUri(
-                    PreferencesUtils(this).getInstance()
-                        ?.getUserData(Constant.USER_DATA_KEY)?.linkName!!
+                    "https://" +
+                            PreferencesUtils(this).getInstance()
+                                ?.getUserData(Constant.USER_DATA_KEY)?.linkName!!
                 ),
             )
 
