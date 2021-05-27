@@ -22,7 +22,6 @@ class LinkHeaderAdapter(
 ) :
     RecyclerView.Adapter<BaseViewHolder<*>>(), IClickOnItems<Link> {
     private val differ = AsyncListDiffer(this, DiffCallback<AllLink>())
-    private var isCollapse = false
     private var position: Int? = null
 
     fun submitList(list: List<AllLink?>?) {
