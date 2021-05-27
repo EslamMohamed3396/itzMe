@@ -195,12 +195,12 @@ class ClickOnLink {
     }
 
     private fun openSnapChat(context: Context, name: String) {
-        val urlSn = "https://snapchat.com/add/$name"
+        val urlSn = "https://www.snapchat.com/add/$name"
         try {
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "*/*"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(urlSn)
             intent.setPackage("com.snapchat.android")
-            context.startActivity(Intent.createChooser(intent, "Open Snapchat"))
+            context.startActivity(intent)
         } catch (anfe: ActivityNotFoundException) {
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(urlSn)))
         }
@@ -507,7 +507,7 @@ class ClickOnLink {
     }
 
     private fun openTumbler(context: Context, name: String) {
-        val uri = Uri.parse("https://www.tumblr.com/blog/view/$name")
+        val uri = Uri.parse(name)
 
         val likeIng = Intent(Intent.ACTION_VIEW, uri)
 
@@ -518,7 +518,7 @@ class ClickOnLink {
             context.startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://www.tumblr.com/blog/view/$name")
+                    Uri.parse(name)
                 )
             )
         }
