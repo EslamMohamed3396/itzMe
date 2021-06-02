@@ -107,7 +107,7 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
         binding.countryCode.registerCarrierNumberEditText(binding.linkInputLayout.editText)
         val phone = args.addLinkArgs.link?.
         split(binding.countryCode.selectedCountryCode)
-        Timber.d("${phone}")
+        Timber.d("$phone")
     }
 
 

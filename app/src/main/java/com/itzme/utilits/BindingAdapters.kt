@@ -52,7 +52,7 @@ fun imageLoadQrCode(imageView: ImageView, linkeName: String?) {
                 }
             }
         } catch (e: WriterException) {
-            Timber.d("${e.message}")
+            Timber.d(e.message.toString())
         }
 
         Glide.with(imageView.context)
@@ -200,7 +200,7 @@ fun isProfilePrivate(button: SwitchMaterial, isPrivate: Boolean) {
 fun setPrefixText(textInputLayout: TextInputLayout, link: BaseLink) {
     when (link.linkType) {
         0, 1, 7, 9, 11, 12, 22, 23, 24, 25, 26, in 30..41 -> {
-            if (link.link != null && !link?.link?.startsWith("http://")!! && !link.link?.startsWith(
+            if (link.link != null && !link.link?.startsWith("http://")!! && !link.link?.startsWith(
                     "https://"
                 )!!
             ) {

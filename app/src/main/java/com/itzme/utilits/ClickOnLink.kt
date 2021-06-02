@@ -159,7 +159,7 @@ class ClickOnLink {
     }
 
 
-    fun composeEmail(context: Context, email: String) {
+    private fun composeEmail(context: Context, email: String) {
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
         context.startActivity(Intent.createChooser(emailIntent, "Chooser Title"))
     }
@@ -572,7 +572,7 @@ class ClickOnLink {
         }
     }
 
-    fun openFaceBook(context: Context, url: String) {
+    private fun openFaceBook(context: Context, url: String) {
 
         val uri = Uri.parse("fb://facewebmodal/f?href=$url")
         val likeIng = Intent(Intent.ACTION_VIEW, uri)
@@ -607,7 +607,7 @@ class ClickOnLink {
     }
 
     private fun openPhone(context: Context, number: String) {
-        val u = Uri.parse("tel:" + number)
+        val u = Uri.parse("tel:$number")
 
         val i = Intent(Intent.ACTION_DIAL, u)
         try {
@@ -619,7 +619,7 @@ class ClickOnLink {
 
     private fun openSMS(context: Context, number: String) {
         val intent = Intent(Intent.ACTION_SEND)
-        intent.data = Uri.parse("smsto:" + number)
+        intent.data = Uri.parse("smsto:$number")
 
         intent.putExtra("sms_body", message)
         if (intent.resolveActivity(context.packageManager) != null) {

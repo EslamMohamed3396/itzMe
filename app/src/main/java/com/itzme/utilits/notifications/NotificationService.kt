@@ -23,7 +23,6 @@ import java.util.*
 
 class NotificationService : FirebaseMessagingService() {
 
-    var TAG = "NotificationService"
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
@@ -36,9 +35,9 @@ class NotificationService : FirebaseMessagingService() {
             var body: String? = ""
             var deepLink: String? = ""
             if (notification != null) {
-                if (notification.title != null && !notification.title!!.isEmpty()) title =
+                if (notification.title != null && notification.title!!.isNotEmpty()) title =
                     notification.title
-                if (notification.body != null && !notification.body!!.isEmpty()) body =
+                if (notification.body != null && notification.body!!.isNotEmpty()) body =
                     notification.body
             } else if (map.isNotEmpty()) {
                 if (map.containsKey("Title") || map.containsKey("title")) title =
@@ -48,9 +47,9 @@ class NotificationService : FirebaseMessagingService() {
                 if (map.containsKey("deepLink") || map.containsKey("DeepLink")) deepLink =
                     getElementByIndex(map, 1) as String?
             }
-            Timber.d("title ${title}")
-            Timber.d("body ${body}")
-            Timber.d("deepLink ${deepLink}")
+            Timber.d("title $title")
+            Timber.d("body $body")
+            Timber.d("deepLink $deepLink")
             sendNotification(title, body, deepLink)
         } catch (ignored: Exception) {
 
@@ -128,7 +127,7 @@ class NotificationService : FirebaseMessagingService() {
         notificationManager.notify(0, notificationBuilder.build())
     }
 
-    fun getElementByIndex(map: Map<String, String>, index: Int): Any? {
+    private fun getElementByIndex(map: Map<String, String>, index: Int): Any? {
         return map[Objects.requireNonNull<Array<Any>>(map.keys.toTypedArray())[index]]
     }
 

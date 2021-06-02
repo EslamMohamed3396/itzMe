@@ -70,12 +70,11 @@ object EditTextValidiation {
             textInputLayout: TextInputLayout
     ): Boolean {
         val pattern: Pattern
-        val matcher: Matcher
-//            val passwordPattern = "[0-9]{1,6}"
+        //            val passwordPattern = "[0-9]{1,6}"
 //            val passwordPattern = "((?!\\s)\\A)(\\s|(?<!\\s)\\S){4,20}\\Z"
         val passwordPattern = "^[A-Za-z0-9]{4,20}$"
         pattern = Pattern.compile(passwordPattern)
-        matcher = pattern.matcher(textInputLayout.editText?.text.toString())
+        val matcher: Matcher = pattern.matcher(textInputLayout.editText?.text.toString())
         return if (matcher.matches()) {
             textInputLayout.error = null
             true
@@ -91,12 +90,12 @@ object EditTextValidiation {
             Password: TextInputLayout,
             confirmInputLayout: TextInputLayout
     ): Boolean {
-        if (confirmInputLayout.editText?.text.toString().isEmpty()) {
-            return true
+        return if (confirmInputLayout.editText?.text.toString().isEmpty()) {
+            true
         } else {
-            return if (confirmInputLayout.editText?.text.toString() != Password.editText?.text.toString()) {
+            if (confirmInputLayout.editText?.text.toString() != Password.editText?.text.toString()) {
                 confirmInputLayout.error =
-                        confirmInputLayout.context.getString(R.string.password_match)
+                    confirmInputLayout.context.getString(R.string.password_match)
                 confirmInputLayout.editText?.requestFocus()
                 false
             } else {

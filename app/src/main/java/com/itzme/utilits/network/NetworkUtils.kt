@@ -1,4 +1,4 @@
-package com.dayrah.utilis.network
+package com.itzme.utilits.network
 
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
@@ -43,7 +43,7 @@ class NetworkUtils(context: Context) : LiveData<Boolean>() {
           Source: https://developer.android.com/reference/android/net/ConnectivityManager.NetworkCallback#onAvailable(android.net.Network)
          */
         override fun onAvailable(network: Network) {
-            Timber.d("onAvailable: ${network}")
+            Timber.d("onAvailable: $network")
             val networkCapabilities = cm.getNetworkCapabilities(network)
             val hasInternetCapability = networkCapabilities?.hasCapability(NET_CAPABILITY_INTERNET)
             Timber.d("onAvailable: ${network}, $hasInternetCapability")
@@ -53,7 +53,7 @@ class NetworkUtils(context: Context) : LiveData<Boolean>() {
                     val hasInternet = DoesNetworkHaveInternet.execute(network.socketFactory)
                     if (hasInternet) {
                         withContext(Dispatchers.Main) {
-                            Timber.d("onAvailable: adding network. ${network}")
+                            Timber.d("onAvailable: adding network. $network")
                             validNetworks.add(network)
                             checkValidNetworks()
                         }
@@ -67,7 +67,7 @@ class NetworkUtils(context: Context) : LiveData<Boolean>() {
           Source: https://developer.android.com/reference/android/net/ConnectivityManager.NetworkCallback#onLost(android.net.Network)
          */
         override fun onLost(network: Network) {
-            Timber.d("onLost: ${network}")
+            Timber.d("onLost: $network")
             validNetworks.remove(network)
             checkValidNetworks()
         }

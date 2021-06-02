@@ -1,4 +1,4 @@
-package com.dayrah.utilis.network
+package com.itzme.utilits.network
 
 import timber.log.Timber
 import java.io.IOException
@@ -16,7 +16,7 @@ object DoesNetworkHaveInternet {
             Timber.d("PING success.")
             true
         } catch (e: IOException) {
-            Timber.e("No internet connection. ${e}")
+            Timber.e("No internet connection. $e")
             false
         }
     }

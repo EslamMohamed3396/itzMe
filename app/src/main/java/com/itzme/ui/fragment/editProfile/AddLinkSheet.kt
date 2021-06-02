@@ -195,7 +195,7 @@ class AddLinkSheet : BottomSheetDialogFragment() {
     }
 
 
-    fun composeEmail(email: String) {
+    private fun composeEmail(email: String) {
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
         startActivity(Intent.createChooser(emailIntent, "Chooser Title"))
     }

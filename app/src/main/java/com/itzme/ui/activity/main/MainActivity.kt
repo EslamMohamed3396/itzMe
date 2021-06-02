@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navHostFragment: NavHostFragment
     private val MIME_TEXT_PLAIN = "text/plain"
-    private val viewModelValidateTag: ValidateSerialViewModel by viewModels()
     private val viewModelReadTag: ReadTagViewModel by viewModels()
 
     private var nfcAdapter: NfcAdapter? = null
@@ -45,21 +44,14 @@ class MainActivity : AppCompatActivity() {
     private var tag: Tag? = null
     private var intentReadTag: Intent? = null
     private val filters = arrayOf(
-        IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED),
+    //    IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED),
         IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
-        IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
+        //  IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
     )
-    private var toast: Toast? = null
 
     private val techTypes = arrayOf(
         arrayOf(Ndef::class.java.name),
-        arrayOf(IsoDep::class.java.name),
         arrayOf(NfcA::class.java.name),
-        arrayOf(NfcB::class.java.name),
-        arrayOf(NfcF::class.java.name),
-        arrayOf(NfcV::class.java.name),
-        arrayOf(NdefFormatable::class.java.name),
-        arrayOf(MifareClassic::class.java.name),
         arrayOf(MifareUltralight::class.java.name)
     )
 
@@ -73,37 +65,38 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        setupForegroundDispatch(nfcAdapter)
-    }
-
     private fun handleIntent(intent: Intent) {
         val action = intent.action
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED == action) {
-            val type = intent.type
-            if (MIME_TEXT_PLAIN.equals(type)) {
-                val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-                getTag(intent)
-                Timber.d("tag $tag")
-            } else {
-                Timber.d("Wrong mime type: $type")
-            }
-        } else if (NfcAdapter.ACTION_TECH_DISCOVERED == action) {
+        val type = intent.type
+        Timber.d("handleIntent $action")
+        val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+        getTag(intent)
+        Timber.d("tag $tag")
+//        if (MIME_TEXT_PLAIN == type) {
+//
+//        } else {
+//            Timber.d("Wrong mime type: $type")
+//        }
+//        if (NfcAdapter.ACTION_NDEF_DISCOVERED == action) {
+//
+//        }
+//        else
 
-            // In case we would still use the Tech Discovered Intent
-            val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-            val techList = tag!!.techList
-            val searchedTech = Ndef::class.java.name
-            for (tech in techList) {
-                if (searchedTech == tech) {
-                    getTag(intent)
-                    Timber.d("searchedTech $searchedTech")
-                    Timber.d("searchedTech tag $tag")
-                    break
-                }
-            }
-        }
+//        if (NfcAdapter.ACTION_TECH_DISCOVERED == action) {
+//
+//            // In case we would still use the Tech Discovered Intent
+//            val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+//            val techList = tag!!.techList
+//            val searchedTech = Ndef::class.java.name
+//            for (tech in techList) {
+//                if (searchedTech == tech) {
+//                    getTag(intent)
+//                    Timber.d("searchedTech $searchedTech")
+//                    Timber.d("searchedTech tag $tag")
+//                    break
+//                }
+//            }
+//        }
     }
 
     private fun getTag(intent: Intent) {
@@ -114,13 +107,15 @@ class MainActivity : AppCompatActivity() {
         Timber.d("${byteArrayToHex(tagId!!)}")
     }
 
-    fun setupForegroundDispatch(adapter: NfcAdapter?) {
+    private fun setupForegroundDispatch(adapter: NfcAdapter?) {
 
         filters[0].addDataType("text/plain")
-        filters[1].addDataType("text/plain")
-        filters[2].addDataType("text/plain")
+        //  filters[1].addDataType("text/plain")
+        //  filters[2].addDataType("text/plain")
 
-
+        filters[0].addCategory(Intent.CATEGORY_DEFAULT)
+        //   filters[1].addCategory(Intent.CATEGORY_DEFAULT)
+        //   filters[2].addCategory(Intent.CATEGORY_DEFAULT)
         adapter?.enableForegroundDispatch(this, nfcPendingIntent, filters, techTypes)
     }
 
@@ -167,6 +162,8 @@ class MainActivity : AppCompatActivity() {
             myDialog.show()
         }
 
+        setupForegroundDispatch(nfcAdapter)
+
     }
 
 
@@ -200,7 +197,7 @@ class MainActivity : AppCompatActivity() {
         if (readWriteNFC == ReadWriteNFC.WRITE_NFC) {
             initReadViewModel("", byteArrayToHex(tagId!!))
         } else {
-            Timber.d("${tag}")
+            Timber.d("$tag")
             readFromTag(intent)
         }
     }
@@ -232,7 +229,7 @@ class MainActivity : AppCompatActivity() {
 
     //region convert byte to hex string
 
-    fun byteArrayToHex(a: ByteArray): String {
+    private fun byteArrayToHex(a: ByteArray): String {
         val sb = StringBuilder(a.size * 2)
         for (b in a) sb.append(String.format("%02x:", b))
         return sb.reversed().substring(1).reversed()
@@ -326,7 +323,7 @@ class MainActivity : AppCompatActivity() {
     //region write in nfc
     private fun writeInNFC(tag: Tag) {
 
-        Timber.d("${tag}")
+        Timber.d("$tag")
 
 
         val ndef = Ndef.get(tag) ?: return
@@ -368,17 +365,17 @@ class MainActivity : AppCompatActivity() {
 
     //region read nfc
 
-    fun readFromTag(intent: Intent) {
+    private fun readFromTag(intent: Intent) {
         val ndef = Ndef.get(tag)
         try {
             ndef.connect()
 
             val messages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
-            Timber.d("messages ${messages}")
+            Timber.d("messages $messages")
 
             if (messages != null) {
                 val ndefMessages = arrayOfNulls<NdefMessage>(messages.size)
-                Timber.d("ndefMessages ${ndefMessages}")
+                Timber.d("ndefMessages $ndefMessages")
 
                 for (i in messages.indices) {
                     ndefMessages[i] = messages[i] as NdefMessage
@@ -386,7 +383,7 @@ class MainActivity : AppCompatActivity() {
                 val record = ndefMessages[0]!!.records[0]
                 val payload = record.payload
                 val text = String(payload)
-                Timber.d("text ${text}")
+                Timber.d("text $text")
 
                 initReadViewModel(splitLink(text), byteArrayToHex(tagId!!))
                 ndef.close()

@@ -8,15 +8,15 @@ import com.itzme.data.network.ICallBackNetwork
 import com.itzme.utilits.Resource
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import timber.log.Timber
 
 open class BaseViewModel<T> : ViewModel() {
     private var disposable: Disposable? = null
     private var responseMutableLiveData = MutableLiveData<Resource<T>>()
 
+
     open fun callApi(api: Observable<T>): LiveData<Resource<T>> {
 
-        responseMutableLiveData?.value = Resource.Loading()
+        responseMutableLiveData.value = Resource.Loading()
 
         Client.getInstance()?.request(api, object : ICallBackNetwork<T> {
             override fun onSuccess(response: T?) {
@@ -28,22 +28,21 @@ open class BaseViewModel<T> : ViewModel() {
             }
 
             override fun onFailed(error: String?, code: Int?, response: String?) {
-                Timber.d("$response")
                 onFailure(error, code)
             }
 
         })
-        return responseMutableLiveData!!
+        return responseMutableLiveData
     }
 
 
     private fun onFailure(t: String?, code: Int?) {
-        responseMutableLiveData?.value = Resource.Error(t, code)
+        responseMutableLiveData.value = Resource.Error(t, code)
 
     }
 
     private fun onResponse(response: T) {
-        responseMutableLiveData?.value = Resource.Success(response)
+        responseMutableLiveData.value = Resource.Success(response)
     }
 
     override fun onCleared() {

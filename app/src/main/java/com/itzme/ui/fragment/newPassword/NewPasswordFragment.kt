@@ -127,9 +127,7 @@ class NewPasswordFragment : BaseFragment<FragmentNewPasswordBinding>() {
     //region show sucess dialog
     private fun initSuccessDialog() {
 
-        lateinit var dialog: Dialog
-
-        dialog = Dialog(requireContext(), R.style.FullHeightDialog)
+        val dialog = Dialog(requireContext(), R.style.FullHeightDialog)
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
