@@ -13,7 +13,6 @@ import com.itzme.data.models.stateNfc.enmReadWriteItzME.ReadWriteNFC
 import com.itzme.data.models.tags.howToUse.response.HowToUse
 import com.itzme.databinding.FragmentHowToUseBinding
 import com.itzme.ui.base.BaseFragment
-import com.itzme.ui.fragment.activeProduct.ActiveProductFragmentDirections
 
 class HowToUseFragment : BaseFragment<FragmentHowToUseBinding>() {
 
@@ -100,12 +99,12 @@ class HowToUseFragment : BaseFragment<FragmentHowToUseBinding>() {
         val howToUserList = ArrayList<HowToUse>()
         howToUserList.add(
                 HowToUse(
-                        1, R.drawable.how_to_use_iphone,
-                        requireContext().resources.getString(R.string.how_iphone),
-                        requireContext().resources.getString(R.string.content1_iphone),
-                        requireContext().resources.getString(R.string.content2_iphone),
+                    1, R.drawable.how_iphone,
+                    requireContext().resources.getString(R.string.how_iphone),
+                    requireContext().resources.getString(R.string.content1_iphone),
+                    requireContext().resources.getString(R.string.content2_iphone),
 
-                        )
+                    )
         )
         howToUserList.add(
                 HowToUse(

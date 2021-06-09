@@ -22,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/imageSlideIcon"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="319dp"
+                android:layout_height="395dp"
                 android:contentDescription="@string/app_name"
                 app:layout_constraintBottom_toTopOf="@+id/guideline5"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +40,7 @@
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/cairo_bold"
                 android:gravity="center"
+                android:textAllCaps="true"
                 android:text="@{howToUse.title}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 android:textColor="@color/dark_blue"
@@ -103,7 +104,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="@{howToUse.content1}"
+                android:text="@{howToUse.content2}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 android:textColor="@color/gray"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -129,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.75" />
+                app:layout_constraintGuide_percent="0.70" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: SharedViewModel
 
     private lateinit var navHostFragment: NavHostFragment
-    private val MIME_TEXT_PLAIN = "text/plain"
     private val viewModelReadTag: ReadTagViewModel by viewModels()
 
     private var nfcAdapter: NfcAdapter? = null
@@ -44,9 +43,7 @@ class MainActivity : AppCompatActivity() {
     private var tag: Tag? = null
     private var intentReadTag: Intent? = null
     private val filters = arrayOf(
-    //    IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED),
         IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
-        //  IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
     )
 
     private val techTypes = arrayOf(
@@ -72,31 +69,7 @@ class MainActivity : AppCompatActivity() {
         val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
         getTag(intent)
         Timber.d("tag $tag")
-//        if (MIME_TEXT_PLAIN == type) {
-//
-//        } else {
-//            Timber.d("Wrong mime type: $type")
-//        }
-//        if (NfcAdapter.ACTION_NDEF_DISCOVERED == action) {
-//
-//        }
-//        else
 
-//        if (NfcAdapter.ACTION_TECH_DISCOVERED == action) {
-//
-//            // In case we would still use the Tech Discovered Intent
-//            val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-//            val techList = tag!!.techList
-//            val searchedTech = Ndef::class.java.name
-//            for (tech in techList) {
-//                if (searchedTech == tech) {
-//                    getTag(intent)
-//                    Timber.d("searchedTech $searchedTech")
-//                    Timber.d("searchedTech tag $tag")
-//                    break
-//                }
-//            }
-//        }
     }
 
     private fun getTag(intent: Intent) {
@@ -110,12 +83,9 @@ class MainActivity : AppCompatActivity() {
     private fun setupForegroundDispatch(adapter: NfcAdapter?) {
 
         filters[0].addDataType("text/plain")
-        //  filters[1].addDataType("text/plain")
-        //  filters[2].addDataType("text/plain")
 
         filters[0].addCategory(Intent.CATEGORY_DEFAULT)
-        //   filters[1].addCategory(Intent.CATEGORY_DEFAULT)
-        //   filters[2].addCategory(Intent.CATEGORY_DEFAULT)
+
         adapter?.enableForegroundDispatch(this, nfcPendingIntent, filters, techTypes)
     }
 
@@ -207,18 +177,6 @@ class MainActivity : AppCompatActivity() {
         intentReadTag = intent
 
         handleIntent(intent)
-//        tagId = intent?.getByteArrayExtra(NfcAdapter.EXTRA_ID)
-//        tag = intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG) ?: return
-//
-//        Timber.d("${byteArrayToHex(tagId!!)}")
-//
-//        if (readWriteNFC == ReadWriteNFC.WRITE_NFC) {
-//            initReadViewModel("", byteArrayToHex(tagId!!))
-//        } else {
-//            Timber.d("${tag}")
-//            readFromTag(intent)
-//        }
-        //  initValidateViewModel(byteArrayToHex(tagId!!))
 
     }
 
@@ -240,41 +198,9 @@ class MainActivity : AppCompatActivity() {
 
     //region init view model
 
-//    private fun initValidateViewModel(serial: String) {
-//        viewModelValidateTag.validateSerial(serial).observe(this, { response ->
-//            val message = response.data?.errorMessage
-//            when (response) {
-//                is Resource.Loading -> {
-//                    DialogUtil.showDialog(this)
-//                }
-//                is Resource.Success -> {
-//                    DialogUtil.dismissDialog()
-//                    if (readWriteNFC == ReadWriteNFC.WRITE_NFC) {
-//                        writeInNFC(tag!!)
-//                    } else {
-//                        readFromTag(intentReadTag!!)
-//                    }
-//                }
-//                is Resource.Error -> {
-//                    DialogUtil.dismissDialog()
-//                    when (response.code) {
-//                        401 -> {
-//
-//                        }
-//                        else -> {
-//                            showToast(message)
-//                        }
-//                    }
-//                }
-//
-//            }
-//        })
-//
-//    }
 
     private fun initReadViewModel(userName: String?, serial: String?) {
         viewModelReadTag.readTag(userName, serial).observe(this, { response ->
-            val message = response.data?.errorMessage
             when (response) {
                 is Resource.Loading -> {
                     DialogUtil.showDialog(this)

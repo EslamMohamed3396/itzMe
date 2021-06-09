@@ -46,8 +46,8 @@
     <string name="log_out">تسجيل خروج </string>
     <string name="old_password">كلمة المرور القديمة </string>
     <string name="email_exist">هذا البريد الإلكتروني موجود بالفعل </string>
-    <string name="direct_off">Direct Off</string>
-    <string name="direct_on">Direct On</string>
+    <string name="direct_off">ايقاف</string>
+    <string name="direct_on">تشغيل</string>
     <string name="share_profile_link">مشاركة ملفك الشخصي</string>
     <string name="my_qr_code">الرمز الخاص بي </string>
     <string name="cancel">الغاء</string>
@@ -90,8 +90,8 @@
     <string name="your_new_password">كلمة المرور الجديدة </string>
     <string name="your_identity_has_been_verified_set_your_new_password">تم التحقق من هويتك قم بتعيين كلمة المرور الجديدة الخاصة بك </string>
     <string name="set_new_password">تعيين كلمة مرور جديدة </string>
-    <string name="itzme_on">itzme مفتوح</string>
-    <string name="itzme_off">itzme مغلقة </string>
+    <string name="itzme_on">نشط</string>
+    <string name="itzme_off">غير نشط</string>
     <string name="change_email">تغيير البريد الالكتروني </string>
     <string name="resend_code_success">إعادة إرسال الرمز بنجاح </string>
     <string name="no_nfc">هذا الجهاز لا يدعم NFC. </string>
@@ -127,8 +127,8 @@
     <string name="content2_use_get_itzme">Your QR Code can be accessed on the top right of your profile and in the main menu</string>
     <string name="remove">مسح</string>
     <string name="invalid_name">اسم غير صحيح</string>
-    <string name="user_name_hint">username</string>
-    <string name="hyper_link">hyperlink</string>
+    <string name="user_name_hint">اسم المستخدم</string>
+    <string name="hyper_link">رابط</string>
     <string name="he_didn_t_add_any_link_yet">تعرف على اسم المستخدم شخصيًا لرؤية ملف تعريفه على itzme </string>
 
 </resources>
