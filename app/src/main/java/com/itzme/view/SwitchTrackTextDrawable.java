@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import com.itzme.R;
+import com.itzme.utilits.Constant;
+import com.itzme.utilits.PreferencesUtils;
 
 public class SwitchTrackTextDrawable extends Drawable {
 
@@ -58,12 +60,29 @@ public class SwitchTrackTextDrawable extends Drawable {
 
         // This is one quarter of the full width, to measure the centers of the texts
         final int widthQuarter = canvas.getClipBounds().width() / 4;
-        canvas.drawText(mLeftText, 0, mLeftText.length(),
-                widthQuarter, heightBaseline,
-                mTextPaint);
-        canvas.drawText(mRightText, 0, mRightText.length(),
-                widthQuarter * 3, heightBaseline,
-                mTextPaint);
+
+
+        if (checkArabic()) {
+            canvas.drawText(mRightText, 0, mRightText.length(),
+                    widthQuarter, heightBaseline,
+                    mTextPaint);
+            canvas.drawText(mLeftText, 0, mLeftText.length(),
+                    widthQuarter * 3, heightBaseline,
+                    mTextPaint);
+        } else {
+            canvas.drawText(mLeftText, 0, mLeftText.length(),
+                    widthQuarter, heightBaseline,
+                    mTextPaint);
+            canvas.drawText(mRightText, 0, mRightText.length(),
+                    widthQuarter * 3, heightBaseline,
+                    mTextPaint);
+        }
+
+    }
+
+    private Boolean checkArabic() {
+        PreferencesUtils preferencesUtils = new PreferencesUtils(mContext);
+        return preferencesUtils.getString(Constant.LANGUAGE_KEY).equals(Constant.ARABIC_LANGUAGE);
     }
 
     @Override

@@ -40,9 +40,7 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         initClick()
         bindData()
-        //removeCountryCode()
 
-        //goneCountryCode()
     }
 
 
@@ -51,15 +49,6 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
         setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
     }
 
-
-    //region  view gone to coutry code
-    private fun goneCountryCode() {
-        if (checkIfLinkType()) {
-            binding.countryCode.visibility = View.GONE
-        }
-    }
-
-    //endregion
 
 
     //region bind data
@@ -80,18 +69,18 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
         }
         binding.saveBtn.setOnClickListener {
             if (checkIfLinkType()) {
-                if (checkBeforeRemove()) {
+                if (checkIfEmpty()) {
                     initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString())
                 }
             } else {
-                if (checkData()) {
+                if (checkIfEmpty()) {
                     initEditLinkViewModel(binding.linkInputLayout.editText?.text.toString())
                 }
             }
 
         }
         binding.removeBtn.setOnClickListener {
-            if (checkBeforeRemove()) {
+            if (checkIfEmpty()) {
                 initEditLinkViewModel("")
             }
         }
@@ -100,24 +89,9 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
     //endregion
 
 
-    //region remove country code
-
-    private fun removeCountryCode() {
-
-        binding.countryCode.registerCarrierNumberEditText(binding.linkInputLayout.editText)
-        val phone = args.addLinkArgs.link?.
-        split(binding.countryCode.selectedCountryCode)
-        Timber.d("$phone")
-    }
-
-
-    //endregion
 
 
     //region check Data
-    private fun checkData(): Boolean {
-        return CheckValidData.checkPhone(binding.countryCode, binding.linkInputLayout)
-    }
 
     private fun checkIfLinkType(): Boolean {
         return when (args.addLinkArgs.linkType) {
@@ -131,7 +105,7 @@ class AddPhoneSheet : BottomSheetDialogFragment() {
     }
 
 
-    private fun checkBeforeRemove(): Boolean {
+    private fun checkIfEmpty(): Boolean {
         return binding.linkInputLayout.editText?.text.toString().isNotEmpty()
     }
     //endregion

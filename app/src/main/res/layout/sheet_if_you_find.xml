@@ -258,7 +258,7 @@
                 app:errorEnabled="true"
                 app:hintTextColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/country_code"
+                app:layout_constraintStart_toStartOf="@+id/em_name_inputLayout"
                 app:layout_constraintTop_toBottomOf="@+id/em_name_inputLayout"
                 app:layout_constraintVertical_chainStyle="packed">
 
@@ -275,45 +275,45 @@
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/country_code"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                app:ccpDialog_allowSearch="true"
-                app:ccpDialog_initialScrollToSelection="true"
-                app:ccpDialog_keyboardAutoPopup="false"
-                app:ccpDialog_showCloseIcon="true"
-                app:ccpDialog_showFastScroller="false"
-                app:ccpDialog_showFlag="true"
-                app:ccpDialog_showPhoneCode="true"
-                app:ccpDialog_showTitle="false"
-                app:ccp_arrowColor="@color/white"
-                app:ccp_arrowSize="20dp"
-                app:ccp_autoDetectCountry="true"
-                app:ccp_autoDetectLanguage="true"
-                app:ccp_autoFormatNumber="true"
-                app:ccp_clickable="true"
-                app:ccp_countryAutoDetectionPref="SIM_ONLY"
-                app:ccp_countryPreference="US,NZ"
-                app:ccp_defaultNameCode="US"
-                app:ccp_excludedCountries="in,us,pk"
-                app:ccp_rememberLastSelection="true"
-                app:ccp_selectionMemoryTag="signupCCP"
-                app:ccp_showArrow="true"
-                app:ccp_showFlag="true"
-                app:ccp_showFullName="false"
-                app:ccp_showNameCode="true"
-                app:ccp_showPhoneCode="true"
-                app:ccp_textGravity="RIGHT"
-                app:ccp_textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/em_phone_inputLayout"
-                app:layout_constraintEnd_toStartOf="@+id/em_phone_inputLayout"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/em_phone_inputLayout" />
+            <!--            <com.hbb20.CountryCodePicker-->
+            <!--                android:id="@+id/country_code"-->
+            <!--                android:layout_width="60dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="16dp"-->
+            <!--                android:layout_marginEnd="8dp"-->
+            <!--                android:gravity="center"-->
+            <!--                app:ccpDialog_allowSearch="true"-->
+            <!--                app:ccpDialog_initialScrollToSelection="true"-->
+            <!--                app:ccpDialog_keyboardAutoPopup="false"-->
+            <!--                app:ccpDialog_showCloseIcon="true"-->
+            <!--                app:ccpDialog_showFastScroller="false"-->
+            <!--                app:ccpDialog_showFlag="true"-->
+            <!--                app:ccpDialog_showPhoneCode="true"-->
+            <!--                app:ccpDialog_showTitle="false"-->
+            <!--                app:ccp_arrowColor="@color/white"-->
+            <!--                app:ccp_arrowSize="20dp"-->
+            <!--                app:ccp_autoDetectCountry="true"-->
+            <!--                app:ccp_autoDetectLanguage="true"-->
+            <!--                app:ccp_autoFormatNumber="true"-->
+            <!--                app:ccp_clickable="true"-->
+            <!--                app:ccp_countryAutoDetectionPref="SIM_ONLY"-->
+            <!--                app:ccp_countryPreference="US,NZ"-->
+            <!--                app:ccp_defaultNameCode="US"-->
+            <!--                app:ccp_excludedCountries="in,us,pk"-->
+            <!--                app:ccp_rememberLastSelection="true"-->
+            <!--                app:ccp_selectionMemoryTag="signupCCP"-->
+            <!--                app:ccp_showArrow="true"-->
+            <!--                app:ccp_showFlag="true"-->
+            <!--                app:ccp_showFullName="false"-->
+            <!--                app:ccp_showNameCode="true"-->
+            <!--                app:ccp_showPhoneCode="true"-->
+            <!--                app:ccp_textGravity="RIGHT"-->
+            <!--                app:ccp_textSize="16sp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="@+id/em_phone_inputLayout"-->
+            <!--                app:layout_constraintEnd_toStartOf="@+id/em_phone_inputLayout"-->
+            <!--                app:layout_constraintHorizontal_bias="0.5"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="@+id/em_phone_inputLayout" />-->
 
 
             <com.google.android.material.button.MaterialButton

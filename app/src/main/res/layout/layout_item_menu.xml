@@ -80,6 +80,7 @@
             android:textColor="@color/control_switch_color_selector"
             android:textOff="@string/itzme_off"
             android:textOn="@string/itzme_on"
+            app:chainUseRtl="false"
             android:textSize="16sp"
             android:textStyle="bold"
             android:thumb="@drawable/menu_thumb_selector"

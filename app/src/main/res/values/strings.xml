@@ -114,8 +114,8 @@
     <string name="content1_android">Tap your itzme to the middle to itz to Android </string>
     <string name="content2_android">Make sure they have NFC turned on in settings! Some Androids have this off</string>
     <string name="how_direct">itzme Direct</string>
-    <string name="content1_direct">Tap your itzme to the middle to itz to Android </string>
-    <string name="content2_direct">When itzme Direct is on, your itzme will open directly to the first link on your profile</string>
+    <string name="content1_direct">Tap the itzme direct button on your profile to turn on</string>
+    <string name="content2_direct">when itzme direct is on,your itzme will open directly to the first link on your profile</string>
     <string name="how_profile">Your itzme profile</string>
     <string name="content1_profile">Turn itzme Direct off to share your full itzme Profile </string>
     <string name="content2_profile">Your itzme Profile is fully customizable, and links can be sorted using drag and drop</string>

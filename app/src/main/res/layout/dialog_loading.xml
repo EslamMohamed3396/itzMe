@@ -24,11 +24,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.core.widget.ContentLoadingProgressBar
+            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="8dp"
-            style="?android:attr/progressBarStyleLarge"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

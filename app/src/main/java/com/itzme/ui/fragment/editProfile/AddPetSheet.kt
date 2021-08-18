@@ -83,7 +83,7 @@ class AddPetSheet : BottomSheetDialogFragment() {
                 CheckValidData.checkEditText(binding.petNameInputLayout) &&
                 CheckValidData.checkEditText(binding.petInformationInputLayout) &&
                 CheckValidData.checkEditText(binding.emNameInputLayout) &&
-                CheckValidData.checkPhone(binding.countryCode, binding.emPhoneInputLayout)
+                CheckValidData.checkPhone(binding.emPhoneInputLayout)
     }
 
     //endregion
